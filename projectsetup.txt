@@ -1,0 +1,86 @@
+1: Create a project with vite.
+ --> npm create vite@latest
+2: Install package. 
+ --> yarn install | yarn 
+3: Es-Lint setup:
+ --> 1. yarn add eslint -D
+ --> 2. npx eslint --init
+ --> 3: .eslintrc.cjs : {
+    module.exports = {
+        root: true,
+        env: { browser: true, es2020: true },
+        extends: [
+            'eslint:recommended',
+            'plugin:@typescript-eslint/recommended',
+            'plugin:react-hooks/recommended',
+            'prettier',
+            'plugin:@tanstack/eslint-plugin-query/recommended',
+        ],
+        ignorePatterns: ['dist', '.eslintrc.cjs'],
+        parser: '@typescript-eslint/parser',
+        plugins: ['react-refresh', '@tanstack/query'],
+        rules: {
+            'react-refresh/only-export-components': [
+                'warn',
+                { allowConstantExport: true },
+            ],
+            '@tanstack/query/exhaustive-deps': 'error',
+            '@tanstack/query/prefer-query-object-syntax': 'error',
+        },
+    };
+ }
+
+4: Prettier setup:
+ --> 1. yarn add -D prettier
+ --> 2. yarn add eslint-config-prettier -D
+ --> 3. yarn add @tanstack/eslint-plugin-query@latest -D
+ --> .prettierignore {
+    # Ignore artifacts:
+    build
+    coverage
+    }
+--> .prettierrc.json{
+        {
+            "singleQuote": true,
+            "semi": true,
+            "tabWidth": 2
+        }
+    }  
+
+5: Husky Setup: 
+ --> 1. yarn add husky -D
+ --> 2. npx husky-init
+ --> 3. pre-commit: {
+    #!/usr/bin/env sh
+    . "$(dirname -- "$0")/_/husky.sh"
+
+    echo ""
+    echo "linting your code"
+    echo "----please wait-----"
+
+    npx lint-staged
+
+    echo "Linted Successfully!"
+
+    echo ""
+    echo "building your code"
+    echo "----please wait-----"
+
+    npm run build
+
+    echo "Built Successfully!"
+    }
+ --> 4. commit-msg: {
+    #!/usr/bin/env sh
+    . "$(dirname -- "$0")/_/husky.sh"
+
+    npm run commitlint ${1}
+    }
+
+6: Commitlint.
+ --> 1. yarn add @commitlint/{config-conventional,cli} -D
+ --> .commitlintrc.json: {
+        {
+            "extends": ["@commitlint/config-conventional"]
+        }
+    }
