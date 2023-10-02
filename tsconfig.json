@@ -13,6 +13,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@rsces/assets/*": ["assets/*"],
+      "@rsces/components/*": ["components/*"],
+      "@rsces/layout/*": ["layout/*"],
+      "@rsces/providers/*": ["providers/*"],
+      "@rsces/routes/*": ["routes/*"],
+      "@rsces/theme/*": ["theme/*"]
+    },
 
     /* Linting */
     "strict": true,

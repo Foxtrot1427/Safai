@@ -1,5 +1,4 @@
-import './App.css';
-import Provider from './providers';
+import Provider from '@rsces/providers/index';
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
