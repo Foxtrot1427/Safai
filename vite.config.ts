@@ -12,6 +12,7 @@ export default defineConfig({
       '@rsces/assets': path.resolve('src/assets'),
       '@rsces/components': path.resolve('src/components'),
       '@rsces/layout': path.resolve('src/layout'),
+      '@rsces/pages': path.resolve('src/pages'),
       '@rsces/providers': path.resolve('src/providers'),
       '@rsces/routes': path.resolve('src/routes'),
       '@rsces/theme': path.resolve('src/theme'),

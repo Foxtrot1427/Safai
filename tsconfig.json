@@ -18,6 +18,7 @@
       "@rsces/assets/*": ["assets/*"],
       "@rsces/components/*": ["components/*"],
       "@rsces/layout/*": ["layout/*"],
+      "@rsces/pages/*": ["pages/*"],
       "@rsces/providers/*": ["providers/*"],
       "@rsces/routes/*": ["routes/*"],
       "@rsces/theme/*": ["theme/*"]
