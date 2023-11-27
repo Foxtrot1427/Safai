@@ -1,15 +1,14 @@
-import { useRoutes } from 'react-router-dom';
-
-import AboutUs from '@rsces/pages/AboutUs';
-import AvailableWithUs from '@rsces/pages/AvailableWithUs';
-import Contact from '@rsces/pages/Contact';
-import Home from '@rsces/pages/Home';
-import HowItWorks from '@rsces/pages/HowItWorks';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 import RootLayout from '@rsces/layout/RootLayout';
+import Home from '@rsces/pages/Home';
+import AboutUs from '@rsces/pages/AboutUs';
+import AvailableWithUs from '@rsces/pages/AvailableWithUs';
+import HowItWorks from '@rsces/pages/HowItWorks';
 import WhatWeBuy from '@rsces/pages/WhatWeBuy';
+import Contact from '@rsces/pages/Contact';
 
-const publicRoutes = [
+const router = createBrowserRouter([
   {
     path: NAVIGATION_ROUTES.BASE,
     element: <RootLayout />,
@@ -40,12 +39,14 @@ const publicRoutes = [
       },
     ],
   },
-];
+]);
 
 const AppRoutes = () => {
-  const routes = useRoutes(publicRoutes);
-
-  return routes;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 };
 
 export default AppRoutes;

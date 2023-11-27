@@ -7,11 +7,12 @@ import {
   UnorderedList,
   VStack,
 } from '@chakra-ui/react';
-import { colors } from '@rsces/theme/colors';
-
 import { FaFacebookF, FaTwitter } from 'react-icons/fa';
 import { TfiYoutube } from 'react-icons/tfi';
-import Container from '../ui/Container';
+import { colors } from '@rsces/theme/colors';
+import Container from '@rsces/components/ui/Container';
+import { FOOTER_LINKS } from '../../data';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -35,20 +36,14 @@ const Footer = () => {
                 spacing={2}
                 mt={4}
               >
-                {[
-                  'About Company',
-                  'What we buy',
-                  'How it works',
-                  'Available with us',
-                  'Contact us',
-                ].map((item) => (
+                {FOOTER_LINKS.map((item) => (
                   <ListItem
-                    key={item}
+                    key={item.title}
                     textTransform={'uppercase'}
                     fontSize={'sm'}
                     letterSpacing={0.5}
                   >
-                    {item}
+                    <Link to={item.to}>{item.title}</Link>
                   </ListItem>
                 ))}
               </UnorderedList>
