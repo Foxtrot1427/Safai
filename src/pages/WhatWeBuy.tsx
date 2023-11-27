@@ -41,6 +41,7 @@ const WhatWeBuy = () => {
             columnGap={8}
             justifyItems={'center'}
           >
+            {/* PRODUCTS */}
             {Array.from(new Array(16)).map((_, index) => (
               <Box
                 key={index}
@@ -85,15 +86,13 @@ const WhatWeBuy = () => {
                 align={'center'}
                 fontSize={'2xl'}
                 fontWeight={'bold'}
-                w={'35%'}
+                w={'34%'}
               >
-                Please fill the form if you want to
-                <br />
+                Please fill the form if you want to &nbsp;
                 <span style={{ color: colors.primary, fontSize: '50px' }}>
                   SALE
                 </span>
-                <br />
-                your trash
+                &nbsp; your trash
               </Text>
 
               <Box
