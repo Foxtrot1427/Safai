@@ -5,4 +5,7 @@ export const NAVIGATION_ROUTES = {
   HOW_IT_WORKS: '/how-it-works',
   AVAILABLE_WITH_US: '/available-with-us',
   CONTACT: '/contact',
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_REGISTER: '/admin/register',
+  NO_MATCH: '*',
 };
