@@ -17,6 +17,7 @@ export default defineConfig({
       '@rsces/providers': path.resolve('src/providers'),
       '@rsces/routes': path.resolve('src/routes'),
       '@rsces/theme': path.resolve('src/theme'),
+      '@rsces/service': path.resolve('src/service'),
     },
   },
 });
