@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import LayoutDashboard from './Layout';
 import { DataTable } from '@rsces/components/DataTable';
 const dummyData = [

@@ -17,6 +17,7 @@ import {
 import { FiSettings } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
 import { HiOutlineDocumentText } from "react-icons/hi";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ const options = [
   {
     label: "Register",
     icon: <LuMailQuestion size={20} />,
-    link: "/admin/register",
+    link: NAVIGATION_ROUTES.ADMIN_REGISTER,
   },
   {
     label: "Settings",
@@ -202,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             }}
             flexShrink={0}
           >
-            <Image src="src\assets\images\logo.jpg" alt="Logo" height={10} />
+            <Image src="src\assets\images\logo.jpg" alt="Logo" height={12} />
           </Link>
           <Link
             as={ReactRouterLink}
