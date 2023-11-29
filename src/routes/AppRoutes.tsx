@@ -11,9 +11,12 @@ import AvailableWithUs from '@rsces/pages/AvailableWithUs';
 import HowItWorks from '@rsces/pages/HowItWorks';
 import WhatWeBuy from '@rsces/pages/WhatWeBuy';
 import Contact from '@rsces/pages/Contact';
-import Login from '@rsces/pages/login';
+import Login from '@rsces/pages/Admin/login';
 import TokenService from '@rsces/service/service-token';
-import Register from '@rsces/pages/register';
+import Register from '@rsces/pages/Admin/register';
+import Dashboard from '@rsces/pages/Admin/Layout';
+import LayoutDashboard from '@rsces/pages/Admin/Layout';
+import AdminLanding from '@rsces/pages/Admin/AdminLanding';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +67,10 @@ const adminRouter = createBrowserRouter([
   {
     path: NAVIGATION_ROUTES.ADMIN_LOGIN,
     element: <Login />,
+  },
+  {
+    path: NAVIGATION_ROUTES.ADMIN_DASHBOARD,
+    element: <AdminLanding />,
   },
   {
     path: NAVIGATION_ROUTES.BASE,
