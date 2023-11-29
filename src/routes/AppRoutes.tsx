@@ -14,8 +14,7 @@ import Contact from '@rsces/pages/Contact';
 import Login from '@rsces/pages/Admin/login';
 import TokenService from '@rsces/service/service-token';
 import Register from '@rsces/pages/Admin/register';
-import Dashboard from '@rsces/pages/Admin/Layout';
-import LayoutDashboard from '@rsces/pages/Admin/Layout';
+
 import AdminLanding from '@rsces/pages/Admin/AdminLanding';
 
 const router = createBrowserRouter([
