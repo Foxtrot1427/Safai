@@ -18,6 +18,20 @@ export const Button = defineStyleConfig({
         border: `1px solid ${colors.primary}`,
       },
     },
+    outline: {
+      bg: colors.gray_100,
+      color: colors.primary,
+      border: `1px solid`,
+      borderColor: colors.primary,
+      _hover: {
+        bg: colors.primary,
+        color: colors.gray_100,
+      },
+      _active: {
+        bg: colors.primary,
+        opacity: 0.8,
+      },
+    },
   },
   defaultProps: {
     variant: 'primary',

@@ -16,7 +16,23 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { Carton, Logistics, Recycle } from '@rsces/assets/images';
+import {
+  Carton,
+  ClientFlatIron,
+  ClientHotelHimalaya,
+  ClientNamaste,
+  ClientVaishali,
+  HomeBanner,
+  LogisticServices,
+  Logistics,
+  Recycle,
+  RecycleServices,
+  RecycledProducts,
+  ShopRecycled,
+  TrashDonation,
+  TrashPickup,
+  TrashTransform,
+} from '@rsces/assets/images';
 import Container from '@rsces/components/ui/Container';
 import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 import { colors } from '@rsces/theme/colors';
@@ -44,9 +60,7 @@ const Home = () => {
         as={'section'}
         position={'relative'}
         py={80}
-        background={
-          'url("https://images.unsplash.com/photo-1618477462041-2b6b1920e073?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")'
-        }
+        bgImage={HomeBanner}
         backgroundSize={'cover'}
         backgroundPosition={'center'}
         _after={{
@@ -159,6 +173,7 @@ const Home = () => {
                 borderColor={colors.gray_200}
                 borderTop={`3px solid ${colors.black}`}
                 bg={colors.white}
+                color={colors.black}
                 _hover={{
                   bg: colors.black,
                   color: colors.white,
@@ -268,14 +283,24 @@ const Home = () => {
         <Container>
           <TabPanels py={8}>
             <TabPanel>
-              <Flex>
-                {/* Recycle Services Image  */}
-                <Box></Box>
+              <Flex gap={8}>
+                <Box>
+                  <Image
+                    src={RecycleServices}
+                    alt="Recycle Services"
+                    w={'400px'}
+                    aspectRatio={4 / 3}
+                    objectFit={'cover'}
+                    objectPosition={'center'}
+                  />
+                </Box>
 
                 <Box flex={1}>
-                  <Text>Recycle Service</Text>
+                  <Text fontWeight={600} fontSize={'2xl'}>
+                    Recycle Service
+                  </Text>
 
-                  <Text>
+                  <Text mt={4}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Iusto at eum nisi harum nulla placeat, dolorum eveniet
                     pariatur, ea deleniti nam reprehenderit dolorem, nemo sequi
@@ -283,20 +308,41 @@ const Home = () => {
                     quasi rem voluptate, officia deserunt perspiciatis
                     laboriosam. Dolor ipsam saepe consectetur inventore
                     accusamus veniam deleniti architecto cum cupiditate nihil
-                    iste quae, quod voluptatibus itaque illo.
+                    iste quae, quod voluptatibus itaque illo. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Voluptas aspernatur
+                    exercitationem quas laboriosam modi pariatur quidem!
+                    Mollitia, corporis, alias corrupti dolorem facilis quaerat
+                    modi facere quae repellendus eveniet numquam repellat? Omnis
+                    cupiditate tenetur repellendus! Quia maxime eveniet delectus
+                    facere magni odit veritatis atque reiciendis ipsa dicta
+                    quos, possimus quasi cumque illo dolorum tempora voluptatum
+                    corrupti illum, velit libero? Nihil, tempore. Aperiam
+                    quisquam eligendi, inventore deleniti nam ipsam sapiente?
+                    Libero facere quod vel debitis officia, eum commodi culpa
+                    iste.
                   </Text>
                 </Box>
               </Flex>
             </TabPanel>
             <TabPanel>
-              <Flex>
-                {/* Recycle Services Image  */}
-                <Box></Box>
+              <Flex gap={8}>
+                <Box>
+                  <Image
+                    src={LogisticServices}
+                    alt="Logistic Services"
+                    w={'400px'}
+                    aspectRatio={4 / 3}
+                    objectFit={'cover'}
+                    objectPosition={'center'}
+                  />
+                </Box>
 
                 <Box flex={1}>
-                  <Text>Logistic Service</Text>
+                  <Text fontWeight={600} fontSize={'2xl'}>
+                    Logistic Service
+                  </Text>
 
-                  <Text>
+                  <Text mt={4}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Expedita veritatis, recusandae nostrum cumque odit quas
                     vitae, error earum provident ratione dicta quia impedit
@@ -309,6 +355,14 @@ const Home = () => {
                     ducimus totam veritatis facilis quisquam alias sunt repellat
                     maxime, cum eaque tempora corrupti excepturi, blanditiis
                     odit doloremque laudantium incidunt? Labore, magni quia?
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Ullam magnam officiis et perspiciatis consequuntur,
+                    dignissimos soluta quo fugit temporibus, odit dicta
+                    distinctio pariatur similique voluptates inventore. Aliquam
+                    quasi dolor distinctio. Velit aut sit sint doloribus magni,
+                    optio itaque voluptate ratione temporibus quae voluptatum
+                    obcaecati? Velit blanditiis ipsam quibusdam quo non
+                    aspernatur reprehenderit.
                   </Text>
                 </Box>
               </Flex>
@@ -333,11 +387,36 @@ const Home = () => {
 
           <Flex mt={24}>
             {[
-              { title: 'Bear to Discover', image: '' },
-              { title: 'Bear to Discover 2', image: '' },
-              { title: 'Bear to Discover 3', image: '' },
-              { title: 'Bear to Discover 4', image: '' },
-              { title: 'Bear to Discover 5', image: '' },
+              {
+                title: 'Donate Your Trash',
+                description:
+                  'Shape a sustainable tomorrow with your recyclables.',
+                image: TrashDonation,
+              },
+              {
+                title: 'Waste Warriors at Your Doorstep',
+                description:
+                  'Effortless recycling with prompt doorstep pickups',
+                image: TrashPickup,
+              },
+              {
+                title: 'Transforming Trash into Treasure',
+                description:
+                  'Experience the magic of turning waste into renewed materials.',
+                image: TrashTransform,
+              },
+              {
+                title: 'From Recycled to Remarkable',
+                description:
+                  'Explore unique, high-quality products crafted from your donated materials',
+                image: RecycledProducts,
+              },
+              {
+                title: 'Shop the Change',
+                description:
+                  'Contribute to a cleaner planet by purchasing from our recycled product range',
+                image: ShopRecycled,
+              },
             ].map((item, index) => (
               <Flex
                 flex={1}
@@ -345,13 +424,18 @@ const Home = () => {
                 flexDir={(index + 1) % 2 === 0 ? 'column-reverse' : 'column'}
                 align={'center'}
                 gap={6}
-                color={colors.white}
+                color={colors.gray_200}
               >
-                <Flex gap={2} align={'center'}>
-                  <Text fontSize={'5xl'} fontWeight={'bold'}>
+                <Flex gap={2}>
+                  <Text fontSize={'5xl'} fontWeight={'bold'} mt={-3}>
                     {index + 1}
                   </Text>
-                  <Text>{item.title}</Text>
+                  <VStack align={'start'}>
+                    <Text fontWeight={700} fontSize={'lg'}>
+                      {item.title}
+                    </Text>
+                    <Text>{item.description}</Text>
+                  </VStack>
                 </Flex>
                 <Circle
                   position={'relative'}
@@ -362,24 +446,22 @@ const Home = () => {
                     transformStyle: 'preserve-3d',
                   }}
                   _before={{
-                    display: index === 4 ? 'none' : 'block',
+                    display: index >= 4 ? 'none' : 'block',
                     content: '""',
-                    width: '100px',
+                    width: '280px',
                     height: 0,
                     position: 'relative',
                     border: '4px dashed gray',
                     right: 0,
                     transformOrigin: `100px ${
-                      (index + 1) % 2 === 0 ? '260px' : '-260px'
+                      (index + 1) % 2 === 0 ? '130px' : '-130px'
                     }`,
                     transform: `rotate(${
-                      (index + 1) % 2 === 0 ? '30deg' : '-30deg'
+                      (index + 1) % 2 === 0 ? '40deg' : '-40deg'
                     }) translateZ(-1px)`,
                   }}
-                  bgImage={
-                    "url('https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png')"
-                  }
-                  bgSize={'contain'}
+                  bgImage={item.image}
+                  bgSize={'cover'}
                 ></Circle>
               </Flex>
             ))}
@@ -419,6 +501,7 @@ const Home = () => {
               px={16}
               py={6}
               borderRadius={'none'}
+              border={`1px solid ${colors.primary}`}
             >
               View All
             </Button>
@@ -441,8 +524,13 @@ const Home = () => {
           </Text>
 
           <Flex gap={8} justifyContent={'center'} mt={12}>
-            {Array.from(new Array(6)).map((_, index) => (
-              <Square size={48} key={index} bgColor={colors.gray_700} />
+            {[
+              { id: 1, name: 'Flat Iron', image: ClientFlatIron },
+              { id: 2, name: 'Hotel Himalaya', image: ClientHotelHimalaya },
+              { id: 3, name: 'Namaste', image: ClientNamaste },
+              { id: 4, name: 'Vaishali', image: ClientVaishali },
+            ].map((item) => (
+              <Image key={item.id} src={item.image} alt={item.name} h={48} />
             ))}
           </Flex>
         </Container>
