@@ -13,11 +13,14 @@
     "commitlint": "commitlint --edit"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.2",
+    "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-query": "^5.8.7",
+    "@tanstack/react-table": "^8.10.7",
     "axios": "^1.6.2",
     "framer-motion": "^10.16.1",
     "path": "^0.12.7",
@@ -26,6 +29,7 @@
     "react-hook-form": "^7.48.2",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.11.0",
+    "react-paginate": "^8.2.0",
     "react-router-dom": "^6.15.0",
     "yup": "^1.3.2"
   },

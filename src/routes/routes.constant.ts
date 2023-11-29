@@ -6,6 +6,7 @@ export const NAVIGATION_ROUTES = {
   AVAILABLE_WITH_US: '/available-with-us',
   CONTACT: '/contact',
   ADMIN_LOGIN: '/admin/login',
+  ADMIN_DASHBOARD: '/admin',
   ADMIN_REGISTER: '/admin/register',
   NO_MATCH: '*',
 };

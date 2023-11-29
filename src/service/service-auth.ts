@@ -1,7 +1,7 @@
 import {
   ILoginRequest,
   ILoginResponseData,
-} from '@rsces/pages/login/interface';
+} from '@rsces/pages/Admin/login/interface';
 import { HttpClient } from './service-axios';
 import { Response, api } from './service-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import serverErrorResponse from './service-error';
 import {
   ISignupRequest,
   ISignupResponse,
-} from '@rsces/pages/register/interface';
+} from '@rsces/pages/Admin/register/interface';
 
 export const authTokenKey = 'authToken';
 
