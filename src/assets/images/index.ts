@@ -15,6 +15,10 @@ import ClientFlatIron from './client-flat-iron.png';
 import ClientHotelHimalaya from './client-hotel-himalaya.jpeg';
 import ClientNamaste from './client-namaste.jpg';
 import ClientVaishali from './client-vaishali.jpeg';
+import Trash from './trash.jpg';
+import Newspapers from './newspapers.jpg';
+import ETrash from './e-trash.jpg';
+import WhatWeBuyBanner from './what-we-buy.jpg';
 
 export {
   Logo,
@@ -34,4 +38,8 @@ export {
   ClientHotelHimalaya,
   ClientNamaste,
   ClientVaishali,
+  Trash,
+  Newspapers,
+  ETrash,
+  WhatWeBuyBanner,
 };
