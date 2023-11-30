@@ -9,7 +9,7 @@ import Home from '@rsces/pages/Home';
 import AboutUs from '@rsces/pages/AboutUs';
 import AvailableWithUs from '@rsces/pages/AvailableWithUs';
 import HowItWorks from '@rsces/pages/HowItWorks';
-import WhatWeBuy from '@rsces/pages/WhatWeBuy';
+import WhatWeBuy from '@rsces/pages/what-we-buy';
 import Contact from '@rsces/pages/Contact';
 import Login from '@rsces/pages/Admin/login';
 import TokenService from '@rsces/service/service-token';
