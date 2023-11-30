@@ -11,6 +11,7 @@ export const NAVBAR_LINKS = [
   { title: 'How it works', to: NAVIGATION_ROUTES.HOW_IT_WORKS },
   { title: 'Available with us', to: NAVIGATION_ROUTES.AVAILABLE_WITH_US },
   { title: 'Contact', to: NAVIGATION_ROUTES.CONTACT },
+  { title: "Admin's Login", to: NAVIGATION_ROUTES.ADMIN_LOGIN },
 ];
 
 // HOME

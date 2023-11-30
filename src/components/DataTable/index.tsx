@@ -30,6 +30,7 @@ import {
   getGroupedRowModel,
   getSortedRowModel,
   GroupingState,
+  RowData,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
@@ -41,9 +42,10 @@ import { BiSkipNext, BiSkipPrevious } from 'react-icons/bi';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { colors } from '@rsces/theme/colors';
 
-export type DataTableProps = {
-  data: Record<string, any>[];
-  columns: ColumnDef<any, any>[];
+export type DataTableProps<TData> = {
+  data: TData[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  columns: ColumnDef<TData, any>[];
   isLoading?: boolean;
   pinColumnAccess?: boolean;
   showFooter?: boolean;
@@ -59,9 +61,10 @@ export type DataTableProps = {
     setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
   };
   sortingColumn?: string;
-  setTable?: (table: any) => void;
+  setTable?: (table: unknown) => void;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -77,7 +80,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 
 const tooltipLabel = 'Select the number of items to be displayed';
 
-export function DataTable({
+export function DataTable<TData extends RowData>({
   data,
   columns,
   pagination,
@@ -87,7 +90,7 @@ export function DataTable({
   pinColumnAccess,
   showFooter,
   sortingColumn,
-}: DataTableProps) {
+}: DataTableProps<TData>) {
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [stickyColumn, setStickyColumn] = useState<null | number>(null);
@@ -114,7 +117,7 @@ export function DataTable({
     }
   }, [pagination?.count, limit]);
 
-  const table = useReactTable({
+  const table = useReactTable<TData>({
     columns,
     data,
     filterFns: {
@@ -156,7 +159,7 @@ export function DataTable({
   useEffect(() => {
     setTable?.(table);
     table.setPageSize(pagination?.count ?? 20);
-  }, [table]);
+  }, [table, setTable, pagination?.count]);
 
   useEffect(() => {
     table.getHeaderGroups().map((headerGroup) =>
@@ -248,8 +251,9 @@ export function DataTable({
                         <HStack justifyContent={'space-between'}>
                           <Text
                             flex={1}
-                            color={colors.gray_500}
-                            fontWeight={500}
+                            color={colors.primary}
+                            fontWeight={700}
+                            py={1}
                           >
                             {header.isPlaceholder
                               ? null

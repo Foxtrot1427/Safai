@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Container from '@rsces/components/ui/Container';
+import Wrapper from '@rsces/components/ui/Wrapper';
 import { colors } from '@rsces/theme/colors';
 
 import { PiPaperPlaneRightFill } from 'react-icons/pi';
@@ -17,32 +18,19 @@ import { PiPaperPlaneRightFill } from 'react-icons/pi';
 const AboutUs = () => {
   return (
     <>
-      <Box as={'section'} h={'400px'}>
-        <Box
-          w={'50%'}
-          h={'inherit'}
-          mx={'auto'}
-          bgColor={colors.primary}
-          opacity={0.5}
-          color={colors.white}
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          flexDirection={'column'}
+      <Wrapper>
+        <Text textTransform={'uppercase'} align={'center'} fontSize={'2xl'}>
+          Our Company & Motto
+        </Text>
+        <Text
+          textTransform={'uppercase'}
+          align={'center'}
+          fontSize={'5xl'}
+          fontWeight={'bold'}
         >
-          <Text textTransform={'uppercase'} align={'center'} fontSize={'2xl'}>
-            Our Company & Motto
-          </Text>
-          <Text
-            textTransform={'uppercase'}
-            align={'center'}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
-          >
-            About us
-          </Text>
-        </Box>
-      </Box>
+          About us
+        </Text>
+      </Wrapper>
 
       <Box as={'section'} py={24} bgColor={colors.gray_200}>
         <Container>

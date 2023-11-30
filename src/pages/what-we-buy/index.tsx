@@ -17,47 +17,30 @@ import {
   Trash,
   WhatWeBuyBanner,
 } from '@rsces/assets/images';
+import Wrapper from '@rsces/components/ui/Wrapper';
 
 const WhatWeBuy = () => {
   return (
     <>
-      <Box as={'section'} h={'700px'}>
-        <Box
-          h={'inherit'}
-          mx={'auto'}
-          color={colors.white}
-          display={'flex'}
-          justifyContent={'center'}
-          alignItems={'center'}
-          flexDirection={'column'}
-          bgImage={WhatWeBuyBanner}
-          bgSize={'cover'}
-          bgPosition={'center center'}
-          position={'relative'}
-          _after={{
-            position: 'absolute',
-            zIndex: 10,
-            top: 0,
-            content: '""',
-            width: '100%',
-            height: '100%',
-            backgroundImage: `linear-gradient(to right, ${colors.primary}, transparent)`,
-            opacity: 0.5,
-          }}
+      <Wrapper bannerImg={WhatWeBuyBanner}>
+        <Text
+          textTransform={'uppercase'}
+          align={'center'}
+          fontSize={'2xl'}
+          color={colors.gray_100}
         >
-          <Text textTransform={'uppercase'} align={'center'} fontSize={'2xl'}>
-            You can sell items
-          </Text>
-          <Text
-            textTransform={'uppercase'}
-            align={'center'}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
-          >
-            What we buy
-          </Text>
-        </Box>
-      </Box>
+          You can sell items
+        </Text>
+        <Text
+          textTransform={'uppercase'}
+          align={'center'}
+          fontSize={'5xl'}
+          fontWeight={'bold'}
+          color={colors.gray_100}
+        >
+          What we buy
+        </Text>
+      </Wrapper>
 
       <Box as={'section'} py={16}>
         <Container>

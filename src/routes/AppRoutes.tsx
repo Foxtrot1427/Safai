@@ -15,7 +15,8 @@ import Login from '@rsces/pages/Admin/login';
 import TokenService from '@rsces/service/service-token';
 import Register from '@rsces/pages/Admin/register';
 
-import AdminLanding from '@rsces/pages/Admin/AdminLanding';
+import AdminLayout from '@rsces/pages/Admin/Layout';
+import AdminDonations from '@rsces/pages/Admin/donations';
 
 const router = createBrowserRouter([
   {
@@ -69,7 +70,13 @@ const adminRouter = createBrowserRouter([
   },
   {
     path: NAVIGATION_ROUTES.ADMIN_DASHBOARD,
-    element: <AdminLanding />,
+    element: <AdminLayout />,
+    children: [
+      {
+        path: NAVIGATION_ROUTES.ADMIN_DONATIONS,
+        element: <AdminDonations />,
+      },
+    ],
   },
   {
     path: NAVIGATION_ROUTES.BASE,

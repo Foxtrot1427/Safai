@@ -40,6 +40,7 @@ import { IconType } from 'react-icons';
 import { BsEnvelope } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { STATISTICS } from '../data';
+import Wrapper from '@rsces/components/ui/Wrapper';
 
 function renderIcon(icon: IconType) {
   const Icon = icon;
@@ -56,24 +57,7 @@ const Home = () => {
   return (
     <>
       {/* Banner */}
-      <Box
-        as={'section'}
-        position={'relative'}
-        py={80}
-        bgImage={HomeBanner}
-        backgroundSize={'cover'}
-        backgroundPosition={'center'}
-        _after={{
-          position: 'absolute',
-          zIndex: 10,
-          top: 0,
-          content: '""',
-          width: '100%',
-          height: '100%',
-          backgroundImage: `linear-gradient(to right, ${colors.primary}, transparent)`,
-          opacity: 0.5,
-        }}
-      >
+      <Wrapper bannerImg={HomeBanner}>
         <Container>
           <Box>
             <Box position={'relative'} zIndex={20}>
@@ -112,7 +96,7 @@ const Home = () => {
             </Box>
           </Box>
         </Container>
-      </Box>
+      </Wrapper>
 
       <Box as={'section'} py={48}>
         <Container>

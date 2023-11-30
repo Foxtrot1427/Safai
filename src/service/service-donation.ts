@@ -4,19 +4,7 @@ import { HttpClient } from './service-axios';
 import { toastFail, toastSuccess } from './service-toast';
 import serverErrorResponse from './service-error';
 import { GenericFormData } from 'axios';
-
-interface IDonation {
-  id: number;
-  name: string;
-  number: string;
-  itemName: string;
-  image: string;
-  pickUpDate: string;
-  pickUpTime: string;
-  created_at: string;
-  updated_at: string;
-  description: string;
-}
+import { IDonation } from '@rsces/pages/Admin/donations/interface';
 
 const getDonations = async () => {
   const response = await HttpClient.get<Response<IDonation[]>>(
