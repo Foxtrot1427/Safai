@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import {
   Accordion,
   AccordionButton,
@@ -13,11 +13,12 @@ import {
   Text,
   Tooltip,
   VStack,
-} from "@chakra-ui/react";
-import { FiSettings } from "react-icons/fi";
-import { LuMailQuestion } from "react-icons/lu";
-import { HiOutlineDocumentText } from "react-icons/hi";
-import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
+} from '@chakra-ui/react';
+import { FiSettings } from 'react-icons/fi';
+import { LuMailQuestion } from 'react-icons/lu';
+import { HiOutlineDocumentText } from 'react-icons/hi';
+import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
+import { colors } from '@rsces/theme/colors';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -40,28 +41,28 @@ interface SidebarItemProps extends CommonSidebarItemProps {
 
 const options = [
   {
-    label: "Donations",
+    label: 'Donations',
     icon: <HiOutlineDocumentText size={20} />,
-    link: "/admin/release-requests",
+    link: NAVIGATION_ROUTES.ADMIN_DONATIONS,
   },
   {
-    label: "Products",
+    label: 'Products',
     icon: <HiOutlineDocumentText size={20} />,
-    link: "/admin/release-requests",
+    link: '/admin/release-requests',
   },
   {
-    label: "Register",
+    label: 'Register',
     icon: <LuMailQuestion size={20} />,
     link: NAVIGATION_ROUTES.ADMIN_REGISTER,
   },
   {
-    label: "Settings",
+    label: 'Settings',
     icon: <FiSettings size={20} />,
-    link: "/admin/settings",
+    link: '/admin/settings',
   },
 ];
 
-const SidebarItem: React.FC<SidebarItemProps> = props => {
+const SidebarItem: React.FC<SidebarItemProps> = (props) => {
   const {
     icon,
     label,
@@ -70,14 +71,17 @@ const SidebarItem: React.FC<SidebarItemProps> = props => {
     verticalPadding = 16,
     isOpen,
     onToggle,
+    link,
   } = props;
+  const location = useLocation();
+  const isSelected = location.pathname === link;
 
   return (
     <AccordionItem border="none" gap={0}>
       <Tooltip
         hasArrow
         placement="right"
-        label={!isOpen ? label : ""}
+        label={!isOpen ? label : ''}
         openDelay={200}
         fontSize={13}
       >
@@ -89,15 +93,21 @@ const SidebarItem: React.FC<SidebarItemProps> = props => {
             26 + (isOpen ? extraHorizontalPadding : 0)
           }px`}
           justifyContent="space-between"
-          _hover={{ background: "grey.100" }}
+          _hover={{ background: colors.gray_100 }}
           display={{
-            base: "flex",
-            md: !isOpen && subItems ? "none" : "flex",
+            base: 'flex',
+            md: !isOpen && subItems ? 'none' : 'flex',
           }}
+          bg={isSelected ? colors.gray_100 : 'transparent'}
         >
-          <Flex gap={15} alignItems={"flex-end"}>
+          <Flex gap={8} alignItems={'flex-end'}>
             <Box flexShrink={0}>{icon}</Box>
-            <Text isTruncated visibility={isOpen ? "visible" : "hidden"}>
+            <Text
+              isTruncated
+              visibility={isOpen ? 'visible' : 'hidden'}
+              fontSize={'sm'}
+              fontWeight={600}
+            >
               {label}
             </Text>
           </Flex>
@@ -124,7 +134,7 @@ const SidebarItem: React.FC<SidebarItemProps> = props => {
   );
 };
 
-const SidebarItemContainer: React.FC<SidebarItemProps> = props => {
+const SidebarItemContainer: React.FC<SidebarItemProps> = (props) => {
   const { link, isOpen, onToggle } = props;
 
   if (link) {
@@ -158,8 +168,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
   };
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -170,11 +180,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         transition="width 0.3s ease"
         width={{
           base: isOpen ? 280 : 0,
-          lg: isOpen ? 280 : "72px",
+          lg: isOpen ? 280 : '72px',
         }}
         position={{
-          base: "absolute",
-          lg: "relative",
+          base: 'absolute',
+          lg: 'relative',
         }}
         zIndex={50}
         background="white"
@@ -182,24 +192,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         height="full"
         overflowX="hidden"
         overflowY="auto"
-        boxShadow={"2px 0 4px rgba(0, 0, 0, 0.1)"}
+        boxShadow={'2px 0 4px rgba(0, 0, 0, 0.1)'}
       >
         <Flex
           alignItems="center"
-          justifyContent={isOpen ? "flex-start" : "center"}
+          justifyContent={isOpen ? 'flex-start' : 'center'}
           width="full"
           height={73}
           flexShrink={0}
           px={isOpen ? 7 : 2}
           pt={2}
-          boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.1)"}
+          boxShadow={'0px 4px 4px rgba(0, 0, 0, 0.1)'}
         >
           <Link
             as={ReactRouterLink}
-            to={"/"}
+            to={'/'}
             display={{
-              base: "block",
-              lg: isOpen ? "block" : "none",
+              base: 'block',
+              lg: isOpen ? 'block' : 'none',
             }}
             flexShrink={0}
           >
@@ -207,12 +217,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
           </Link>
           <Link
             as={ReactRouterLink}
-            to={"/"}
+            to={'/'}
             display={{
-              lg: !isOpen ? "block" : "none",
+              lg: !isOpen ? 'block' : 'none',
             }}
           >
-            <Image src="src\assets\images\mini-logo.jpg" alt="Logo" height={6} />
+            <Image
+              src="src\assets\images\mini-logo.jpg"
+              alt="Logo"
+              height={6}
+            />
           </Link>
         </Flex>
 
@@ -226,7 +240,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             isOpen || isSmallScreen
               ? openIndexes
               : Array(options.length + 20)
-                  .fill("")
+                  .fill('')
                   .map((_, index) => index)
           }
         >
@@ -248,9 +262,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         position="fixed"
         transition="opacity 0.3s ease, visibility 0.3s ease"
         display={{
-          lg: "none",
+          lg: 'none',
         }}
-        visibility={isOpen ? "visible" : "hidden"}
+        visibility={isOpen ? 'visible' : 'hidden'}
         opacity={isOpen ? 0.4 : 0}
         zIndex={40}
         left={0}

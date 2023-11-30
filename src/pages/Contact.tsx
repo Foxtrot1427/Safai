@@ -1,38 +1,24 @@
-import { Box, Circle, Flex, Text, VStack } from '@chakra-ui/react';
+import { Circle, Flex, Text, VStack } from '@chakra-ui/react';
+import Wrapper from '@rsces/components/ui/Wrapper';
 import { colors } from '@rsces/theme/colors';
 
 const Contact = () => {
   return (
     <>
       {/* Banner */}
-      <Box
-        position={'relative'}
-        h={'400px'}
-        display={'flex'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        flexDirection={'column'}
-        background={colors.primary}
-        opacity={0.5}
-      >
-        <Box textAlign={'center'}>
-          <Text
-            textTransform={'uppercase'}
-            fontSize={'2xl'}
-            color={colors.white}
-          >
-            Our Corporate Location
-          </Text>
-          <Text
-            textTransform={'uppercase'}
-            color={colors.white}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
-          >
-            Collection Center
-          </Text>
-        </Box>
-      </Box>
+      <Wrapper>
+        <Text textTransform={'uppercase'} fontSize={'2xl'} align={'center'}>
+          Our Corporate Location
+        </Text>
+        <Text
+          textTransform={'uppercase'}
+          fontSize={'5xl'}
+          fontWeight={'bold'}
+          align={'center'}
+        >
+          Collection Center
+        </Text>
+      </Wrapper>
 
       <Flex w={'60%'} mx={'auto'} py={24}>
         {[
