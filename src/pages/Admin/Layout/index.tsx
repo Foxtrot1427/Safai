@@ -16,7 +16,7 @@ const LayoutDashboard: React.FC<LayoutProps> = ({ children }) => {
         <Sidebar isOpen={isOpen} onToggle={onToggle} />
         <VStack alignItems={'stretch'} gap={0} flex={1} overflow={'hidden'}>
           <Navbar onToggle={onToggle} />
-          <Box maxWidth={'full'}>{children}</Box>
+          <Box maxWidth={'full'} p={5}>{children}</Box>
         </VStack>
       </Flex>
     </Fragment>

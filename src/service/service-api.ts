@@ -1,4 +1,7 @@
 export const api = {
+  admin:{
+    getDonations: '/donations',
+  },
   login: 'admin/login',
   register: 'admin/register',
   products: {
