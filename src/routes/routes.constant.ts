@@ -9,5 +9,6 @@ export const NAVIGATION_ROUTES = {
   ADMIN_DASHBOARD: '/admin',
   ADMIN_REGISTER: '/admin/register',
   ADMIN_DONATIONS: '/admin/donations',
+  ADMIN_PRODUCTS: '/admin/products',
   NO_MATCH: '*',
 };

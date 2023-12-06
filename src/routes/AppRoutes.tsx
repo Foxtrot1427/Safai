@@ -17,6 +17,7 @@ import Register from '@rsces/pages/Admin/register';
 
 import AdminLayout from '@rsces/pages/Admin/Layout';
 import AdminDonations from '@rsces/pages/Admin/donations';
+import AdminProducts from '@rsces/pages/Admin/Products';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const adminRouter = createBrowserRouter([
       {
         path: NAVIGATION_ROUTES.ADMIN_DONATIONS,
         element: <AdminDonations />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
+        element: <AdminProducts />,
       },
     ],
   },
