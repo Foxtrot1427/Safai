@@ -7,7 +7,7 @@ export const api = {
   products: {
     get: 'products/get',
     create: 'products/create',
-    delete: 'products/:id',
+    delete: 'products/',
     update: 'products/:id',
   },
   interest: {

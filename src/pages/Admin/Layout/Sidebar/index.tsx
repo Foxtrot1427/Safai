@@ -48,7 +48,7 @@ const options = [
   {
     label: 'Products',
     icon: <HiOutlineDocumentText size={20} />,
-    link: '/admin/release-requests',
+    link: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
   },
   {
     label: 'Register',
