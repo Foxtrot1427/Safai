@@ -9,6 +9,7 @@ const SearchBar = ({
 }: {
   getFilterData: (childData: string) => void;
 }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleSearchChange = useCallback(
     debounce((value) => {
       getFilterData(value);

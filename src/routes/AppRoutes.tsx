@@ -1,22 +1,22 @@
+import RootLayout from '@rsces/layout/RootLayout';
+import AboutUs from '@rsces/pages/AboutUs';
+import Login from '@rsces/pages/Admin/login';
+import Register from '@rsces/pages/Admin/register';
+import AvailableWithUs from '@rsces/pages/AvailableWithUs';
+import Contact from '@rsces/pages/Contact';
+import Home from '@rsces/pages/Home';
+import HowItWorks from '@rsces/pages/HowItWorks';
+import WhatWeBuy from '@rsces/pages/what-we-buy';
+import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from 'react-router-dom';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
-import RootLayout from '@rsces/layout/RootLayout';
-import Home from '@rsces/pages/Home';
-import AboutUs from '@rsces/pages/AboutUs';
-import AvailableWithUs from '@rsces/pages/AvailableWithUs';
-import HowItWorks from '@rsces/pages/HowItWorks';
-import WhatWeBuy from '@rsces/pages/what-we-buy';
-import Contact from '@rsces/pages/Contact';
-import Login from '@rsces/pages/Admin/login';
-import TokenService from '@rsces/service/service-token';
-import Register from '@rsces/pages/Admin/register';
 
-import AdminLayout from '@rsces/pages/Admin/Layout';
 import AdminDonations from '@rsces/pages/Admin/donations';
+import AdminLayout from '@rsces/pages/Admin/Layout';
+import { useAuthentication } from '@rsces/service/service-auth';
 import AdminProducts from '@rsces/pages/Admin/Products';
 
 const router = createBrowserRouter([
@@ -67,12 +67,16 @@ const adminRouter = createBrowserRouter([
   },
   {
     path: NAVIGATION_ROUTES.ADMIN_LOGIN,
-    element: <Login />,
+    element: <Navigate to={NAVIGATION_ROUTES.ADMIN_DASHBOARD} />,
   },
   {
     path: NAVIGATION_ROUTES.ADMIN_DASHBOARD,
     element: <AdminLayout />,
     children: [
+      {
+        index: true,
+        element: <Navigate to={NAVIGATION_ROUTES.ADMIN_DONATIONS} />,
+      },
       {
         path: NAVIGATION_ROUTES.ADMIN_DONATIONS,
         element: <AdminDonations />,
@@ -120,7 +124,7 @@ const adminRouter = createBrowserRouter([
 ]);
 
 const AppRoutes = () => {
-  const isAdmin = TokenService.isAuthenticated();
+  const { data: isAdmin } = useAuthentication();
 
   return (
     <>

@@ -11,4 +11,4 @@ export const NAVIGATION_ROUTES = {
   ADMIN_DONATIONS: '/admin/donations',
   ADMIN_PRODUCTS: '/admin/products',
   NO_MATCH: '*',
-};
+} as const;

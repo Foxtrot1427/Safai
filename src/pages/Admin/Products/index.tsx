@@ -93,7 +93,7 @@ const AdminProducts = () => {
         ),
       }),
     ],
-    [productData],
+    [columnHelper, onOpen],
   );
 
   return (

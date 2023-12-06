@@ -20,7 +20,7 @@ const AdminDonations = () => {
         <SearchBar getFilterData={searchFilterDataProp} />
       </Flex>
       <DataTable
-        columns={donationColumns}
+        columns={donationColumns()}
         data={donationData ?? []}
         filter={{
           globalFilter: searchFilterData,

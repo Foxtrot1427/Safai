@@ -12,6 +12,7 @@ export const Button = defineStyleConfig({
     primary: {
       bg: colors.primary,
       color: colors.gray_100,
+      border: `1px solid ${colors.primary}`,
       _hover: {
         bg: colors.gray_100,
         color: colors.primary,
