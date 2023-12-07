@@ -1,23 +1,23 @@
-import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import {
+  Button,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
-  FormControl,
-  Input,
-  FormLabel,
-  Button,
   HStack,
-  Text,
   Image,
+  Input,
+  Text,
 } from '@chakra-ui/react';
-import InputField from '@rsces/components/form/InputField';
-import { BsUpload } from 'react-icons/bs';
-import Textarea from '@rsces/components/form/Textarea';
-import { defaultValues, schema } from './constant';
 import { yupResolver } from '@hookform/resolvers/yup';
+import InputField from '@rsces/components/form/InputField';
+import Textarea from '@rsces/components/form/Textarea';
 import { useCreateDonation } from '@rsces/service/service-donation';
 import { toFormData } from 'axios';
+import { useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { BsUpload } from 'react-icons/bs';
+import { defaultValues, schema } from './constant';
 
 const Donation = () => {
   const imageRef = useRef<HTMLInputElement | null>(null);
@@ -111,7 +111,11 @@ const Donation = () => {
           </Button>
           {watch('image')?.[0] && (
             <Image
-              src={URL.createObjectURL(watch('image')?.[0] || '')}
+              src={
+                watch('image')
+                  ? URL.createObjectURL(watch('image')?.[0] || '')
+                  : ''
+              }
               alt="Item image"
               h={48}
               mt={2}

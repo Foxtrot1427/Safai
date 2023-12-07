@@ -1,11 +1,11 @@
-import { createColumnHelper } from '@tanstack/react-table';
 import { HStack, IconButton, Image } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { createColumnHelper } from '@tanstack/react-table';
+import { CheckmarkIcon } from 'react-hot-toast';
 import { IDonation } from './interface';
 
 const columnHelper = createColumnHelper<IDonation>();
 
-export const donationColumns = [
+export const donationColumns = () => [
   columnHelper.display({
     header: 'S.N.',
     cell: ({ row }) => row.index + 1,
@@ -40,25 +40,18 @@ export const donationColumns = [
   columnHelper.accessor('description', {
     header: 'Description',
   }),
-  {
-    header: 'Action',
-    accessorKey: 'action',
+  columnHelper.display({
+    header: 'Actions',
     cell: () => (
-      <HStack spacing={0}>
+      <HStack spacing={0} justify={'center'}>
         <IconButton
           p={0}
           variant={'ghost'}
           aria-label="Edit Donation"
-          icon={<EditIcon />}
-          onClick={() => {}}
-        />
-        <IconButton
-          variant={'ghost'}
-          aria-label="Delete Donation"
-          icon={<DeleteIcon />}
+          icon={<CheckmarkIcon />}
           onClick={() => {}}
         />
       </HStack>
     ),
-  },
+  }),
 ];

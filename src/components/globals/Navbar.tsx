@@ -2,10 +2,12 @@ import { Box, HStack, Image, ListItem, UnorderedList } from '@chakra-ui/react';
 import { Logo } from '@rsces/assets/images/index';
 import Container from '@rsces/components/ui/Container';
 import { colors } from '@rsces/theme/colors';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NAVBAR_LINKS } from '../../data';
+import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   return (
@@ -16,8 +18,14 @@ const Navbar = () => {
     >
       <Container>
         <HStack w={'full'} py={4} justify={'space-between'}>
-          <Image src={Logo} alt="Logo" height={'64px'} objectFit={'contain'} />
-
+          <Image
+            src={Logo}
+            alt="Logo"
+            height={'64px'}
+            objectFit={'contain'}
+            cursor={'pointer'}
+            onClick={() => navigate(NAVIGATION_ROUTES.BASE)}
+          />
           <UnorderedList
             listStyleType={'none'}
             display={'flex'}
