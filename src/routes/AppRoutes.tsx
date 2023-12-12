@@ -11,15 +11,18 @@ import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 import {
   createBrowserRouter,
   Navigate,
+  RouteObject,
   RouterProvider,
 } from 'react-router-dom';
 
 import AdminDonations from '@rsces/pages/Admin/donations';
 import AdminLayout from '@rsces/pages/Admin/Layout';
-import { useAuthentication } from '@rsces/service/service-auth';
 import AdminProducts from '@rsces/pages/Admin/Products';
+import { useAuthentication } from '@rsces/service/service-auth';
+import { Center, Spinner } from '@chakra-ui/react';
+import { useMemo } from 'react';
 
-const router = createBrowserRouter([
+const openRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.ADMIN_LOGIN,
     element: <Login />,
@@ -58,9 +61,9 @@ const router = createBrowserRouter([
     path: NAVIGATION_ROUTES.NO_MATCH,
     element: <Navigate to={NAVIGATION_ROUTES.BASE} replace />,
   },
-]);
+];
 
-const adminRouter = createBrowserRouter([
+const adminRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.ADMIN_REGISTER,
     element: <Register />,
@@ -88,49 +91,28 @@ const adminRouter = createBrowserRouter([
     ],
   },
   {
-    path: NAVIGATION_ROUTES.BASE,
-    element: <RootLayout />,
-    children: [
-      {
-        path: NAVIGATION_ROUTES.BASE,
-        element: <Home />,
-      },
-      {
-        path: NAVIGATION_ROUTES.ABOUT_US,
-        element: <AboutUs />,
-      },
-      {
-        path: NAVIGATION_ROUTES.WHAT_WE_BUY,
-        element: <WhatWeBuy />,
-      },
-      {
-        path: NAVIGATION_ROUTES.HOW_IT_WORKS,
-        element: <HowItWorks />,
-      },
-      {
-        path: NAVIGATION_ROUTES.AVAILABLE_WITH_US,
-        element: <AvailableWithUs />,
-      },
-      {
-        path: NAVIGATION_ROUTES.CONTACT,
-        element: <Contact />,
-      },
-    ],
-  },
-  {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.BASE} replace />,
+    element: <Navigate to={NAVIGATION_ROUTES.ADMIN_DASHBOARD} />,
   },
-]);
+];
 
 const AppRoutes = () => {
-  const { data: isAdmin } = useAuthentication();
+  const { data: isAdmin, isLoading } = useAuthentication();
 
-  return (
-    <>
-      <RouterProvider router={isAdmin ? adminRouter : router} />
-    </>
+  const router = useMemo(
+    () => createBrowserRouter(isAdmin ? adminRoutes : openRoutes),
+    [isAdmin],
   );
+
+  if (isLoading) {
+    return (
+      <Center h={'100vh'}>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  return <RouterProvider router={router} />;
 };
 
 export default AppRoutes;
