@@ -123,15 +123,21 @@ const [rowId, setRowId] = useState<number | null>(null);
         header: 'View Interest',
         cell: ({ row }) => (
           <>
-          <IconButton
-              variant={'ghost'}
-              aria-label="Show Interest"
-              icon={<GrView />            }
-              onClick={() => {
-                setRowId(row.original.id);
-               onDrawerOpen();
-              }}
-            />
+          {row.original.interests.length > 0 ? (
+            <IconButton
+                variant={'ghost'}
+                aria-label="Show Interest"
+                icon={<GrView />            }
+                onClick={() => {
+                 setRowId(row.original.id);
+                 onDrawerOpen();
+                }}
+              />
+          ) : (
+            <Text>No Interest for this product yet</Text>
+          )
+            
+          }
           </>
         ),
       }),
