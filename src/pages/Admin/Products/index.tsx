@@ -103,8 +103,6 @@ const [rowId, setRowId] = useState<number | null>(null);
     createProduct(formdata);
     reset(defaultValues)
   }
-console.log(productData, 'productData');
-
   const productsColumns = useMemo(
     () => [
       columnHelper.display({
@@ -207,8 +205,8 @@ console.log(productData, 'productData');
       <ModalForm
         isOpen={isAddOpen}
         onClose={() => {
-          onAddClose
-        reset(defaultValues)
+          onAddClose()
+        reset(defaultValues);
         }
         }
         title={'Add Product'}
