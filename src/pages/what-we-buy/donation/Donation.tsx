@@ -33,7 +33,6 @@ const Donation = () => {
     resolver: yupResolver(schema),
   });
   
-
   const { mutateAsync: createDonation, isPending: isCreatingDonation } =
     useCreateDonation();
 
