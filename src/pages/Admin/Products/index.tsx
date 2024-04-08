@@ -1,23 +1,70 @@
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
+  Button,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
+  FormControl,
+  FormLabel,
   HStack,
   IconButton,
   Image,
+  Input,
+  Text,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import { DataTable } from '@rsces/components/DataTable';
 import ConfirmationModel from '@rsces/components/Modal/conformationModal';
 import {
   IProduct,
+  useCreateProduct,
   useDeleteProduct,
   useProducts,
 } from '@rsces/service/service-products';
 import { ColumnFiltersState, createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import SearchBar from '../Layout/SearchBar';
+import { IoMdAdd } from "react-icons/io";
+import ModalForm from '@rsces/components/Modal/modalForm';
+import InputField from '@rsces/components/form/InputField';
+import { useForm } from 'react-hook-form';
+import { BsUpload } from 'react-icons/bs';
+import { toFormData } from 'axios';
+import { GrView } from "react-icons/gr";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
+const defaultValues = {
+  name: '',
+  image: null as unknown as FileList,
+  price:'',
+};
+const schema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  price: yup.string().required('Price is required'),
+ image: yup.mixed<FileList>().required('Image is required'),
+
+});
 const AdminProducts = () => {
+  const {
+    control,
+    formState: { errors },
+    register,
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
   const { data: productData, isLoading } = useProducts();
   const [searchFilterData, setSearchFilterData] = useState('');
   const columnFilters: ColumnFiltersState = [];
@@ -27,7 +74,14 @@ const AdminProducts = () => {
   }
   const { mutate: deleteProduct } = useDeleteProduct();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
+
+  const {isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose} = useDisclosure();
   const columnHelper = createColumnHelper<IProduct>();
+  const imageRef = useRef<HTMLInputElement | null>(null);
+const [rowId, setRowId] = useState<number | null>(null);
+  const { mutate: createProduct } = useCreateProduct();
+
 
   const onDelete = () => {
     if (deleteId) {
@@ -40,6 +94,16 @@ const AdminProducts = () => {
       });
     }
   };
+  //Create Product on modal button submit
+  const onSubmit = (data: typeof defaultValues) => {
+    console.log(data);
+    const formdata = toFormData(data, undefined, {
+      indexes: null,
+    });      
+    createProduct(formdata);
+    reset(defaultValues)
+  }
+console.log(productData, 'productData');
 
   const productsColumns = useMemo(
     () => [
@@ -53,8 +117,25 @@ const AdminProducts = () => {
       columnHelper.accessor('price', {
         header: 'Price',
       }),
+      columnHelper.accessor('interests', {
+        header: 'Interest',
+        cell: ({ row }) => row.original.interests.length || 0,
+      }),
       columnHelper.accessor('interest', {
-        header: 'Intrest',
+        header: 'View Interest',
+        cell: ({ row }) => (
+          <>
+          <IconButton
+              variant={'ghost'}
+              aria-label="Show Interest"
+              icon={<GrView />            }
+              onClick={() => {
+                setRowId(row.original.id);
+               onDrawerOpen();
+              }}
+            />
+          </>
+        ),
       }),
       columnHelper.accessor('image', {
         header: 'Image',
@@ -76,7 +157,12 @@ const AdminProducts = () => {
               aria-label="Edit Donation"
               icon={<EditIcon />}
               onClick={() => {
-                console.log('clicked');
+                reset({
+                  name: row.original.name,
+                  price: row.original.price,
+                  // image: row.original.image,
+                });          
+                onAddOpen();
               }}
             />
             <IconButton
@@ -84,7 +170,6 @@ const AdminProducts = () => {
               aria-label="Delete Donation"
               icon={<DeleteIcon />}
               onClick={() => {
-                console.log('clicked');
                 setDeleteId(row.original.id);
                 onOpen();
               }}
@@ -100,6 +185,9 @@ const AdminProducts = () => {
     <>
       <Flex justify={'space-between'} align={'center'} my={8}>
         <SearchBar getFilterData={searchFilterDataProp} />
+        <Button colorScheme="facebook" variant="solid" leftIcon={<IoMdAdd />} onClick={onAddOpen}>
+          Add Product
+        </Button>
       </Flex>
       <DataTable
         columns={productsColumns}
@@ -116,6 +204,101 @@ const AdminProducts = () => {
         onClose={onClose}
         handleSubmit={onDelete}
       />
+      <ModalForm
+        isOpen={isAddOpen}
+        onClose={() => {
+          onAddClose
+        reset(defaultValues)
+        }
+        }
+        title={'Add Product'}
+        size={{base: 'full', md: 'lg'}}
+        buttonLabel={'Add'}
+        onSubmit={handleSubmit(onSubmit)}>
+        <>
+        <InputField
+          control={control}
+          name="name"
+          label="Name"
+          placeholder="Enter product name"
+          errors={errors}
+        />
+        <InputField
+          control={control}
+          name="price"
+          label="Price"
+          placeholder="Enter product price"
+          errors={errors}
+        />
+        <Flex>
+        <FormControl h={'full'}>
+          <Input
+            type="file"
+            display={'none'}
+            {...register('image')}
+            ref={(e) => {
+              register('image').ref(e);
+              imageRef.current = e;
+            }}
+          />
+          <FormLabel fontSize={'sm'}>Item (Image)</FormLabel>
+          <Button
+            width={'full'}
+            variant={'outline'}
+            onClick={() => imageRef.current?.click()}
+          >
+            <HStack spacing={2}>
+              <BsUpload />
+              <Text>Upload</Text>
+            </HStack>
+          </Button>
+          {watch('image')?.[0] && (
+            <Image
+              src={
+                watch('image')
+                  ? URL.createObjectURL(watch('image')?.[0] || '')
+                  : ''
+              }
+              alt="Item image"
+              h={48}
+              mt={2}
+              mx={'auto'}
+            />
+          )}
+        </FormControl>
+      </Flex>
+        </>
+      </ModalForm>
+      <Drawer
+        isOpen={isDrawerOpen}
+        placement='right'
+        onClose={onClose}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton onClick={onDrawerClose} />
+          <DrawerHeader fontSize={24}>Interests</DrawerHeader>
+          <DrawerBody>
+            <VStack>
+              {productData?.find((product) => product.id === rowId)?.interests.map((interest) => (
+                <VStack alignItems={"flex-start"} mb={8}>
+                <Text key={interest.id}><b>Name:</b> {interest.name}</Text>
+                <Text key={interest.id}><b>Number:</b> {interest.number}</Text>
+                <Text key={interest.id}><b>Description:</b> {interest.description}</Text>
+                <Divider mt={4} borderWidth={1}/>
+                </VStack>
+              ))  
+              }
+            </VStack>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant='outline' mr={3} onClick={onDrawerClose}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

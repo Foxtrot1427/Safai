@@ -3,6 +3,7 @@ import { Response, api } from './service-api';
 import { HttpClient } from './service-axios';
 import { toastFail, toastSuccess } from './service-toast';
 import serverErrorResponse from './service-error';
+import { GenericFormData } from 'axios';
 
 export interface IProduct {
   id: number;
@@ -11,6 +12,19 @@ export interface IProduct {
   price: string;
   interest: string;
   admin: IAdmin;
+  interests: IIntrests[]
+}
+export interface IIntrests {
+  id: number
+  name: string
+  number: string
+  description: string
+  closed: boolean
+}
+export interface IProductCreate {
+  name: string;
+  image: FileList | null;
+  price: string;
 }
 
 interface IAdmin {
@@ -33,6 +47,31 @@ export const useProducts = () => {
     select: (response) => response.data.results,
   });
 };
+
+const createProduct = async (data: GenericFormData) => {
+  const response = await HttpClient.post<Response<IProductCreate>>(
+    api.products.create,
+    data,
+  );
+  return response;
+}
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [api.products.create],
+    mutationFn: createProduct,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: [api.products.get],
+      });
+      toastSuccess(response.data.toast || 'Product created');
+    },
+    onError: (error) => {
+      const errorMsg = serverErrorResponse(error);
+      toastFail(errorMsg || 'Failed to create product');
+    },
+  });
+}
 
 const deleteProduct = async (id: number) => {
   const response = await HttpClient.delete<Response<IProduct>>(

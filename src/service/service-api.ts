@@ -19,6 +19,7 @@ export const api = {
     get: '/donations',
     create: '/donations',
     delete: '/donations/:id',
+    update: '/donations/:id',
   },
 };
 

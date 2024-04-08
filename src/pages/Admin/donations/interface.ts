@@ -9,4 +9,5 @@ export interface IDonation {
   created_at: string;
   updated_at: string;
   description: string;
+  isAccepted: boolean;
 }
