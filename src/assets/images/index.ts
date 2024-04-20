@@ -19,6 +19,7 @@ import Trash from './trash.jpg';
 import Newspapers from './newspapers.jpg';
 import ETrash from './e-trash.jpg';
 import WhatWeBuyBanner from './what-we-buy.jpg';
+import ThreeR from './3r.png';
 
 export {
   Logo,
@@ -42,4 +43,6 @@ export {
   Newspapers,
   ETrash,
   WhatWeBuyBanner,
+  ThreeR,
 };
+
