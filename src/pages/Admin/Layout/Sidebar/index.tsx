@@ -1,5 +1,3 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import {
   Accordion,
   AccordionButton,
@@ -14,11 +12,16 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
-import { FiSettings } from 'react-icons/fi';
-import { LuMailQuestion } from 'react-icons/lu';
-import { HiOutlineDocumentText } from 'react-icons/hi';
+import { DonationIcon } from '@rsces/assets/icons/Donation';
+import { ProductsIcon } from '@rsces/assets/icons/Products';
+import Logo from '@rsces/assets/images/logo.png';
+import MiniLogo from '@rsces/assets/images/mini-logo.png';
 import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
 import { colors } from '@rsces/theme/colors';
+import React, { Fragment, useEffect, useState } from 'react';
+import { FiSettings } from 'react-icons/fi';
+import { LuMailQuestion } from 'react-icons/lu';
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -42,12 +45,12 @@ interface SidebarItemProps extends CommonSidebarItemProps {
 const options = [
   {
     label: 'Donations',
-    icon: <HiOutlineDocumentText size={20} />,
+    icon: <DonationIcon />,
     link: NAVIGATION_ROUTES.ADMIN_DONATIONS,
   },
   {
     label: 'Products',
-    icon: <HiOutlineDocumentText size={20} />,
+    icon: <ProductsIcon />,
     link: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
   },
   {
@@ -213,7 +216,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             }}
             flexShrink={0}
           >
-            <Image src="src\assets\images\logo.jpg" alt="Logo" height={12} />
+            <Image src={Logo} alt="Logo" height={12} />
           </Link>
           <Link
             as={ReactRouterLink}
@@ -222,11 +225,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
               lg: !isOpen ? 'block' : 'none',
             }}
           >
-            <Image
-              src="src\assets\images\mini-logo.jpg"
-              alt="Logo"
-              height={6}
-            />
+            <Image src={MiniLogo} alt="Logo" height={6} />
           </Link>
         </Flex>
 
@@ -270,6 +269,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         left={0}
         top={0}
         onClick={onToggle}
+        border="1px solid"
       ></Flex>
     </Fragment>
   );

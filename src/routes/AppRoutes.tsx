@@ -22,11 +22,14 @@ import { useAuthentication } from "@rsces/service/service-auth";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-const openRoutes: RouteObject[] = [
+const authRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.ADMIN_LOGIN,
     element: <Login />,
   },
+];
+
+const openRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.BASE,
     element: <RootLayout />,
@@ -63,7 +66,10 @@ const openRoutes: RouteObject[] = [
   },
 ];
 
+const userRoutes = [...authRoutes, ...openRoutes];
+
 const adminRoutes: RouteObject[] = [
+  ...openRoutes,
   {
     path: NAVIGATION_ROUTES.ADMIN_REGISTER,
     element: <Register />,
@@ -100,7 +106,7 @@ const AppRoutes = () => {
   const { data: isAdmin, isLoading } = useAuthentication();
 
   const router = useMemo(
-    () => createBrowserRouter(isAdmin ? adminRoutes : openRoutes),
+    () => createBrowserRouter(isAdmin ? adminRoutes : userRoutes),
     [isAdmin],
   );
 
