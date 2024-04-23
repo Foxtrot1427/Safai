@@ -33,10 +33,9 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: initLogout,
     onSuccess: () => {
-      queryClient.clear();
       queryClient.setQueryData([authTokenKey], () => false);
       navigate(NAVIGATION_ROUTES.BASE, { replace: true });
-      toastSuccess('Logout Success');
+      toastSuccess('Logged Out');
     },
     onError: (error) => {
       const errorMsg = serverErrorResponse(error, 'Logout Failed');
