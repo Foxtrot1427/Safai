@@ -1,26 +1,26 @@
-import RootLayout from '@rsces/layout/RootLayout';
-import AboutUs from '@rsces/pages/AboutUs';
-import Login from '@rsces/pages/Admin/login';
-import Register from '@rsces/pages/Admin/register';
-import AvailableWithUs from '@rsces/pages/AvailableWithUs';
-import Contact from '@rsces/pages/Contact';
-import Home from '@rsces/pages/Home';
-import HowItWorks from '@rsces/pages/HowItWorks';
-import WhatWeBuy from '@rsces/pages/what-we-buy';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
+import RootLayout from "@rsces/layout/RootLayout";
+import AboutUs from "@rsces/pages/AboutUs";
+import Login from "@rsces/pages/Admin/login";
+import Register from "@rsces/pages/Admin/register";
+import AvailableWithUs from "@rsces/pages/AvailableWithUs/AvailableWithUs";
+import Contact from "@rsces/pages/Contact";
+import Home from "@rsces/pages/Home";
+import HowItWorks from "@rsces/pages/HowItWorks";
+import WhatWeBuy from "@rsces/pages/what-we-buy";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import {
   createBrowserRouter,
   Navigate,
   RouteObject,
   RouterProvider,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import AdminDonations from '@rsces/pages/Admin/donations';
-import AdminLayout from '@rsces/pages/Admin/Layout';
-import AdminProducts from '@rsces/pages/Admin/Products';
-import { useAuthentication } from '@rsces/service/service-auth';
-import { Center, Spinner } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import AdminDonations from "@rsces/pages/Admin/donations";
+import AdminLayout from "@rsces/pages/Admin/Layout";
+import AdminProducts from "@rsces/pages/Admin/Products";
+import { useAuthentication } from "@rsces/service/service-auth";
+import { Center, Spinner } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 const authRoutes: RouteObject[] = [
   {
@@ -112,7 +112,7 @@ const AppRoutes = () => {
 
   if (isLoading) {
     return (
-      <Center h={'100vh'}>
+      <Center h={"100vh"}>
         <Spinner />
       </Center>
     );

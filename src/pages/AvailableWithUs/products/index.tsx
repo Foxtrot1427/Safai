@@ -8,24 +8,26 @@ import {
   Text,
   VStack,
   useDisclosure,
-} from '@chakra-ui/react';
-import { IProduct, useProducts } from '@rsces/service/service-products';
-import { colors } from '@rsces/theme/colors';
-import { useState } from 'react';
-import Product from './product';
+} from "@chakra-ui/react";
+import { IProduct, useProducts } from "@rsces/service/service-products";
+import { colors } from "@rsces/theme/colors";
+import { useState } from "react";
+import Product from "./product";
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
   const { data: products, isLoading: isProductsLoading } = useProducts();
+  console.log(products, "products");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Grid
-        templateColumns={'repeat(auto-fit, minmax(250px, 1fr))'}
+        templateColumns={"repeat(auto-fit, minmax(250px, 1fr))"}
         rowGap={8}
         columnGap={8}
-        justifyItems={'center'}
+        justifyItems={"center"}
       >
         {isProductsLoading && (
           <VStack>
@@ -36,40 +38,40 @@ const Products = () => {
         {!isProductsLoading && products?.length === 0 && (
           <Text>No products found.</Text>
         )}
-        {products?.map((product) => (
+        {products?.map(product => (
           <Flex
             role="group"
-            position={'relative'}
-            boxShadow={'sm'}
+            position={"relative"}
+            boxShadow={"sm"}
             key={product.id}
-            justify={'center'}
-            width={'250px'}
+            justify={"center"}
+            width={"250px"}
             aspectRatio={1 / 1}
-            overflow={'hidden'}
+            overflow={"hidden"}
           >
             <Box
-              position={'absolute'}
+              position={"absolute"}
               inset={0}
-              width={'full'}
-              height={'full'}
+              width={"full"}
+              height={"full"}
               _groupHover={{
                 bg: colors.black,
                 opacity: 0.2,
               }}
             />
             <Box
-              position={'absolute'}
-              display={'none'}
+              position={"absolute"}
+              display={"none"}
               _groupHover={{
-                display: 'grid',
-                height: 'full',
-                placeItems: 'center',
+                display: "grid",
+                height: "full",
+                placeItems: "center",
               }}
             >
               <Button
                 color={colors.gray_200}
-                borderRadius={'50px'}
-                variant={'solid'}
+                borderRadius={"50px"}
+                variant={"solid"}
                 onClick={() => {
                   setSelectedProduct(product);
                   onOpen();
@@ -81,8 +83,8 @@ const Products = () => {
             <Image
               src={product.image}
               alt={product.name}
-              h={'full'}
-              objectFit={'cover'}
+              h={"full"}
+              objectFit={"cover"}
             />
           </Flex>
         ))}

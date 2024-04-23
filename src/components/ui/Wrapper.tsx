@@ -4,14 +4,15 @@ import { PropsWithChildren } from 'react';
 
 interface WrapperProps extends PropsWithChildren {
   bannerImg?: string;
+  py?: number;
 }
 
-const Wrapper = ({ bannerImg, children }: WrapperProps) => {
+const Wrapper = ({ bannerImg, children, py  }: WrapperProps) => {
   return (
     <Box
       as={'section'}
       position={'relative'}
-      py={80}
+      py={py ?? 80}
       bgImage={bannerImg}
       backgroundSize={'cover'}
       backgroundPosition={'center'}
