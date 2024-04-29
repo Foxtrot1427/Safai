@@ -20,7 +20,7 @@ const AvailableWithUs = () => {
         </Text>
       </Wrapper>
       <Box as={"section"} py={16}>
-        <Container>
+        <Container maxW="7xl">
           <HStack gap={8} mb={8}>
             <Box
               w={"full"}
