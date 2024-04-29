@@ -6,4 +6,5 @@ export interface ModalProps extends ChakraModalProps {
   header?: React.ReactNode;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  size?: string;
 }

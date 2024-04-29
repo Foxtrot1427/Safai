@@ -163,8 +163,7 @@ const AboutUs = () => {
       <Box as={"section"} py={24} position={"relative"} w={"100%"}>
         <Box maxW={"80%"} mx={"auto"}>
           <Text textTransform={"uppercase"} align={"center"} fontSize={"3xl"}>
-            For the outcome of our mission we provide a range of services to our
-            clients
+            We provide a range of services to our clients
           </Text>
           <Text textTransform={"uppercase"} align={"center"} fontSize={"1xl"}>
             Waste Collection:

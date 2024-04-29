@@ -21,6 +21,12 @@ export const api = {
     delete: '/donations/:id',
     update: '/donations/:id',
   },
+  organization: {
+    get: '/organization',
+    // create: '/organizations',
+    // delete: '/organizations/:id',
+    // update: '/organizations/:id',
+  }
 };
 
 export interface Response<T> {

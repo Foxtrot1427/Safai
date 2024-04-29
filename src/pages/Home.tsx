@@ -15,7 +15,7 @@ import {
   Tabs,
   Text,
   VStack,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import {
   Carton,
   ClientFlatIron,
@@ -32,19 +32,19 @@ import {
   TrashDonation,
   TrashPickup,
   TrashTransform,
-} from '@rsces/assets/images';
-import Container from '@rsces/components/ui/Container';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
-import { colors } from '@rsces/theme/colors';
-import { IconType } from 'react-icons';
-import { BsEnvelope } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
-import { STATISTICS } from '../data';
-import Wrapper from '@rsces/components/ui/Wrapper';
+} from "@rsces/assets/images";
+import Container from "@rsces/components/ui/Container";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
+import { colors } from "@rsces/theme/colors";
+import { IconType } from "react-icons";
+import { BsEnvelope } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { STATISTICS } from "../data";
+import Wrapper from "@rsces/components/ui/Wrapper";
 
 function renderIcon(icon: IconType) {
   const Icon = icon;
-  return <Icon fontSize={60} color={'#aaa'} />;
+  return <Icon fontSize={60} color={"#aaa"} />;
 }
 
 const Home = () => {
@@ -60,17 +60,17 @@ const Home = () => {
       <Wrapper bannerImg={HomeBanner}>
         <Container>
           <Box>
-            <Box position={'relative'} zIndex={20}>
+            <Box position={"relative"} zIndex={20}>
               <Text
-                textTransform={'uppercase'}
-                fontSize={'5xl'}
-                fontWeight={'bold'}
+                textTransform={"uppercase"}
+                fontSize={"5xl"}
+                fontWeight={"bold"}
                 color={colors.white}
               >
                 Got Trash?
               </Text>
 
-              <Text maxW={'40%'} mt={4} color={colors.white} fontSize={'xl'}>
+              <Text maxW={"40%"} mt={4} color={colors.white} fontSize={"xl"}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
                 optio earum quis beatae, tempore tempora nisi, blanditiis sunt
                 rerum aliquam labore amet soluta tenetur dolores quas asperiores
@@ -78,16 +78,16 @@ const Home = () => {
               </Text>
 
               <Button
-                textTransform={'uppercase'}
-                w={'fit-content'}
+                textTransform={"uppercase"}
+                w={"fit-content"}
                 mt={6}
-                bg={colors.black}
+                bg={colors.primary}
                 color={colors.white}
-                borderRadius={'none'}
+                borderRadius={"none"}
                 py={6}
                 px={8}
                 _hover={{
-                  bg: colors.gray_100,
+                  bg: colors.white,
                   color: colors.black,
                 }}
               >
@@ -98,7 +98,7 @@ const Home = () => {
         </Container>
       </Wrapper>
 
-      <Box as={'section'} py={48}>
+      <Box as={"section"} py={48}>
         <Container>
           <Flex gap={12}>
             <HStack flex={1}>
@@ -106,25 +106,25 @@ const Home = () => {
                 <Image
                   src={Carton}
                   alt="Box"
-                  height={'300px'}
-                  objectFit={'cover'}
+                  height={"300px"}
+                  objectFit={"cover"}
                 />
               </Box>
 
               <VStack
                 px={6}
                 borderRight={`6px solid ${colors.primary}`}
-                align={'start'}
+                align={"start"}
                 spacing={0}
               >
-                <Text fontSize={'5xl'} fontWeight={'bold'}>
+                <Text fontSize={"5xl"} fontWeight={"bold"}>
                   About
                 </Text>
                 <Text
-                  fontSize={'7xl'}
-                  fontWeight={'black'}
+                  fontSize={"7xl"}
+                  fontWeight={"black"}
                   color={colors.gray}
-                  mt={'-24px'}
+                  mt={"-24px"}
                 >
                   RSCES
                 </Text>
@@ -134,10 +134,10 @@ const Home = () => {
             <VStack
               flex={1}
               spacing={4}
-              align={'normal'}
-              justifyContent={'center'}
+              align={"normal"}
+              justifyContent={"center"}
             >
-              <Text lineHeight={'taller'} fontSize={'lg'}>
+              <Text lineHeight={"taller"} fontSize={"lg"}>
                 Phohor Mohor (Research for Scrap and Civil Engineering Service
                 Pvt., Ltd) is a waste management company established in 2070 BS
                 with a mission to promote sustainable development by purchasing
@@ -149,11 +149,11 @@ const Home = () => {
               </Text>
               <Button
                 mt={4}
-                w={'max-content'}
+                w={"max-content"}
                 px={12}
                 py={6}
-                borderRadius={'none'}
-                border={'1px solid'}
+                borderRadius={"none"}
+                border={"1px solid"}
                 borderColor={colors.gray_200}
                 borderTop={`3px solid ${colors.black}`}
                 bg={colors.white}
@@ -172,41 +172,41 @@ const Home = () => {
         </Container>
       </Box>
 
-      <Box as={'section'} py={8} bgColor={colors.gray_100}>
+      <Box as={"section"} py={8} bgColor={colors.gray_100}>
         <Container>
-          <Flex align={'center'} justify={'space-between'}>
+          <Flex align={"center"} justify={"space-between"}>
             <HStack>
-              <BsEnvelope fontSize={48} color={'#aaa'} />
+              <BsEnvelope fontSize={48} color={"#aaa"} />
               <HStack flex={1} spacing={4} ml={4}>
-                <Text fontSize={'6xl'} fontWeight={'bold'}>
+                <Text fontSize={"6xl"} fontWeight={"bold"}>
                   4
                 </Text>
-                <Text fontSize={'2xl'}>
+                <Text fontSize={"2xl"}>
                   Years of <br /> Establishment
                 </Text>
               </HStack>
             </HStack>
 
-            {STATISTICS.map((item) => (
-              <HStack key={item.id} flex={1} justify={'center'}>
+            {STATISTICS.map(item => (
+              <HStack key={item.id} flex={1} justify={"center"}>
                 {renderIcon(item.icon)}
                 <VStack spacing={0}>
                   <Text
-                    position={'relative'}
-                    fontSize={'6xl'}
-                    fontWeight={'bold'}
+                    position={"relative"}
+                    fontSize={"6xl"}
+                    fontWeight={"bold"}
                     _after={{
                       content: `"${item.unit}"`,
-                      display: 'inline-block',
-                      fontSize: '2xl',
-                      position: 'absolute',
+                      display: "inline-block",
+                      fontSize: "2xl",
+                      position: "absolute",
                       top: 4,
-                      left: '105%',
+                      left: "105%",
                     }}
                   >
                     {item.quantity}
                   </Text>
-                  <Text fontSize={'2xl'}>{item.material}</Text>
+                  <Text fontSize={"2xl"}>{item.material}</Text>
                 </VStack>
               </HStack>
             ))}
@@ -220,19 +220,19 @@ const Home = () => {
             <HStack as={TabList} divider={<StackDivider />}>
               <Tab
                 color={colors.white}
-                flexDirection={'column'}
+                flexDirection={"column"}
                 gap={4}
-                position={'relative'}
+                position={"relative"}
                 _selected={{
                   _after: {
                     content: '""',
                     width: 0,
                     height: 0,
-                    borderLeft: '25px solid transparent',
-                    borderRight: '25px solid transparent',
+                    borderLeft: "25px solid transparent",
+                    borderRight: "25px solid transparent",
                     borderTop: `25px solid ${colors.primary}`,
-                    position: 'absolute',
-                    bottom: '-40px',
+                    position: "absolute",
+                    bottom: "-40px",
                   },
                 }}
               >
@@ -241,19 +241,19 @@ const Home = () => {
               </Tab>
               <Tab
                 color={colors.white}
-                flexDirection={'column'}
+                flexDirection={"column"}
                 gap={4}
-                position={'relative'}
+                position={"relative"}
                 _selected={{
                   _after: {
                     content: '""',
                     width: 0,
                     height: 0,
-                    borderLeft: '25px solid transparent',
-                    borderRight: '25px solid transparent',
+                    borderLeft: "25px solid transparent",
+                    borderRight: "25px solid transparent",
                     borderTop: `25px solid ${colors.primary}`,
-                    position: 'absolute',
-                    bottom: '-40px',
+                    position: "absolute",
+                    bottom: "-40px",
                   },
                 }}
               >
@@ -272,15 +272,15 @@ const Home = () => {
                   <Image
                     src={RecycleServices}
                     alt="Recycle Services"
-                    w={'400px'}
+                    w={"400px"}
                     aspectRatio={4 / 3}
-                    objectFit={'cover'}
-                    objectPosition={'center'}
+                    objectFit={"cover"}
+                    objectPosition={"center"}
                   />
                 </Box>
 
                 <Box flex={1}>
-                  <Text fontWeight={600} fontSize={'2xl'}>
+                  <Text fontWeight={600} fontSize={"2xl"}>
                     Recycle Service
                   </Text>
 
@@ -314,15 +314,15 @@ const Home = () => {
                   <Image
                     src={LogisticServices}
                     alt="Logistic Services"
-                    w={'400px'}
+                    w={"400px"}
                     aspectRatio={4 / 3}
-                    objectFit={'cover'}
-                    objectPosition={'center'}
+                    objectFit={"cover"}
+                    objectPosition={"center"}
                   />
                 </Box>
 
                 <Box flex={1}>
-                  <Text fontWeight={600} fontSize={'2xl'}>
+                  <Text fontWeight={600} fontSize={"2xl"}>
                     Logistic Service
                   </Text>
 
@@ -355,16 +355,16 @@ const Home = () => {
         </Container>
       </Tabs>
 
-      <Box as={'section'} bgColor={colors.primary} py={24}>
+      <Box as={"section"} bgColor={colors.primary} py={24}>
         <Container>
-          <Text textTransform={'uppercase'} align={'center'} fontSize={'2xl'}>
+          <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
             Collecting Trash
           </Text>
           <Text
-            textTransform={'uppercase'}
-            align={'center'}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
+            textTransform={"uppercase"}
+            align={"center"}
+            fontSize={"5xl"}
+            fontWeight={"bold"}
           >
             How it works
           </Text>
@@ -372,80 +372,80 @@ const Home = () => {
           <Flex mt={24}>
             {[
               {
-                title: 'Donate Your Trash',
+                title: "Donate Your Trash",
                 description:
-                  'Shape a sustainable tomorrow with your recyclables.',
+                  "Shape a sustainable tomorrow with your recyclables.",
                 image: TrashDonation,
               },
               {
-                title: 'Waste Warriors at Your Doorstep',
+                title: "Waste Warriors at Your Doorstep",
                 description:
-                  'Effortless recycling with prompt doorstep pickups',
+                  "Effortless recycling with prompt doorstep pickups",
                 image: TrashPickup,
               },
               {
-                title: 'Transforming Trash into Treasure',
+                title: "Transforming Trash into Treasure",
                 description:
-                  'Experience the magic of turning waste into renewed materials.',
+                  "Experience the magic of turning waste into renewed materials.",
                 image: TrashTransform,
               },
               {
-                title: 'From Recycled to Remarkable',
+                title: "From Recycled to Remarkable",
                 description:
-                  'Explore unique, high-quality products crafted from your donated materials',
+                  "Explore unique, high-quality products crafted from your donated materials",
                 image: RecycledProducts,
               },
               {
-                title: 'Shop the Change',
+                title: "Shop the Change",
                 description:
-                  'Contribute to a cleaner planet by purchasing from our recycled product range',
+                  "Contribute to a cleaner planet by purchasing from our recycled product range",
                 image: ShopRecycled,
               },
             ].map((item, index) => (
               <Flex
                 flex={1}
                 key={item.title}
-                flexDir={(index + 1) % 2 === 0 ? 'column-reverse' : 'column'}
-                align={'center'}
+                flexDir={(index + 1) % 2 === 0 ? "column-reverse" : "column"}
+                align={"center"}
                 gap={6}
                 color={colors.gray_200}
               >
                 <Flex gap={2}>
-                  <Text fontSize={'5xl'} fontWeight={'bold'} mt={-3}>
+                  <Text fontSize={"5xl"} fontWeight={"bold"} mt={-3}>
                     {index + 1}
                   </Text>
-                  <VStack align={'start'}>
-                    <Text fontWeight={700} fontSize={'lg'}>
+                  <VStack align={"start"}>
+                    <Text fontWeight={700} fontSize={"lg"}>
                       {item.title}
                     </Text>
                     <Text>{item.description}</Text>
                   </VStack>
                 </Flex>
                 <Circle
-                  position={'relative'}
+                  position={"relative"}
                   zIndex={1}
                   size={48}
-                  bgColor={'black'}
+                  bgColor={"black"}
                   style={{
-                    transformStyle: 'preserve-3d',
+                    transformStyle: "preserve-3d",
                   }}
                   _before={{
-                    display: index >= 4 ? 'none' : 'block',
+                    display: index >= 4 ? "none" : "block",
                     content: '""',
-                    width: '280px',
+                    width: "280px",
                     height: 0,
-                    position: 'relative',
-                    border: '4px dashed gray',
+                    position: "relative",
+                    border: "4px dashed gray",
                     right: 0,
                     transformOrigin: `100px ${
-                      (index + 1) % 2 === 0 ? '130px' : '-130px'
+                      (index + 1) % 2 === 0 ? "130px" : "-130px"
                     }`,
                     transform: `rotate(${
-                      (index + 1) % 2 === 0 ? '40deg' : '-40deg'
+                      (index + 1) % 2 === 0 ? "40deg" : "-40deg"
                     }) translateZ(-1px)`,
                   }}
                   bgImage={item.image}
-                  bgSize={'cover'}
+                  bgSize={"cover"}
                 ></Circle>
               </Flex>
             ))}
@@ -455,36 +455,36 @@ const Home = () => {
 
       <Box as="section" py={24}>
         <Container>
-          <Text textTransform={'uppercase'} align={'center'} fontSize={'2xl'}>
+          <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
             What we recycle
           </Text>
           <Text
-            textTransform={'uppercase'}
-            align={'center'}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
+            textTransform={"uppercase"}
+            align={"center"}
+            fontSize={"5xl"}
+            fontWeight={"bold"}
           >
             What we buy?
           </Text>
 
           <Grid
             mt={24}
-            gridTemplateColumns={'repeat(auto-fit, minmax(250px, 1fr))'}
+            gridTemplateColumns={"repeat(auto-fit, minmax(250px, 1fr))"}
             gap={8}
-            justifyItems={'center'}
+            justifyItems={"center"}
           >
             {Array.from(new Array(8)).map((_, index) => (
               <Square size={56} key={index} bgColor={colors.gray_100}></Square>
             ))}
           </Grid>
 
-          <Flex justify={'center'} mt={8}>
+          <Flex justify={"center"} mt={8}>
             <Button
               bg={colors.primary}
               color={colors.white}
               px={16}
               py={6}
-              borderRadius={'none'}
+              borderRadius={"none"}
               border={`1px solid ${colors.primary}`}
             >
               View All
@@ -493,27 +493,27 @@ const Home = () => {
         </Container>
       </Box>
 
-      <Box as={'section'} bgColor={colors.gray_100} py={24}>
+      <Box as={"section"} bgColor={colors.gray_100} py={24}>
         <Container>
-          <Text textTransform={'uppercase'} fontSize={'2xl'} align={'center'}>
+          <Text textTransform={"uppercase"} fontSize={"2xl"} align={"center"}>
             Who saves environment
           </Text>
           <Text
-            textTransform={'uppercase'}
-            fontSize={'5xl'}
-            align={'center'}
-            fontWeight={'bold'}
+            textTransform={"uppercase"}
+            fontSize={"5xl"}
+            align={"center"}
+            fontWeight={"bold"}
           >
             Our clients
           </Text>
 
-          <Flex gap={8} justifyContent={'center'} mt={12}>
+          <Flex gap={8} justifyContent={"center"} mt={12}>
             {[
-              { id: 1, name: 'Flat Iron', image: ClientFlatIron },
-              { id: 2, name: 'Hotel Himalaya', image: ClientHotelHimalaya },
-              { id: 3, name: 'Namaste', image: ClientNamaste },
-              { id: 4, name: 'Vaishali', image: ClientVaishali },
-            ].map((item) => (
+              { id: 1, name: "Flat Iron", image: ClientFlatIron },
+              { id: 2, name: "Hotel Himalaya", image: ClientHotelHimalaya },
+              { id: 3, name: "Namaste", image: ClientNamaste },
+              { id: 4, name: "Vaishali", image: ClientVaishali },
+            ].map(item => (
               <Image key={item.id} src={item.image} alt={item.name} h={48} />
             ))}
           </Flex>
