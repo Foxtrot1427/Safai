@@ -8,8 +8,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/react';
-import { ModalProps } from './interface';
+} from "@chakra-ui/react";
+import { ModalProps } from "./interface";
 
 const Modal = ({
   isOpen,
@@ -17,10 +17,17 @@ const Modal = ({
   header,
   children,
   footer,
+  size = "lg",
   ...rest
 }: ModalProps) => {
   return (
-    <ChakraModal isOpen={isOpen} onClose={onClose} isCentered {...rest}>
+    <ChakraModal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      {...rest}
+      size={size}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{header}</ModalHeader>
@@ -28,7 +35,7 @@ const Modal = ({
         <ModalBody>{children}</ModalBody>
         <ModalFooter>
           <HStack>
-            <Button variant={'outline'} onClick={onClose}>
+            <Button variant={"outline"} onClick={onClose}>
               Cancel
             </Button>
             {footer}

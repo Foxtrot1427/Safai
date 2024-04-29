@@ -21,6 +21,7 @@ import AdminProducts from "@rsces/pages/Admin/Products";
 import { useAuthentication } from "@rsces/service/service-auth";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
+import AdminOrganizations from "@rsces/pages/Admin/Organizations";
 
 const authRoutes: RouteObject[] = [
   {
@@ -93,6 +94,10 @@ const adminRoutes: RouteObject[] = [
       {
         path: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
         element: <AdminProducts />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
+        element: <AdminOrganizations />,
       },
     ],
   },
