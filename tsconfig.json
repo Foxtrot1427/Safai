@@ -22,7 +22,8 @@
       "@rsces/providers/*": ["providers/*"],
       "@rsces/routes/*": ["routes/*"],
       "@rsces/theme/*": ["theme/*"],
-      "@rsces/service/*": ["service/*"]
+      "@rsces/service/*": ["service/*"],
+      "@rsces/utils/*": ["utils/*"]
     },
 
     /* Linting */

@@ -1,25 +1,27 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Response, api } from './service-api';
-import { HttpClient } from './service-axios';
-import { toastFail, toastSuccess } from './service-toast';
-import serverErrorResponse from './service-error';
-import { GenericFormData } from 'axios';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Response, api } from "./service-api";
+import { HttpClient } from "./service-axios";
+import { toastFail, toastSuccess } from "./service-toast";
+import serverErrorResponse from "./service-error";
+import { GenericFormData } from "axios";
 
 export interface IProduct {
   id: number;
   name: string;
   image: string;
+  description: string;
   price: string;
+  type: string;
   interest: string;
   admin: IAdmin;
-  interests: IIntrests[]
+  interests: IIntrests[];
 }
 export interface IIntrests {
-  id: number
-  name: string
-  number: string
-  description: string
-  closed: boolean
+  id: number;
+  name: string;
+  number: string;
+  description: string;
+  closed: boolean;
 }
 export interface IProductCreate {
   name: string;
@@ -44,7 +46,7 @@ export const useProducts = () => {
   return useQuery({
     queryKey: [api.products.get],
     queryFn: getAllProducts,
-    select: (response) => response.data.results,
+    select: response => response.data.results,
   });
 };
 
@@ -54,24 +56,24 @@ const createProduct = async (data: GenericFormData) => {
     data,
   );
   return response;
-}
+};
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [api.products.create],
     mutationFn: createProduct,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.products.get],
       });
-      toastSuccess(response.data.toast || 'Product created');
+      toastSuccess(response.data.toast || "Product created");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to create product');
+      toastFail(errorMsg || "Failed to create product");
     },
   });
-}
+};
 
 const deleteProduct = async (id: number) => {
   const response = await HttpClient.delete<Response<IProduct>>(
@@ -84,15 +86,15 @@ export const useDeleteProduct = () => {
   return useMutation({
     mutationKey: [api.products.delete],
     mutationFn: deleteProduct,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.products.get],
       });
-      toastSuccess(response.data.toast || 'Product deleted');
+      toastSuccess(response.data.toast || "Product deleted");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to Delete product');
+      toastFail(errorMsg || "Failed to Delete product");
     },
   });
 };

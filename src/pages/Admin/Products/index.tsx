@@ -10,18 +10,20 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
   IconButton,
   Image,
-  Input,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@rsces/components/DataTable";
 import ConfirmationModel from "@rsces/components/Modal/conformationModal";
+import ModalForm from "@rsces/components/Modal/modalForm";
+import Dropzone from "@rsces/components/form/Dropzone";
+import InputField from "@rsces/components/form/InputField";
+import { useFileFromUrl } from "@rsces/service/service-file";
 import {
   IProduct,
   useCreateProduct,
@@ -29,18 +31,13 @@ import {
   useProducts,
 } from "@rsces/service/service-products";
 import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
-import { useEffect, useMemo, useRef, useState } from "react";
-import SearchBar from "../Layout/SearchBar";
-import { IoMdAdd } from "react-icons/io";
-import ModalForm from "@rsces/components/Modal/modalForm";
-import InputField from "@rsces/components/form/InputField";
-import { useForm } from "react-hook-form";
-import { BsUpload } from "react-icons/bs";
 import { toFormData } from "axios";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { GrView } from "react-icons/gr";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { IoMdAdd } from "react-icons/io";
 import * as yup from "yup";
-import { useFileFromUrl } from "@rsces/service/service-file";
+import SearchBar from "../Layout/SearchBar";
 
 const defaultValues = {
   name: "",
@@ -56,8 +53,6 @@ const AdminProducts = () => {
   const {
     control,
     formState: { errors },
-    register,
-    watch,
     handleSubmit,
     reset,
     setValue,
@@ -89,7 +84,6 @@ const AdminProducts = () => {
     onClose: onAddClose,
   } = useDisclosure();
   const columnHelper = createColumnHelper<IProduct>();
-  const imageRef = useRef<HTMLInputElement | null>(null);
   const [rowId, setRowId] = useState<number | null>(null);
   const { mutate: createProduct } = useCreateProduct();
 
@@ -116,6 +110,7 @@ const AdminProducts = () => {
       });
     }
   };
+
   //Create Product on modal button submit
   const onSubmit = (data: typeof defaultValues) => {
     console.log(data);
@@ -125,6 +120,7 @@ const AdminProducts = () => {
     createProduct(formdata);
     reset(defaultValues);
   };
+
   const productsColumns = useMemo(
     () => [
       columnHelper.display({
@@ -198,7 +194,7 @@ const AdminProducts = () => {
         ),
       }),
     ],
-    [columnHelper, onOpen],
+    [columnHelper, onAddOpen, onDrawerOpen, onOpen, reset],
   );
 
   return (
@@ -255,7 +251,8 @@ const AdminProducts = () => {
             placeholder="Enter product price"
             errors={errors}
           />
-          <Flex>
+          <Dropzone control={control} name="image" />
+          {/* <Flex>
             <FormControl h={"full"}>
               <Input
                 type="file"
@@ -295,7 +292,7 @@ const AdminProducts = () => {
                 />
               )}
             </FormControl>
-          </Flex>
+          </Flex> */}
         </>
       </ModalForm>
       <Drawer
@@ -313,14 +310,14 @@ const AdminProducts = () => {
               {productData
                 ?.find(product => product.id === rowId)
                 ?.interests.map(interest => (
-                  <VStack alignItems={"flex-start"} mb={8}>
-                    <Text key={interest.id}>
+                  <VStack key={interest.id} alignItems={"flex-start"} mb={8}>
+                    <Text>
                       <b>Name:</b> {interest.name}
                     </Text>
-                    <Text key={interest.id}>
+                    <Text>
                       <b>Number:</b> {interest.number}
                     </Text>
-                    <Text key={interest.id}>
+                    <Text>
                       <b>Description:</b> {interest.description}
                     </Text>
                     <Divider mt={4} borderWidth={1} />

@@ -65,9 +65,7 @@ const ModalForm = ({
           <ModalCloseButton />
           <ModalBody pb={6}>{children}</ModalBody>
 
-          {hasBottomDivider && (
-            <Divider color={colors.gray_700} />
-          )}
+          {hasBottomDivider && <Divider color={colors.gray_700} />}
           <ModalFooter display={"flex"} gap={"5px"} {...footerPadding}>
             {renderCancelButton && (
               <Button flex={1} onClick={onClose} variant={"outline"}>
@@ -79,10 +77,9 @@ const ModalForm = ({
               <Button
                 flex={isButtonFlex ? 1 : ""}
                 variant={"solid"}
-                onClick={(() => {
-                  onSubmit()
-                   onClose()
-                  })}
+                onClick={() => {
+                  onSubmit();
+                }}
                 isDisabled={buttonLabelDisabled}
                 isLoading={isSubmitting}
               >

@@ -1,0 +1,14 @@
+.dropzone {
+    border: 1px dashed gray;
+    border-radius: 0.25rem;
+    padding-inline: 1rem;
+    padding-block: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropzone>input {
+    font-size: .5rem;
+}
