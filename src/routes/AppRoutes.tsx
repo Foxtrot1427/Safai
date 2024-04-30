@@ -22,6 +22,7 @@ import { useAuthentication } from "@rsces/service/service-auth";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
 import AdminOrganizations from "@rsces/pages/Admin/Organizations";
+import OrganizationProfile from "@rsces/pages/Admin/Organizations/profile";
 
 const authRoutes: RouteObject[] = [
   {
@@ -98,6 +99,10 @@ const adminRoutes: RouteObject[] = [
       {
         path: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
         element: <AdminOrganizations />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ORGANIZATION_PROFILE,
+        element: <OrganizationProfile />,
       },
     ],
   },

@@ -79,6 +79,7 @@ const ModalForm = ({
                 variant={"solid"}
                 onClick={() => {
                   onSubmit();
+                  isSubmitting && onClose();
                 }}
                 isDisabled={buttonLabelDisabled}
                 isLoading={isSubmitting}
