@@ -28,6 +28,7 @@ import {
   IProduct,
   useCreateProduct,
   useDeleteProduct,
+  useEditProduct,
   useProducts,
 } from "@rsces/service/service-products";
 import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
@@ -56,13 +57,11 @@ const AdminProducts = () => {
     handleSubmit,
     reset,
     setValue,
-    getValues,
   } = useForm({
     mode: "onChange",
     defaultValues,
     resolver: yupResolver(schema),
   });
-  console.log(getValues());
   const { data: productData, isLoading } = useProducts();
   const [searchFilterData, setSearchFilterData] = useState("");
   const columnFilters: ColumnFiltersState = [];
@@ -83,9 +82,15 @@ const AdminProducts = () => {
     onOpen: onAddOpen,
     onClose: onAddClose,
   } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
   const columnHelper = createColumnHelper<IProduct>();
   const [rowId, setRowId] = useState<number | null>(null);
   const { mutate: createProduct } = useCreateProduct();
+  const { mutate: editProduct } = useEditProduct();
 
   const [imageUrl, setImageUrl] = useState("");
   const { data: imageFile } = useFileFromUrl(imageUrl);
@@ -112,13 +117,32 @@ const AdminProducts = () => {
   };
 
   //Create Product on modal button submit
-  const onSubmit = (data: typeof defaultValues) => {
-    console.log(data);
+  const onSubmitAdd = (data: typeof defaultValues) => {
     const formdata = toFormData(data, undefined, {
       indexes: null,
     });
-    createProduct(formdata);
-    reset(defaultValues);
+    createProduct(formdata, {
+      onSuccess: () => {
+        onAddClose();
+        reset(defaultValues);
+      },
+    });
+  };
+  const onSubmitEdit = (data: typeof defaultValues) => {
+    const formdata = toFormData(data, undefined, {
+      indexes: null,
+    });
+    rowId &&
+      editProduct(
+        { id: rowId, data: formdata },
+        {
+          onSuccess: () => {
+            onEditClose();
+            reset(defaultValues);
+            setRowId(null);
+          },
+        },
+      );
   };
 
   const productsColumns = useMemo(
@@ -173,12 +197,13 @@ const AdminProducts = () => {
               aria-label="Edit Donation"
               icon={<EditIcon />}
               onClick={() => {
+                setRowId(row.original.id);
                 setImageUrl(row.original.image);
                 reset({
                   name: row.original.name,
                   price: row.original.price,
                 });
-                onAddOpen();
+                onEditOpen();
               }}
             />
             <IconButton
@@ -196,7 +221,66 @@ const AdminProducts = () => {
     ],
     [columnHelper, onAddOpen, onDrawerOpen, onOpen, reset],
   );
-
+  const formFields = (
+    <>
+      <InputField
+        control={control}
+        name="name"
+        label="Name"
+        placeholder="Enter product name"
+        errors={errors}
+      />
+      <InputField
+        control={control}
+        name="price"
+        label="Price"
+        placeholder="Enter product price"
+        errors={errors}
+      />
+      <Dropzone control={control} name="image" />
+      {/* <Flex>
+    <FormControl h={"full"}>
+      <Input
+        type="file"
+        display={"none"}
+        {...register("image")}
+        ref={e => {
+          register("image").ref(e);
+          imageRef.current = e;
+        }}
+        onChange={e => {
+          if (!e.target.files) return;
+          setValue("image", e.target.files?.[0]);
+        }}
+      />
+      <FormLabel fontSize={"sm"}>Item (Image)</FormLabel>
+      <Button
+        width={"full"}
+        variant={"outline"}
+        onClick={() => imageRef.current?.click()}
+      >
+        <HStack spacing={2}>
+          <BsUpload />
+          <Text>Upload</Text>
+        </HStack>
+      </Button>
+      {watch("image") && (
+        <Image
+          src={
+            watch("image")
+              ? URL.createObjectURL(watch("image") || "")
+              : ""
+          }
+          alt="Item image"
+          h={48}
+          mt={2}
+          mx={"auto"}
+        />
+      )}
+    </FormControl>
+  </Flex> */}
+    </>
+  );
   return (
     <>
       <Flex justify={"space-between"} align={"center"} my={8}>
@@ -234,67 +318,25 @@ const AdminProducts = () => {
         title={"Add Product"}
         size={{ base: "full", md: "lg" }}
         buttonLabel={"Add"}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmitAdd)}
       >
-        <>
-          <InputField
-            control={control}
-            name="name"
-            label="Name"
-            placeholder="Enter product name"
-            errors={errors}
-          />
-          <InputField
-            control={control}
-            name="price"
-            label="Price"
-            placeholder="Enter product price"
-            errors={errors}
-          />
-          <Dropzone control={control} name="image" />
-          {/* <Flex>
-            <FormControl h={"full"}>
-              <Input
-                type="file"
-                display={"none"}
-                {...register("image")}
-                ref={e => {
-                  register("image").ref(e);
-                  imageRef.current = e;
-                }}
-                onChange={e => {
-                  if (!e.target.files) return;
-                  setValue("image", e.target.files?.[0]);
-                }}
-              />
-              <FormLabel fontSize={"sm"}>Item (Image)</FormLabel>
-              <Button
-                width={"full"}
-                variant={"outline"}
-                onClick={() => imageRef.current?.click()}
-              >
-                <HStack spacing={2}>
-                  <BsUpload />
-                  <Text>Upload</Text>
-                </HStack>
-              </Button>
-              {watch("image") && (
-                <Image
-                  src={
-                    watch("image")
-                      ? URL.createObjectURL(watch("image") || "")
-                      : ""
-                  }
-                  alt="Item image"
-                  h={48}
-                  mt={2}
-                  mx={"auto"}
-                />
-              )}
-            </FormControl>
-          </Flex> */}
-        </>
+        {formFields}
       </ModalForm>
+      <ModalForm
+        isOpen={isEditOpen}
+        onClose={() => {
+          onEditClose();
+          reset(defaultValues);
+          setRowId(null);
+        }}
+        title={"Edit Product"}
+        size={{ base: "full", md: "lg" }}
+        buttonLabel={"Update"}
+        onSubmit={handleSubmit(onSubmitEdit)}
+      >
+        {formFields}
+      </ModalForm>
+
       <Drawer
         isOpen={isDrawerOpen}
         placement="right"
@@ -303,7 +345,12 @@ const AdminProducts = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton onClick={onDrawerClose} />
+          <DrawerCloseButton
+            onClick={() => {
+              onDrawerClose();
+              setRowId(null);
+            }}
+          />
           <DrawerHeader fontSize={24}>Interests</DrawerHeader>
           <DrawerBody>
             <VStack align={"normal"}>

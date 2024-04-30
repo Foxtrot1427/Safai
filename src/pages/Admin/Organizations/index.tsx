@@ -1,34 +1,30 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
   FormControl,
   FormLabel,
   HStack,
-  Heading,
   IconButton,
   Image,
   Input,
   Text,
-  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@rsces/components/DataTable";
-import Modal from "@rsces/components/Modal";
 import ConfirmationModel from "@rsces/components/Modal/conformationModal";
 import ModalForm from "@rsces/components/Modal/modalForm";
 import InputField from "@rsces/components/form/InputField";
+import Textarea from "@rsces/components/form/Textarea";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
-  IOrganization,
-  OrganizationDonation,
+  IOrganizations,
+  useCreateOrganization,
+  useDeleteOrganization,
   useGetAllOrganizations,
 } from "@rsces/service/service-organizations";
-import {
-  useCreateProduct,
-  useDeleteProduct,
-} from "@rsces/service/service-products";
 import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import { toFormData } from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -36,17 +32,18 @@ import { useForm } from "react-hook-form";
 import { BsUpload } from "react-icons/bs";
 import { GrView } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
+import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import SearchBar from "../Layout/SearchBar";
 
 const defaultValues = {
   name: "",
   image: null as unknown as File,
-  price: "",
+  description: "",
 };
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  price: yup.string().required("Price is required"),
+  description: yup.string().required("Price is required"),
   image: yup.mixed<File>().required("Image is required"),
 });
 const AdminOrganizations = () => {
@@ -64,6 +61,7 @@ const AdminOrganizations = () => {
     resolver: yupResolver(schema),
   });
   const { data: orgData, isLoading } = useGetAllOrganizations();
+  const { mutate: createOrganization, isPending } = useCreateOrganization();
   console.log(orgData, "orgData");
 
   const [searchFilterData, setSearchFilterData] = useState("");
@@ -73,33 +71,21 @@ const AdminOrganizations = () => {
     setSearchFilterData(childData);
   }
 
-  const { mutate: deleteProduct } = useDeleteProduct();
+  const { mutate: deleteProduct } = useDeleteOrganization();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isOrgOpen,
-    onOpen: onOrgOpen,
-    onClose: onOrgClose,
-  } = useDisclosure();
-
+  const navigate = useNavigate();
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
     onClose: onAddClose,
   } = useDisclosure();
-  const columnHelper = createColumnHelper<IOrganization>();
+  const columnHelper = createColumnHelper<IOrganizations>();
   const imageRef = useRef<HTMLInputElement | null>(null);
-  const [rowId, setRowId] = useState<number | null>(null);
-  const { mutate: createProduct } = useCreateProduct();
-
   const [imageUrl, setImageUrl] = useState("");
   const { data: imageFile } = useFileFromUrl(imageUrl);
-  console.log(orgData?.filter(org => +org.id === rowId), "filter");
 
   useEffect(() => {
     if (!imageFile) return;
-
-    console.log("hello");
-
     setValue("image", imageFile);
   }, [imageFile, setValue]);
 
@@ -120,10 +106,14 @@ const AdminOrganizations = () => {
     const formdata = toFormData(data, undefined, {
       indexes: null,
     });
-    createProduct(formdata);
-    reset(defaultValues);
+    createOrganization(formdata, {
+      onSuccess: () => {
+        onAddClose();
+        reset(defaultValues);
+      },
+    });
   };
-  const productsColumns = useMemo(
+  const orgColumn = useMemo(
     () => [
       columnHelper.display({
         header: "S.N.",
@@ -151,22 +141,11 @@ const AdminOrganizations = () => {
               aria-label="View Interests"
               icon={<GrView />}
               onClick={() => {
-                setRowId(+row.original.id);
-                onOrgOpen();
-              }}
-            />
-            <IconButton
-              p={0}
-              variant={"ghost"}
-              aria-label="Edit Donation"
-              icon={<EditIcon />}
-              onClick={() => {
-                setImageUrl(row.original.image);
-                // reset({
-                //   name: row.original.name,
-                //   price: row.original.price,
-                // });
-                // onAddOpen();
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.ORGANIZATION_PROFILE, {
+                    id: String(row.original.id),
+                  }),
+                );
               }}
             />
             <IconButton
@@ -199,7 +178,7 @@ const AdminOrganizations = () => {
         </Button>
       </Flex>
       <DataTable
-        columns={productsColumns}
+        columns={orgColumn}
         data={orgData ?? []}
         filter={{
           globalFilter: searchFilterData,
@@ -219,25 +198,25 @@ const AdminOrganizations = () => {
           onAddClose();
           reset(defaultValues);
         }}
-        title={"Add Product"}
+        title={"Add Organization"}
         size={{ base: "full", md: "lg" }}
         buttonLabel={"Add"}
         onSubmit={handleSubmit(onSubmit)}
+        isSubmitting={isPending}
       >
         <>
           <InputField
             control={control}
             name="name"
             label="Name"
-            placeholder="Enter product name"
+            placeholder="Enter Organization name"
             errors={errors}
           />
-          <InputField
+          <Textarea
             control={control}
-            name="price"
-            label="Price"
-            placeholder="Enter product price"
-            errors={errors}
+            name="description"
+            label="Description"
+            placeholder="Enter Organization Description"
           />
           <Flex>
             <FormControl h={"full"}>
@@ -282,44 +261,6 @@ const AdminOrganizations = () => {
           </Flex>
         </>
       </ModalForm>
-      <Modal
-        isOpen={isOrgOpen}
-        onClose={onOrgClose}
-        header={"Organization Details"}
-        size={"9xl"}
-      >
-        {orgData
-          ?.filter(org => +org.id === rowId)
-          .map((org: IOrganization) => (
-            <>
-              <VStack spacing={4} width={"full"}>
-                <Image src={org.image} alt={org.name} h={80} />
-                <Text width={"full"}>
-                  <Heading size="md">Organization Name:</Heading> {org.name}
-                </Text>
-                <Text width={"full"}>
-                  <Heading size="md">Organization Description:</Heading>
-                  {org.description}
-                </Text>
-                <HStack>
-                  {org.organizationDonation.map(
-                    (donation: OrganizationDonation) => (
-                      <VStack
-                        key={donation.id}
-                        w={"full"}
-                        p={4}
-                        bg={"gray.100"}
-                      >
-                        <Text>Donation: {donation.donation}</Text>
-                        <Text>Categories: {donation.categories.name}</Text>
-                      </VStack>
-                    ),
-                  )}
-                </HStack>
-              </VStack>
-            </>
-          ))}
-      </Modal>
     </>
   );
 };

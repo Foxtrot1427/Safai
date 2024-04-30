@@ -23,9 +23,9 @@ export const api = {
   },
   organization: {
     get: '/organization',
-    // create: '/organizations',
-    // delete: '/organizations/:id',
-    // update: '/organizations/:id',
+    create: '/organization',
+    delete: '/organization',
+    update: '/organization',
   }
 };
 

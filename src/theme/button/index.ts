@@ -47,6 +47,28 @@ export const Button = defineStyleConfig({
         opacity: 0.8,
       },
     },
+    edit: {
+      bg: colors.gray_500,
+      color: colors.gray_100,
+      _hover: {
+        bg: colors.gray_700,
+        color: colors.gray_100,
+      },
+    },
+    delete: {
+      bg: colors.delete,
+      color: colors.gray_100,
+      _hover: {
+        bg: colors.red,
+        color: colors.gray_100,
+        opacity: 0.8,
+      },
+      _active: {
+        bg: colors.delete,
+        color: colors.gray_100,
+        opacity: 0.8,
+      },
+    }
   },
   defaultProps: {
     variant: 'primary',

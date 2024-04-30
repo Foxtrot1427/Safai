@@ -4,6 +4,7 @@ import { HttpClient } from "./service-axios";
 import { toastFail, toastSuccess } from "./service-toast";
 import serverErrorResponse from "./service-error";
 import { GenericFormData } from "axios";
+import { generatePath } from "react-router-dom";
 
 export interface IProduct {
   id: number;
@@ -98,3 +99,28 @@ export const useDeleteProduct = () => {
     },
   });
 };
+
+const editProduct = async ({data,id} : {data: GenericFormData, id: number})=> {
+  const response = await HttpClient.put<Response<IProductCreate>>(
+    generatePath(api.products.update, {id}),
+    data,
+  );
+  return response;
+}
+export const useEditProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [api.products.update],
+    mutationFn: editProduct,
+    onSuccess: response => {
+      queryClient.invalidateQueries({
+        queryKey: [api.products.get],
+      });
+      toastSuccess(response.data.toast || "Product updated");
+    },
+    onError: error => {
+      const errorMsg = serverErrorResponse(error);
+      toastFail(errorMsg || "Failed to update product");
+    },
+  });
+}
