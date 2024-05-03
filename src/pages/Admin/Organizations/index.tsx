@@ -81,7 +81,8 @@ const AdminOrganizations = () => {
   } = useDisclosure();
   const columnHelper = createColumnHelper<IOrganizations>();
   const imageRef = useRef<HTMLInputElement | null>(null);
-  const [imageUrl, setImageUrl] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl] = useState("");
   const { data: imageFile } = useFileFromUrl(imageUrl);
 
   useEffect(() => {
@@ -161,7 +162,7 @@ const AdminOrganizations = () => {
         ),
       }),
     ],
-    [columnHelper, onOpen],
+    [columnHelper, onOpen, navigate],
   );
 
   return (
