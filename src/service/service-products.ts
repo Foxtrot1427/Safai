@@ -100,13 +100,20 @@ export const useDeleteProduct = () => {
   });
 };
 
-const editProduct = async ({data,id} : {data: GenericFormData, id: number})=> {
-  const response = await HttpClient.put<Response<IProductCreate>>(
-    generatePath(api.products.update, {id}),
+const editProduct = async ({
+  data,
+  id,
+}: {
+  data: GenericFormData;
+  id: number;
+}) => {
+  const response = await HttpClient.patch<Response<IProductCreate>>(
+    generatePath(api.products.update, { id }),
     data,
   );
   return response;
-}
+};
+
 export const useEditProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -123,4 +130,4 @@ export const useEditProduct = () => {
       toastFail(errorMsg || "Failed to update product");
     },
   });
-}
+};

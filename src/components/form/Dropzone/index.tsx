@@ -8,8 +8,10 @@ import {
   FormLabel,
   Image,
   ListItem,
+  Spinner,
   Text,
   UnorderedList,
+  VStack,
 } from "@chakra-ui/react";
 import { colors } from "@rsces/theme/colors";
 
@@ -20,11 +22,13 @@ export interface FileWithPreview extends File {
 interface DropzoneProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
+  isLoading?: boolean;
 }
 
 const Dropzone = <T extends FieldValues>({
   name,
   control,
+  isLoading,
 }: DropzoneProps<T>) => {
   const { field } = useController({
     name,
@@ -43,26 +47,26 @@ const Dropzone = <T extends FieldValues>({
   });
 
   const thumbs =
-    field.value &&
+    Array.isArray(field.value) &&
     field.value.map((file: FileWithPreview) => (
       <ListItem key={file.name} flex={1} listStyleType="none">
-        <div>
-          <Image
-            src={file.preview}
-            height="100%"
-            maxHeight="200px"
-            aspectRatio={1}
-            objectFit="contain"
-            onLoad={() => {
-              URL.revokeObjectURL(file.preview);
-            }}
-          />
-        </div>
+        <Image
+          src={file.preview}
+          height="100%"
+          maxHeight="200px"
+          mx="auto"
+          aspectRatio={1}
+          objectFit="contain"
+          onLoad={() => {
+            URL.revokeObjectURL(file.preview);
+          }}
+        />
       </ListItem>
     ));
 
   useEffect(() => {
     return () =>
+      Array.isArray(field.value) &&
       field.value?.forEach((file: FileWithPreview) =>
         URL.revokeObjectURL(file.preview),
       );
@@ -84,7 +88,11 @@ const Dropzone = <T extends FieldValues>({
           Drag 'n' drop some files here, or click to select files
         </Text>
       </Box>
-      <aside>
+      {isLoading ? (
+        <VStack height="200px" align="center" justify="center">
+          <Spinner />
+        </VStack>
+      ) : (
         <UnorderedList
           display="flex"
           gap={5}
@@ -95,7 +103,7 @@ const Dropzone = <T extends FieldValues>({
         >
           {thumbs}
         </UnorderedList>
-      </aside>
+      )}
     </FormControl>
   );
 };
