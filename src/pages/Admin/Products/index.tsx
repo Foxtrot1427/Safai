@@ -10,6 +10,8 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
+  Grid,
+  GridItem,
   HStack,
   IconButton,
   Image,
@@ -21,8 +23,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@rsces/components/DataTable";
 import ConfirmationModel from "@rsces/components/Modal/conformationModal";
 import ModalForm from "@rsces/components/Modal/modalForm";
-import Dropzone from "@rsces/components/form/Dropzone";
+import Dropzone, { FileWithPreview } from "@rsces/components/form/Dropzone";
 import InputField from "@rsces/components/form/InputField";
+import Textarea from "@rsces/components/form/Textarea";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
   IProduct,
@@ -42,14 +45,18 @@ import SearchBar from "../Layout/SearchBar";
 
 const defaultValues = {
   name: "",
-  image: null as unknown as File,
+  image: null as unknown as FileWithPreview[],
   price: "",
+  description: "",
 };
+
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   price: yup.string().required("Price is required"),
-  image: yup.mixed<File>().required("Image is required"),
+  image: yup.mixed<FileWithPreview[]>().required("Image is required"),
+  description: yup.string().required("Description is required"),
 });
+
 const AdminProducts = () => {
   const {
     control,
@@ -89,19 +96,25 @@ const AdminProducts = () => {
   } = useDisclosure();
   const columnHelper = createColumnHelper<IProduct>();
   const [rowId, setRowId] = useState<number | null>(null);
-  const { mutate: createProduct } = useCreateProduct();
-  const { mutate: editProduct } = useEditProduct();
+  const { mutate: createProduct, isPending: isCreatingProduct } =
+    useCreateProduct();
+  const { mutate: editProduct, isPending: isEditingProduct } = useEditProduct();
 
   const [imageUrl, setImageUrl] = useState("");
-  const { data: imageFile } = useFileFromUrl(imageUrl);
-  console.log(imageFile, "abc");
+  const {
+    data: imageFile,
+    isLoading: isImageFileLoading,
+    isFetching: isImageFileFetching,
+  } = useFileFromUrl(imageUrl);
 
   useEffect(() => {
     if (!imageFile) return;
 
-    console.log("hello");
+    const file = Object.assign(imageFile, {
+      preview: URL.createObjectURL(imageFile),
+    });
 
-    setValue("image", imageFile);
+    setValue("image", [file]);
   }, [imageFile, setValue]);
 
   const onDelete = () => {
@@ -202,6 +215,7 @@ const AdminProducts = () => {
                 reset({
                   name: row.original.name,
                   price: row.original.price,
+                  description: row.original.description,
                 });
                 onEditOpen();
               }}
@@ -230,6 +244,13 @@ const AdminProducts = () => {
         placeholder="Enter product name"
         errors={errors}
       />
+      <GridItem rowSpan={3}>
+        <Dropzone
+          control={control}
+          name="image"
+          isLoading={isImageFileLoading || isImageFileFetching}
+        />
+      </GridItem>
       <InputField
         control={control}
         name="price"
@@ -237,48 +258,12 @@ const AdminProducts = () => {
         placeholder="Enter product price"
         errors={errors}
       />
-      <Dropzone control={control} name="image" />
-      {/* <Flex>
-    <FormControl h={"full"}>
-      <Input
-        type="file"
-        display={"none"}
-        {...register("image")}
-        ref={e => {
-          register("image").ref(e);
-          imageRef.current = e;
-        }}
-        onChange={e => {
-          if (!e.target.files) return;
-          setValue("image", e.target.files?.[0]);
-        }}
+      <Textarea
+        control={control}
+        name="description"
+        label="Description"
+        placeholder="Enter Product Description"
       />
-      <FormLabel fontSize={"sm"}>Item (Image)</FormLabel>
-      <Button
-        width={"full"}
-        variant={"outline"}
-        onClick={() => imageRef.current?.click()}
-      >
-        <HStack spacing={2}>
-          <BsUpload />
-          <Text>Upload</Text>
-        </HStack>
-      </Button>
-      {watch("image") && (
-        <Image
-          src={
-            watch("image")
-              ? URL.createObjectURL(watch("image") || "")
-              : ""
-          }
-          alt="Item image"
-          h={48}
-          mt={2}
-          mx={"auto"}
-        />
-      )}
-    </FormControl>
-  </Flex> */}
     </>
   );
   return (
@@ -314,27 +299,35 @@ const AdminProducts = () => {
         onClose={() => {
           onAddClose();
           reset(defaultValues);
+          setImageUrl("");
         }}
         title={"Add Product"}
-        size={{ base: "full", md: "lg" }}
+        size={{ base: "full", md: "3xl" }}
         buttonLabel={"Add"}
         onSubmit={handleSubmit(onSubmitAdd)}
+        isSubmitting={isCreatingProduct}
       >
-        {formFields}
+        <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={8}>
+          {formFields}
+        </Grid>
       </ModalForm>
       <ModalForm
         isOpen={isEditOpen}
         onClose={() => {
           onEditClose();
           reset(defaultValues);
+          setImageUrl("");
           setRowId(null);
         }}
         title={"Edit Product"}
-        size={{ base: "full", md: "lg" }}
+        size={{ base: "full", md: "3xl" }}
         buttonLabel={"Update"}
         onSubmit={handleSubmit(onSubmitEdit)}
+        isSubmitting={isEditingProduct}
       >
-        {formFields}
+        <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={8}>
+          {formFields}
+        </Grid>
       </ModalForm>
 
       <Drawer

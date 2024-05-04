@@ -47,7 +47,7 @@ const schema = yup.object().shape({
 });
 const OrganizationProfile = () => {
   const { id } = useParams();
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl] = useState("");
   const { data: imageFile } = useFileFromUrl(imageUrl);
   const { mutate: editOrganization } = useUpdateOrganization();
   const { mutate: submitDonation } = useSubmitDonation();
@@ -249,6 +249,7 @@ const OrganizationProfile = () => {
             border={`2px solid ${colors.gray_100}`}
           >
             <Grid templateColumns="repeat(2, 1fr)">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {info?.map((user: any, ind: number) => (
                 <GridItem key={`${ind}`}>
                   <Flex mb="20px" gap="8px">
