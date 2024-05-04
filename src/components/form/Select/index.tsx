@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@rsces/theme/colors";
 import { Control, Controller } from "react-hook-form";
-import ReactSelect, { GroupBase, Props } from "react-select";
+import { GroupBase, Props, default as ReactSelect } from "react-select";
 import { customStyles } from "./customStyles";
 
 declare module "react-select" {
@@ -21,11 +21,8 @@ declare module "react-select" {
     Group extends GroupBase<Option>,
   > {
     size?: "sm" | "md" | "lg";
-
     /** If the Select Component has Custom Label Component */
     helperText?: string;
-    ref?: any;
-    register?: any;
     hasInputAddon?: boolean;
     hideDropdownArrow?: boolean;
     hideSelectedValues?: boolean;
@@ -35,23 +32,23 @@ declare module "react-select" {
     isParticipantGroupContainer?: boolean;
     inheritMultiValueBG?: boolean;
     disableMultiValueRemove?: boolean;
-    disabled?: boolean;
     inheritControlBG?: boolean;
-    rules?: RegistrationOptions;
-    setValue?: any;
-    isRequired?: boolean;
-    label?: string;
+    isFocused?: boolean;
   }
 }
-
 type SelectProps = Props & {
   size?: "sm" | "md" | "lg";
   name: string;
   control?: Control<any>;
-  hideError?: boolean;
-  placeholder?: string;
-  onCustomChange?: (e: any) => void;
-  disabled?: boolean;
+  nonControlled?: boolean;
+  asyncSelect?: boolean;
+  required?: boolean;
+  isRequired?: boolean;
+  isCreatable?: boolean;
+  isReadOnly?: boolean;
+  label?: string;
+  labelWidth?: string;
+  promiseOptions: (inputValue: string) => void;
 };
 
 function SelectComponent({
