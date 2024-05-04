@@ -46,6 +46,12 @@ export interface IOrganizations {
     name: string
     description: string
   }
+  export interface IOrgDonation {
+    donation: number
+    category: number
+    organizations: number
+  }
+  
 
 const getAllOrganizations = async()  => {
     const response = await HttpClient.get<Response<IOrganizations[]>>(api.organization.get);
@@ -137,6 +143,28 @@ export const useUpdateOrganization = () => {
               toastFail(errorMsg || 'Failed to update organization');
           }
       });
+}
+const submitDonation = async (data: IOrgDonation) => {  
+  const response = await HttpClient.post<Response<IOrgDonation>>(api.organization.donation, data);
+  return response;
+}
+export const useSubmitDonation = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    {
+      mutationKey: [api.organization.donation],
+      mutationFn: submitDonation,
+      onSuccess: (response) => {
+        queryClient.invalidateQueries({
+          queryKey: [api.organization.get],
+        });
+        toastSuccess(response.data.toast || 'Donation submitted')
+      },
+      onError: (error) => {
+        const errorMsg = serverErrorResponse(error);
+        toastFail(errorMsg || 'Failed to submit donation');
+    }
+  });
 }
 
 

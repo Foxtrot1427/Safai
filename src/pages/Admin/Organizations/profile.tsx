@@ -13,15 +13,19 @@ import {
   Input,
   Spinner,
   Text,
+  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ModalForm from "@rsces/components/Modal/modalForm";
 import InputField from "@rsces/components/form/InputField";
+import SelectComponent from "@rsces/components/form/Select";
 import Textarea from "@rsces/components/form/Textarea";
+import { useGetCategories } from "@rsces/service/service-categories";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
   useGetOneOrganization,
+  useSubmitDonation,
   useUpdateOrganization,
 } from "@rsces/service/service-organizations";
 import { colors } from "@rsces/theme/colors";
@@ -42,10 +46,25 @@ const schema = yup.object().shape({
   image: yup.mixed<File>().required("Image is required"),
 });
 const OrganizationProfile = () => {
+  const { id } = useParams();
+  const [imageUrl] = useState("");
+  const { data: imageFile } = useFileFromUrl(imageUrl);
+  const { mutate: editOrganization } = useUpdateOrganization();
+  const { mutate: submitDonation } = useSubmitDonation();
+  const { data: organization, isLoading } = useGetOneOrganization(id ?? "");
+  console.log(organization, "organization");
+
+  const { data: categories } = useGetCategories();
+
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
     onClose: onEditClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDonationsOpen,
+    onOpen: onDonationsOpen,
+    onClose: onDonationsClose,
   } = useDisclosure();
   const {
     control,
@@ -60,14 +79,23 @@ const OrganizationProfile = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { id } = useParams();
-  // const [imageUrl, setImageUrl] = useState("");
-  const [imageUrl] = useState("");
-  const { data: imageFile } = useFileFromUrl(imageUrl);
-  const { mutate: editOrganization } = useUpdateOrganization();
-  const { data: organization, isLoading } = useGetOneOrganization(id ?? "");
+  const donationsDefaultValues = {
+    donation: "",
+    category: { label: "", value: "" },
+    organizations: id,
+  };
 
-  console.log(organization);
+  const {
+    control: donationsControl,
+    formState: { errors: donationsErrors },
+    handleSubmit: donationsHandleSubmit,
+    reset: res,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: donationsDefaultValues,
+    // resolver: yupResolver(schema),
+  });
+
   const imageRef = useRef<HTMLInputElement | null>(null);
 
   const info = [{ email: "" }];
@@ -90,6 +118,20 @@ const OrganizationProfile = () => {
         },
       );
   };
+  function donationsSubmit(data: typeof donationsDefaultValues) {
+    if (!id) return;
+    const formattedData = {
+      donation: +data.donation,
+      category: +data.category.value,
+      organizations: +id,
+    };
+    submitDonation(formattedData, {
+      onSuccess: () => {
+        onDonationsClose();
+        res(donationsDefaultValues);
+      },
+    });
+  }
   return isLoading ? (
     <Flex justifyContent="center" alignItems="center" height="80vh">
       <Spinner />
@@ -175,9 +217,8 @@ const OrganizationProfile = () => {
                   //   name: organization?.name,
                   //   description: organization?.description,
                   // });
-                  // onEditOpen();
+                  onDonationsOpen();
                 }}
-                width=" 119.667px"
                 height="41px"
                 variant={"edit"}
                 gap="8px"
@@ -239,8 +280,8 @@ const OrganizationProfile = () => {
                       {Object.values(user)[0] === Boolean(true)
                         ? "True"
                         : Object.values(user)[0] === Boolean(false)
-                          ? "False"
-                          : Object.values(user)}
+                        ? "False"
+                        : Object.values(user)}
                     </Text>
                   </Flex>
                 </GridItem>
@@ -317,6 +358,35 @@ const OrganizationProfile = () => {
             </FormControl>
           </Flex>
         </>
+      </ModalForm>
+      <ModalForm
+        isOpen={isDonationsOpen}
+        onClose={onDonationsClose}
+        title={"Donations"}
+        size={{ base: "full", md: "lg" }}
+        buttonLabel={"Submit"}
+        onSubmit={donationsHandleSubmit(donationsSubmit)}
+        // isSubmitting= {}
+      >
+        <VStack height={56} gap={8}>
+          <SelectComponent
+            control={donationsControl}
+            name="category"
+            label="Category"
+            placeholder="Select Category"
+            options={categories?.map((category: any) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
+          <InputField
+            control={donationsControl}
+            name="donation"
+            label="Donation"
+            placeholder="Enter Donation"
+            errors={donationsErrors}
+          />
+        </VStack>
       </ModalForm>
     </>
   );
