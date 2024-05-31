@@ -76,6 +76,18 @@ export const useGetOneOrganization = (id: string) => {
         select: (response) => response?.data?.results[0],
     });
 }
+const oneOrganizationDonation = async (id: string) => {
+  const response = await HttpClient.get<Response<OrganizationDonation[]>>(`${api.organization.donation}/${id}`);
+  return response;
+}
+export const useOneOrganizationDonation = (id: string) => {
+  return useQuery({
+      queryKey: [api.organization.donation, id],
+      queryFn: () => oneOrganizationDonation(id),
+      enabled: !!id,
+      select: (response) => response?.data?.results,
+  });
+}
 
 const createOrganization = async (data: GenericFormData) => {
     const response = await HttpClient.post<Response<IOrganizationCreate>>(api.organization.create, data);
@@ -166,5 +178,6 @@ export const useSubmitDonation = () => {
     }
   });
 }
+
 
 

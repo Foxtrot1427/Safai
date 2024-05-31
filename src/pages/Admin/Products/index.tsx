@@ -347,22 +347,27 @@ const AdminProducts = () => {
           <DrawerHeader fontSize={24}>Interests</DrawerHeader>
           <DrawerBody>
             <VStack align={"normal"}>
-              {productData
-                ?.find(product => product.id === rowId)
-                ?.interests.map(interest => (
-                  <VStack key={interest.id} alignItems={"flex-start"} mb={8}>
-                    <Text>
-                      <b>Name:</b> {interest.name}
-                    </Text>
-                    <Text>
-                      <b>Number:</b> {interest.number}
-                    </Text>
-                    <Text>
-                      <b>Description:</b> {interest.description}
-                    </Text>
-                    <Divider mt={4} borderWidth={1} />
-                  </VStack>
-                ))}
+              {productData?.find(product => product.id === rowId)?.interests
+                ?.length !== 0 ? (
+                productData
+                  ?.find(product => product.id === rowId)
+                  ?.interests.map(interest => (
+                    <VStack key={interest.id} alignItems={"flex-start"} mb={8}>
+                      <Text>
+                        <b>Name:</b> {interest.name}
+                      </Text>
+                      <Text>
+                        <b>Number:</b> {interest.number}
+                      </Text>
+                      <Text>
+                        <b>Description:</b> {interest.description}
+                      </Text>
+                      <Divider mt={4} borderWidth={1} />
+                    </VStack>
+                  ))
+              ) : (
+                <Text>No Interests for this product yet</Text>
+              )}
             </VStack>
           </DrawerBody>
 
