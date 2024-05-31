@@ -1,16 +1,33 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Response, api } from './service-api';
-import { HttpClient } from './service-axios';
-import { toastFail, toastSuccess } from './service-toast';
-import serverErrorResponse from './service-error';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Response, api } from "./service-api";
+import { HttpClient } from "./service-axios";
+import { toastFail, toastSuccess } from "./service-toast";
+import serverErrorResponse from "./service-error";
+import { GenericFormData } from "axios";
+import { generatePath } from "react-router-dom";
 
 export interface IProduct {
   id: number;
   name: string;
   image: string;
+  description: string;
   price: string;
+  type: string;
   interest: string;
   admin: IAdmin;
+  interests: IIntrests[];
+}
+export interface IIntrests {
+  id: number;
+  name: string;
+  number: string;
+  description: string;
+  closed: boolean;
+}
+export interface IProductCreate {
+  name: string;
+  image: FileList | null;
+  price: string;
 }
 
 interface IAdmin {
@@ -30,7 +47,32 @@ export const useProducts = () => {
   return useQuery({
     queryKey: [api.products.get],
     queryFn: getAllProducts,
-    select: (response) => response.data.results,
+    select: response => response.data.results,
+  });
+};
+
+const createProduct = async (data: GenericFormData) => {
+  const response = await HttpClient.post<Response<IProductCreate>>(
+    api.products.create,
+    data,
+  );
+  return response;
+};
+export const useCreateProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [api.products.create],
+    mutationFn: createProduct,
+    onSuccess: response => {
+      queryClient.invalidateQueries({
+        queryKey: [api.products.get],
+      });
+      toastSuccess(response.data.toast || "Product created");
+    },
+    onError: error => {
+      const errorMsg = serverErrorResponse(error);
+      toastFail(errorMsg || "Failed to create product");
+    },
   });
 };
 
@@ -45,15 +87,47 @@ export const useDeleteProduct = () => {
   return useMutation({
     mutationKey: [api.products.delete],
     mutationFn: deleteProduct,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.products.get],
       });
-      toastSuccess(response.data.toast || 'Product deleted');
+      toastSuccess(response.data.toast || "Product deleted");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to Delete product');
+      toastFail(errorMsg || "Failed to Delete product");
+    },
+  });
+};
+
+const editProduct = async ({
+  data,
+  id,
+}: {
+  data: GenericFormData;
+  id: number;
+}) => {
+  const response = await HttpClient.patch<Response<IProductCreate>>(
+    generatePath(api.products.update, { id }),
+    data,
+  );
+  return response;
+};
+
+export const useEditProduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [api.products.update],
+    mutationFn: editProduct,
+    onSuccess: response => {
+      queryClient.invalidateQueries({
+        queryKey: [api.products.get],
+      });
+      toastSuccess(response.data.toast || "Product updated");
+    },
+    onError: error => {
+      const errorMsg = serverErrorResponse(error);
+      toastFail(errorMsg || "Failed to update product");
     },
   });
 };

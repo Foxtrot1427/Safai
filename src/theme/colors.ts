@@ -1,5 +1,7 @@
 export const colors = {
   primary: '#2e6718',
+  delete: '#ED5E68',
+  red: '#FF0000',
   footer_bg: '#01354b',
   black: '#000',
   white: '#fff',

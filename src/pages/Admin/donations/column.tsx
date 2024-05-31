@@ -1,11 +1,13 @@
-import { HStack, IconButton, Image } from '@chakra-ui/react';
+import { HStack, IconButton, Image, Text } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { CheckmarkIcon } from 'react-hot-toast';
 import { IDonation } from './interface';
 
 const columnHelper = createColumnHelper<IDonation>();
 
-export const donationColumns = () => [
+export const donationColumns = (
+  {setConfirmationId, onOpen}: {setConfirmationId: (id: number) => void, onOpen: () => void},
+) => [
   columnHelper.display({
     header: 'S.N.',
     cell: ({ row }) => row.index + 1,
@@ -41,16 +43,22 @@ export const donationColumns = () => [
     header: 'Description',
   }),
   columnHelper.display({
-    header: 'Actions',
-    cell: () => (
+    header: 'Mark as Completed',
+    cell: ({row}) => (
       <HStack spacing={0} justify={'center'}>
+      {row.original.isAccepted ? <Text fontSize={16} fontWeight={400} color={"green.600"}>Already Completed</Text> : 
+     (
         <IconButton
           p={0}
           variant={'ghost'}
           aria-label="Edit Donation"
           icon={<CheckmarkIcon />}
-          onClick={() => {}}
+          onClick={() => {
+            setConfirmationId(row.original.id);
+            onOpen();
+          }}
         />
+      )}
       </HStack>
     ),
   }),

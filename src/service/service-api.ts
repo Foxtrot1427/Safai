@@ -19,6 +19,21 @@ export const api = {
     get: '/donations',
     create: '/donations',
     delete: '/donations/:id',
+    update: '/donations/:id',
+
+  },
+  organization: {
+    get: '/organization',
+    create: '/organization',
+    delete: '/organization',
+    update: '/organization',
+    donation: '/organization-donation',
+  },
+  categories: {
+    get: '/category', 
+    create: '/category',
+    delete: '/category',
+    update: '/category',
   },
 };
 

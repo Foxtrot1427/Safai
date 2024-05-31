@@ -10,5 +10,7 @@ export const NAVIGATION_ROUTES = {
   ADMIN_REGISTER: '/admin/register',
   ADMIN_DONATIONS: '/admin/donations',
   ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_ORGANIZATIONS: '/admin/organizations',
+  ORGANIZATION_PROFILE: '/admin/organization-profile/:id',
   NO_MATCH: '*',
 } as const;

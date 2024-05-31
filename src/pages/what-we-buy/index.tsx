@@ -1,101 +1,47 @@
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import Container from '@rsces/components/ui/Container';
-import { colors } from '@rsces/theme/colors';
-import Donation from './donation/Donation';
-import Products from './products';
+import { Box, Flex, Image, Text, VStack } from "@chakra-ui/react";
 import {
   ETrash,
   Newspapers,
   Trash,
   WhatWeBuyBanner,
-} from '@rsces/assets/images';
-import Wrapper from '@rsces/components/ui/Wrapper';
+} from "@rsces/assets/images";
+import Container from "@rsces/components/ui/Container";
+import Wrapper from "@rsces/components/ui/Wrapper";
+import { colors } from "@rsces/theme/colors";
+import Donation from "./donation/Donation";
 
 const WhatWeBuy = () => {
   return (
     <>
-      <Wrapper bannerImg={WhatWeBuyBanner}>
+      <Wrapper bannerImg={WhatWeBuyBanner} py={40}>
         <Text
-          textTransform={'uppercase'}
-          align={'center'}
-          fontSize={'2xl'}
+          textTransform={"uppercase"}
+          align={"center"}
+          fontSize={"2xl"}
           color={colors.gray_100}
         >
           You can sell items
         </Text>
         <Text
-          textTransform={'uppercase'}
-          align={'center'}
-          fontSize={'5xl'}
-          fontWeight={'bold'}
+          textTransform={"uppercase"}
+          align={"center"}
+          fontSize={"5xl"}
+          fontWeight={"bold"}
           color={colors.gray_100}
         >
           What we buy
         </Text>
       </Wrapper>
-
-      <Box as={'section'} py={16}>
-        <Container>
-          <HStack gap={8} mb={8}>
-            <Box
-              w={'full'}
-              flex={1}
-              h={0}
-              border={'2px solid'}
-              borderColor={colors.gray_200}
-            />
-            <Text
-              width={'fit-content'}
-              position={'relative'}
-              fontSize={'2xl'}
-              fontWeight={600}
-              textTransform={'uppercase'}
-              color={colors.primary}
-            >
-              Products
-            </Text>
-            <Box
-              w={'full'}
-              flex={1}
-              h={0}
-              border={'2px solid'}
-              borderColor={colors.gray_200}
-            />
-          </HStack>
-          <Products />
-
-          <HStack justify={'center'} mt={12}>
-            <Button
-              borderRadius={'none'}
-              bg={colors.primary}
-              color={colors.white}
-              px={12}
-              py={4}
-            >
-              Load More
-            </Button>
-          </HStack>
-        </Container>
-      </Box>
-
       <Box bgColor={colors.gray_200} py={24}>
         <Container>
-          <Text textTransform={'uppercase'} fontSize={'2xl'} align={'center'}>
+          <Text textTransform={"uppercase"} fontSize={"2xl"} align={"center"}>
             Fill up form to sell trash
           </Text>
           <Text
-            textTransform={'uppercase'}
-            fontSize={'5xl'}
-            fontWeight={'bold'}
-            align={'center'}
+            textTransform={"uppercase"}
+            fontSize={"5xl"}
+            fontWeight={"bold"}
+            align={"center"}
           >
             Sell Now
           </Text>
@@ -104,81 +50,81 @@ const WhatWeBuy = () => {
             <Box flex={0.6}>
               <VStack>
                 <Text
-                  align={'center'}
-                  fontSize={'2xl'}
-                  fontWeight={'bold'}
-                  w={'50%'}
+                  align={"center"}
+                  fontSize={"2xl"}
+                  fontWeight={"bold"}
+                  w={"50%"}
                 >
                   Please fill the form if you want to &nbsp;
                   <span
                     style={{
                       color: colors.primary,
-                      fontSize: '50px',
-                      display: 'block',
+                      fontSize: "50px",
+                      display: "block",
                     }}
                   >
-                    SALE
+                    SELL
                   </span>
                   &nbsp; your trash
                 </Text>
 
                 <Box
-                  display={'flex'}
-                  w={'250px'}
-                  flexWrap={'wrap'}
-                  ml={'-20px'}
+                  display={"flex"}
+                  w={"250px"}
+                  flexWrap={"wrap"}
+                  ml={"-20px"}
                   mt={12}
                 >
                   <Box
-                    width={'100px'}
+                    width={"100px"}
                     aspectRatio={1}
                     bg={colors.white}
                     border={`3px solid ${colors.primary}`}
-                    transform={'rotate(45deg) translate(20px, 5px)'}
-                    overflow={'hidden'}
+                    transform={"rotate(45deg) translate(20px, 5px)"}
+                    overflow={"hidden"}
                   >
                     <Image
                       src={Trash}
-                      h={'full'}
-                      objectFit={'cover'}
-                      transform={'rotate(-45deg) '}
+                      h={"full"}
+                      objectFit={"cover"}
+                      transform={"rotate(-45deg) "}
                     />
                   </Box>
                   <Box
-                    width={'100px'}
-                    transform={'rotate(45deg) translate(50px, -25px)'}
+                    width={"100px"}
+                    transform={"rotate(45deg) translate(50px, -25px)"}
                     border={`3px solid ${colors.primary}`}
                     aspectRatio={1}
                     bg={colors.white}
-                    overflow={'hidden'}
+                    overflow={"hidden"}
                   >
                     <Image
                       src={Newspapers}
-                      h={'full'}
-                      objectFit={'cover'}
-                      transform={'rotate(-45deg) '}
+                      h={"full"}
+                      objectFit={"cover"}
+                      transform={"rotate(-45deg) "}
                     />
                   </Box>
                   <Box
-                    width={'100px'}
-                    transform={'rotate(45deg) translate(55px, -60px)'}
+                    width={"100px"}
+                    transform={"rotate(45deg) translate(55px, -60px)"}
                     border={`3px solid ${colors.primary}`}
                     aspectRatio={1}
                     bg={colors.white}
-                    overflow={'hidden'}
+                    overflow={"hidden"}
                   >
                     <Image
                       src={ETrash}
-                      h={'full'}
-                      objectFit={'cover'}
-                      transform={'rotate(-45deg) '}
+                      h={"full"}
+                      objectFit={"cover"}
+                      transform={"rotate(-45deg) "}
                     />
                   </Box>
                 </Box>
               </VStack>
             </Box>
 
-            <Box flex={1} bg={colors.gray_100} borderRadius={'xl'} p={8}>
+            <Box flex={1} bg={colors.gray_100} borderRadius={"xl"} p={8}>
               <Donation />
             </Box>
           </Flex>

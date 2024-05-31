@@ -77,3 +77,31 @@ export const useDeleteDonation = () => {
     },
   });
 };
+const updateDonation = async ({data, id}:{data: {isAccepted: boolean}, id: number}) => {
+  const response = await HttpClient.patch<Response<IDonation>>(
+    generatePath(api.donation.update, { id }),
+    data,
+    // {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //   },
+    // },
+  );
+  return response;
+}
+export const useUpdateDonation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateDonation,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: [api.donation.get],
+      });
+      toastSuccess(response.data.toast || 'Donation updated');
+    },
+    onError: (error) => {
+      const errorMsg = serverErrorResponse(error);
+      toastFail(errorMsg || 'Failed to update donation');
+    },
+  });
+}

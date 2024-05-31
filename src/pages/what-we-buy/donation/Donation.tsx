@@ -32,7 +32,7 @@ const Donation = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-
+  
   const { mutateAsync: createDonation, isPending: isCreatingDonation } =
     useCreateDonation();
 
@@ -46,7 +46,7 @@ const Donation = () => {
     };
     const formdata = toFormData(formattedData, undefined, {
       indexes: null,
-    });
+    });    
     await createDonation(formdata);
     reset(defaultValues);
   };

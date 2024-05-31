@@ -1,32 +1,37 @@
-import RootLayout from '@rsces/layout/RootLayout';
-import AboutUs from '@rsces/pages/AboutUs';
-import Login from '@rsces/pages/Admin/login';
-import Register from '@rsces/pages/Admin/register';
-import AvailableWithUs from '@rsces/pages/AvailableWithUs';
-import Contact from '@rsces/pages/Contact';
-import Home from '@rsces/pages/Home';
-import HowItWorks from '@rsces/pages/HowItWorks';
-import WhatWeBuy from '@rsces/pages/what-we-buy';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
+import RootLayout from "@rsces/layout/RootLayout";
+import AboutUs from "@rsces/pages/AboutUs";
+import Login from "@rsces/pages/Admin/login";
+import Register from "@rsces/pages/Admin/register";
+import AvailableWithUs from "@rsces/pages/AvailableWithUs/AvailableWithUs";
+import Contact from "@rsces/pages/Contact";
+import Home from "@rsces/pages/Home";
+import HowItWorks from "@rsces/pages/HowItWorks";
+import WhatWeBuy from "@rsces/pages/what-we-buy";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import {
   createBrowserRouter,
   Navigate,
   RouteObject,
   RouterProvider,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import AdminDonations from '@rsces/pages/Admin/donations';
-import AdminLayout from '@rsces/pages/Admin/Layout';
-import AdminProducts from '@rsces/pages/Admin/Products';
-import { useAuthentication } from '@rsces/service/service-auth';
-import { Center, Spinner } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import AdminDonations from "@rsces/pages/Admin/donations";
+import AdminLayout from "@rsces/pages/Admin/Layout";
+import AdminProducts from "@rsces/pages/Admin/Products";
+import { useAuthentication } from "@rsces/service/service-auth";
+import { Center, Spinner } from "@chakra-ui/react";
+import { useMemo } from "react";
+import AdminOrganizations from "@rsces/pages/Admin/Organizations";
+import OrganizationProfile from "@rsces/pages/Admin/Organizations/profile";
 
-const openRoutes: RouteObject[] = [
+const authRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.ADMIN_LOGIN,
     element: <Login />,
   },
+];
+
+const openRoutes: RouteObject[] = [
   {
     path: NAVIGATION_ROUTES.BASE,
     element: <RootLayout />,
@@ -63,7 +68,10 @@ const openRoutes: RouteObject[] = [
   },
 ];
 
+const userRoutes = [...authRoutes, ...openRoutes];
+
 const adminRoutes: RouteObject[] = [
+  ...openRoutes,
   {
     path: NAVIGATION_ROUTES.ADMIN_REGISTER,
     element: <Register />,
@@ -88,6 +96,14 @@ const adminRoutes: RouteObject[] = [
         path: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
         element: <AdminProducts />,
       },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
+        element: <AdminOrganizations />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ORGANIZATION_PROFILE,
+        element: <OrganizationProfile />,
+      },
     ],
   },
   {
@@ -100,13 +116,13 @@ const AppRoutes = () => {
   const { data: isAdmin, isLoading } = useAuthentication();
 
   const router = useMemo(
-    () => createBrowserRouter(isAdmin ? adminRoutes : openRoutes),
+    () => createBrowserRouter(isAdmin ? adminRoutes : userRoutes),
     [isAdmin],
   );
 
   if (isLoading) {
     return (
-      <Center h={'100vh'}>
+      <Center h={"100vh"}>
         <Spinner />
       </Center>
     );
