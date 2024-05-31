@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
+  FormControl as ChakraFormControl,
   FormLabel,
   Grid,
   GridItem,
@@ -18,13 +18,14 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ModalForm from "@rsces/components/Modal/modalForm";
+import FormControl from "@rsces/components/form/FormControl";
 import InputField from "@rsces/components/form/InputField";
-import SelectComponent from "@rsces/components/form/Select";
 import Textarea from "@rsces/components/form/Textarea";
 import { useGetCategories } from "@rsces/service/service-categories";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
   useGetOneOrganization,
+  useOneOrganizationDonation,
   useSubmitDonation,
   useUpdateOrganization,
 } from "@rsces/service/service-organizations";
@@ -51,8 +52,10 @@ const OrganizationProfile = () => {
   const { data: imageFile } = useFileFromUrl(imageUrl);
   const { mutate: editOrganization } = useUpdateOrganization();
   const { mutate: submitDonation } = useSubmitDonation();
+  const { data: orgDonations } = useOneOrganizationDonation(id ?? "");
   const { data: organization, isLoading } = useGetOneOrganization(id ?? "");
   console.log(organization, "organization");
+  console.log(orgDonations, "orgDonations");
 
   const { data: categories } = useGetCategories();
 
@@ -317,7 +320,7 @@ const OrganizationProfile = () => {
             placeholder="Enter Organization Description"
           />
           <Flex>
-            <FormControl h={"full"}>
+            <ChakraFormControl h={"full"}>
               <Input
                 type="file"
                 display={"none"}
@@ -355,7 +358,7 @@ const OrganizationProfile = () => {
                   mx={"auto"}
                 />
               )}
-            </FormControl>
+            </ChakraFormControl>
           </Flex>
         </>
       </ModalForm>
@@ -369,7 +372,8 @@ const OrganizationProfile = () => {
         // isSubmitting= {}
       >
         <VStack height={56} gap={8}>
-          <SelectComponent
+          <FormControl
+            inputControl="select"
             control={donationsControl}
             name="category"
             label="Category"
