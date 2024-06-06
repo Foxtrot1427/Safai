@@ -23,6 +23,7 @@ import { Center, Spinner } from "@chakra-ui/react";
 import { useMemo } from "react";
 import AdminOrganizations from "@rsces/pages/Admin/Organizations";
 import OrganizationProfile from "@rsces/pages/Admin/Organizations/profile";
+import AdminCategories from "@rsces/pages/Admin/Categories";
 
 const authRoutes: RouteObject[] = [
   {
@@ -103,6 +104,10 @@ const adminRoutes: RouteObject[] = [
       {
         path: NAVIGATION_ROUTES.ORGANIZATION_PROFILE,
         element: <OrganizationProfile />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_CATEGORIES,
+        element: <AdminCategories />,
       },
     ],
   },

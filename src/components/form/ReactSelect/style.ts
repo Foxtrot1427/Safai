@@ -2,28 +2,27 @@ import { colors } from "@rsces/theme/colors";
 import { StylesConfig } from 'react-select'
 
 const reactSelectStyles: StylesConfig = {
-  container: baseStyles => ({
+  container: (baseStyles, { isFocused }) => ({
     ...baseStyles,
     height: '100%',
     maxHeight: '42px',
     fontSize: '14px',
-    border: 0,
+    borderRadius: '12px',
+    border: isFocused
+      ? `2px solid ${colors.primary} !important`
+      : `1px solid ${colors.primary} !important`,
   }),
-
-  control: (baseStyles, { isFocused }) => ({
+  
+  control: baseStyles => ({
     ...baseStyles,
     height: '100%',
     padding: '0 !important',
     boxShadow: 'none',
-    borderRadius: '0',
+    borderRadius: '12px',
     border: '0 !important',
-    borderBottom: isFocused
-      ? `1px solid ${colors.primary} !important`
-      : `1px solid ${colors.gray_500} !important`,
   }),
   valueContainer: baseStyles => ({
     ...baseStyles,
-    paddingLeft: 0,
   }),
   placeholder: baseStyles => ({
     ...baseStyles,
@@ -40,6 +39,7 @@ const reactSelectStyles: StylesConfig = {
   }),
   indicatorsContainer: baseStyles => ({
     ...baseStyles,
+    paddingRight: '8px',
     '&:hover': {
       cursor: 'pointer',
     },

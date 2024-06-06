@@ -4,7 +4,6 @@ import { HttpClient } from "./service-axios";
 import { toastFail, toastSuccess } from "./service-toast";
 import serverErrorResponse from "./service-error";
 import { GenericFormData } from "axios";
-import { generatePath } from "react-router-dom";
 
 export interface IOrganizations {
     id: string
@@ -48,7 +47,7 @@ export interface IOrganizations {
   }
   export interface IOrgDonation {
     donation: number
-    category: number
+    categories: number
     organizations: number
   }
   
@@ -65,7 +64,7 @@ export const useGetAllOrganizations = () => {
     });
 }
 const getOneOrganization = async (id: string) => {
-    const response = await HttpClient.get<Response<IOrganization[]>>(`${api.organization.get}/${id}`);
+    const response = await HttpClient.get<Response<IOrganizations[]>>(`${api.organization.get}/${id}`);
     return response;
 }
 export const useGetOneOrganization = (id: string) => {
@@ -135,14 +134,13 @@ export const useDeleteOrganization = () => {
         });
 }
 const updateOrganization = async ({data,id} : {data: GenericFormData, id: number}) => {
-    const response = await HttpClient.patch<Response<IOrganizationCreate>>(generatePath(api.organization.update, {id}), data);
+    const response = await HttpClient.patch<Response<IOrganizationCreate>>(`${api.organization.update}/${id}`, data);
     return response;
 }
 export const useUpdateOrganization = () => {
   const queryClient = useQueryClient();
   return useMutation(
       {
-          mutationKey: [api.organization.update],
           mutationFn: updateOrganization,
           onSuccess: (response) => {
               queryClient.invalidateQueries({

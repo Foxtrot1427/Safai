@@ -35,6 +35,11 @@ export const api = {
     delete: '/category',
     update: '/category',
   },
+  subCategories: {
+    get: '/subcategory',
+    create: '/subcategory',
+    delete: '/subcategory',
+  },
 };
 
 export interface Response<T> {

@@ -43,7 +43,7 @@ const defaultValues = {
 };
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  description: yup.string().required("Price is required"),
+  description: yup.string().required("Description is required"),
   image: yup.mixed<File>().required("Image is required"),
 });
 const AdminOrganizations = () => {
@@ -153,6 +153,7 @@ const AdminOrganizations = () => {
               variant={"ghost"}
               aria-label="Delete Donation"
               icon={<DeleteIcon />}
+              colorScheme="red"
               onClick={() => {
                 setDeleteId(+row.original.id);
                 onOpen();

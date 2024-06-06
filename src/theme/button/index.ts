@@ -68,9 +68,20 @@ export const Button = defineStyleConfig({
         color: colors.gray_100,
         opacity: 0.8,
       },
-    }
+    },
+    primaryInverted: {
+      bg: colors.gray_100,
+      color: colors.primary,
+      border: `1px solid ${colors.primary}`,
+      _hover: {
+        bg: colors.primary,
+        color: colors.gray_100,
+        border: `1px solid ${colors.primary}`,
+      },
+    },
   },
   defaultProps: {
     variant: 'primary',
+
   },
 });
