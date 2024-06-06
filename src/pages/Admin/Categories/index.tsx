@@ -11,11 +11,8 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Grid,
-  GridItem,
   HStack,
   IconButton,
-  Image,
   Text,
   VStack,
   useDisclosure,
@@ -24,104 +21,88 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@rsces/components/DataTable";
 import ConfirmationModel from "@rsces/components/Modal/conformationModal";
 import ModalForm from "@rsces/components/Modal/modalForm";
-import Dropzone, { FileWithPreview } from "@rsces/components/form/Dropzone";
 import InputField from "@rsces/components/form/InputField";
 import Textarea from "@rsces/components/form/Textarea";
-import { useFileFromUrl } from "@rsces/service/service-file";
 import {
-  IProduct,
-  useCreateProduct,
-  useDeleteProduct,
-  useEditProduct,
-  useProducts,
-} from "@rsces/service/service-products";
+  ICategories,
+  SubCategory,
+  useCreateCategory,
+  useCreateSubCategory,
+  useDeleteCategory,
+  useGetCategories,
+  useUpdateCategory,
+} from "@rsces/service/service-categories";
 import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
-import { toFormData } from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrView } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import SearchBar from "../Layout/SearchBar";
 
 const defaultValues = {
   name: "",
-  image: null as unknown as FileWithPreview[],
-  price: "",
   description: "",
 };
-
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  price: yup.string().required("Price is required"),
-  image: yup.mixed<FileWithPreview[]>().required("Image is required"),
   description: yup.string().required("Description is required"),
 });
-
-const AdminProducts = () => {
+const AdminCategories = () => {
   const {
     control,
     formState: { errors },
     handleSubmit,
     reset,
-    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { data: productData, isLoading } = useProducts();
+  const { data: categoriesData, isLoading } = useGetCategories();
+  const { mutate: createCategory, isPending } = useCreateCategory();
+  const { mutate: deleteCategory } = useDeleteCategory();
+  const { mutate: updateCategory, isPending: isEditingCategories } =
+    useUpdateCategory();
+  const { mutate: createSubCategory, isPending: isSubCatPending } =
+    useCreateSubCategory();
+  // const { mutate: deleteSubCategory } = useDeleteSubCategory();
   const [searchFilterData, setSearchFilterData] = useState("");
   const columnFilters: ColumnFiltersState = [];
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [rowId, setRowId] = useState<number | null>(null);
+  const [subCategory, setSubCategory] = useState<SubCategory[]>([]);
   function searchFilterDataProp(childData: string) {
     setSearchFilterData(childData);
   }
-  const { mutate: deleteProduct } = useDeleteProduct();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isDrawerOpen,
-    onOpen: onDrawerOpen,
-    onClose: onDrawerClose,
-  } = useDisclosure();
-
+  const navigate = useNavigate();
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
     onClose: onAddClose,
   } = useDisclosure();
   const {
+    isOpen: isSubCategoryOpen,
+    onOpen: onSubCategoryOpen,
+    onClose: onSubCategoryClose,
+  } = useDisclosure();
+  const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
     onClose: onEditClose,
   } = useDisclosure();
-  const columnHelper = createColumnHelper<IProduct>();
-  const [rowId, setRowId] = useState<number | null>(null);
-  const { mutate: createProduct, isPending: isCreatingProduct } =
-    useCreateProduct();
-  const { mutate: editProduct, isPending: isEditingProduct } = useEditProduct();
-
-  const [imageUrl, setImageUrl] = useState("");
   const {
-    data: imageFile,
-    isLoading: isImageFileLoading,
-    isFetching: isImageFileFetching,
-  } = useFileFromUrl(imageUrl);
-
-  useEffect(() => {
-    if (!imageFile) return;
-
-    const file = Object.assign(imageFile, {
-      preview: URL.createObjectURL(imageFile),
-    });
-
-    setValue("image", [file]);
-  }, [imageFile, setValue]);
+    isOpen: isDrawerOpen,
+    onOpen: onDrawerOpen,
+    onClose: onDrawerClose,
+  } = useDisclosure();
+  const columnHelper = createColumnHelper<ICategories>();
 
   const onDelete = () => {
     if (deleteId) {
-      // Delete product
-      deleteProduct(deleteId, {
+      deleteCategory(deleteId, {
         onSuccess: () => {
           setDeleteId(null);
           onClose();
@@ -129,13 +110,9 @@ const AdminProducts = () => {
       });
     }
   };
-
-  //Create Product on modal button submit
-  const onSubmitAdd = (data: typeof defaultValues) => {
-    const formdata = toFormData(data, undefined, {
-      indexes: null,
-    });
-    createProduct(formdata, {
+  //   Create Categores on modal button submit
+  const onSubmit = (data: typeof defaultValues) => {
+    createCategory(data, {
       onSuccess: () => {
         onAddClose();
         reset(defaultValues);
@@ -143,12 +120,9 @@ const AdminProducts = () => {
     });
   };
   const onSubmitEdit = (data: typeof defaultValues) => {
-    const formdata = toFormData(data, undefined, {
-      indexes: null,
-    });
-    rowId &&
-      editProduct(
-        { id: rowId, data: formdata },
+    if (rowId) {
+      updateCategory(
+        { id: rowId, data: data },
         {
           onSuccess: () => {
             onEditClose();
@@ -157,9 +131,23 @@ const AdminProducts = () => {
           },
         },
       );
+    }
   };
-
-  const productsColumns = useMemo(
+  const submitSubCategory = (data: typeof defaultValues) => {
+    if (rowId) {
+      createSubCategory(
+        { id: rowId, data: data },
+        {
+          onSuccess: () => {
+            onSubCategoryClose();
+            reset(defaultValues);
+            onDrawerClose();
+          },
+        },
+      );
+    }
+  };
+  const orgColumn = useMemo(
     () => [
       columnHelper.display({
         header: "S.N.",
@@ -168,37 +156,25 @@ const AdminProducts = () => {
       columnHelper.accessor("name", {
         header: "Name",
       }),
-      columnHelper.accessor("price", {
-        header: "Price",
+      columnHelper.accessor("description", {
+        header: "Description",
       }),
-      columnHelper.accessor("interests", {
-        header: "Interest",
-        cell: ({ row }) => row.original.interests.length || 0,
-      }),
-      columnHelper.accessor("image", {
-        header: "Image",
+      columnHelper.accessor("subCategories", {
+        header: "Sub-Categories",
         cell: ({ row }) => (
-          <Image src={row.original.image} alt={row.original.name} h={8} />
-        ),
-      }),
-      columnHelper.accessor("admin", {
-        header: "Created by",
-        cell: ({ row }) => row.original.admin.name,
-      }),
-      columnHelper.accessor("interest", {
-        header: "View Interest",
-        cell: ({ row }) => (
-          <>
+          <HStack spacing={0}>
             <IconButton
+              p={0}
               variant={"ghost"}
-              aria-label="Show Interest"
+              aria-label="View Category"
               icon={<GrView />}
               onClick={() => {
-                setRowId(row.original.id);
                 onDrawerOpen();
+                setSubCategory(row?.original?.subCategories);
+                setRowId(row.original.id);
               }}
             />
-          </>
+          </HStack>
         ),
       }),
       columnHelper.accessor("id", {
@@ -208,14 +184,12 @@ const AdminProducts = () => {
             <IconButton
               p={0}
               variant={"ghost"}
-              aria-label="Edit Donation"
+              aria-label="Edit Categories"
               icon={<EditIcon />}
               onClick={() => {
                 setRowId(row.original.id);
-                setImageUrl(row.original.image);
                 reset({
                   name: row.original.name,
-                  price: row.original.price,
                   description: row.original.description,
                 });
                 onEditOpen();
@@ -224,10 +198,10 @@ const AdminProducts = () => {
             <IconButton
               variant={"ghost"}
               aria-label="Delete Donation"
-              icon={<DeleteIcon />}
               colorScheme="red"
+              icon={<DeleteIcon />}
               onClick={() => {
-                setDeleteId(row.original.id);
+                setDeleteId(+row.original.id);
                 onOpen();
               }}
             />
@@ -235,7 +209,7 @@ const AdminProducts = () => {
         ),
       }),
     ],
-    [columnHelper, onAddOpen, onDrawerOpen, onOpen, reset],
+    [columnHelper, onOpen, navigate],
   );
   const formFields = (
     <>
@@ -243,28 +217,14 @@ const AdminProducts = () => {
         control={control}
         name="name"
         label="Name"
-        placeholder="Enter product name"
-        errors={errors}
-      />
-      <GridItem rowSpan={3}>
-        <Dropzone
-          control={control}
-          name="image"
-          isLoading={isImageFileLoading || isImageFileFetching}
-        />
-      </GridItem>
-      <InputField
-        control={control}
-        name="price"
-        label="Price"
-        placeholder="Enter product price"
+        placeholder="Enter Category name"
         errors={errors}
       />
       <Textarea
         control={control}
         name="description"
         label="Description"
-        placeholder="Enter Product Description"
+        placeholder="Enter Category Description"
       />
     </>
   );
@@ -278,12 +238,12 @@ const AdminProducts = () => {
           leftIcon={<IoMdAdd />}
           onClick={onAddOpen}
         >
-          Add Product
+          Add Category
         </Button>
       </Flex>
       <DataTable
-        columns={productsColumns}
-        data={productData ?? []}
+        columns={orgColumn}
+        data={categoriesData ?? []}
         filter={{
           globalFilter: searchFilterData,
           columnFilters: columnFilters,
@@ -301,41 +261,65 @@ const AdminProducts = () => {
         onClose={() => {
           onAddClose();
           reset(defaultValues);
-          setImageUrl("");
         }}
-        title={"Add Product"}
-        size={{ base: "full", md: "3xl" }}
+        title={"Add Category"}
+        size={{ base: "full", md: "lg" }}
         buttonLabel={"Add"}
-        onSubmit={handleSubmit(onSubmitAdd)}
-        isSubmitting={isCreatingProduct}
+        onSubmit={handleSubmit(onSubmit)}
+        isSubmitting={isPending}
       >
-        <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={8}>
-          {formFields}
-        </Grid>
+        {formFields}
+      </ModalForm>
+      <ModalForm
+        isOpen={isSubCategoryOpen}
+        onClose={() => {
+          onSubCategoryClose();
+          reset(defaultValues);
+        }}
+        title={"Add Sub-Category"}
+        size={{ base: "full", md: "lg" }}
+        buttonLabel={"Add"}
+        onSubmit={handleSubmit(submitSubCategory)}
+        isSubmitting={isSubCatPending}
+      >
+        <>
+          <InputField
+            control={control}
+            name="name"
+            label="Name"
+            placeholder="Enter Sub-Category name"
+            errors={errors}
+          />
+          <Textarea
+            control={control}
+            name="description"
+            label="Description"
+            placeholder="Enter Sub-Category Description"
+          />
+        </>{" "}
       </ModalForm>
       <ModalForm
         isOpen={isEditOpen}
         onClose={() => {
           onEditClose();
           reset(defaultValues);
-          setImageUrl("");
           setRowId(null);
         }}
-        title={"Edit Product"}
+        title={"Edit Category"}
         size={{ base: "full", md: "3xl" }}
         buttonLabel={"Update"}
         onSubmit={handleSubmit(onSubmitEdit)}
-        isSubmitting={isEditingProduct}
+        isSubmitting={isEditingCategories}
       >
-        <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={8}>
-          {formFields}
-        </Grid>
+        {formFields}
       </ModalForm>
-
       <Drawer
         isOpen={isDrawerOpen}
         placement="right"
-        onClose={onClose}
+        onClose={() => {
+          onClose();
+          setSubCategory([]);
+        }}
         size={"md"}
       >
         <DrawerOverlay />
@@ -346,48 +330,50 @@ const AdminProducts = () => {
               setRowId(null);
             }}
           />
-          <DrawerHeader fontSize={24}>Interests</DrawerHeader>
+          <DrawerHeader fontSize={24}>Sub-Category</DrawerHeader>
           <DrawerBody>
-            <VStack align="stretch" spacing={4}>
-              {productData?.find(product => product.id === rowId)?.interests
-                ?.length ? (
-                productData
-                  .find(product => product.id === rowId)
-                  ?.interests.map(interest => (
-                    <Box
-                      key={interest.id}
-                      p={4}
-                      shadow="md"
-                      borderWidth="1px"
-                      borderRadius="md"
-                      bg="gray.50"
-                    >
-                      <VStack alignItems="flex-start" spacing={2}>
-                        <HStack>
-                          <Text fontWeight="bold" color="teal.600">
-                            Name:
-                          </Text>
-                          <Text>{interest.name}</Text>
-                        </HStack>
-                        <HStack>
-                          <Text fontWeight="bold" color="teal.600">
-                            Number:
-                          </Text>
-                          <Text>{interest.number}</Text>
-                        </HStack>
-                        <HStack>
-                          <Text fontWeight="bold" color="teal.600">
-                            Description:
-                          </Text>
-                          <Text>{interest.description}</Text>
-                        </HStack>
-                      </VStack>
-                      <Divider mt={4} />
-                    </Box>
-                  ))
+            <HStack justify={"flex-end"}>
+              <Button
+                colorScheme="facebook"
+                variant="primaryInverted"
+                leftIcon={<IoMdAdd />}
+                onClick={onSubCategoryOpen}
+              >
+                Add Sub-Category
+              </Button>
+            </HStack>
+            <VStack align="stretch" spacing={4} mt={4}>
+              {subCategory && subCategory.length !== 0 ? (
+                subCategory.map((item, index) => (
+                  <Box
+                    key={index}
+                    p={4}
+                    shadow="md"
+                    borderWidth="1px"
+                    borderRadius="md"
+                  >
+                    <HStack justify="space-between" align="center">
+                      <Text fontSize="lg" fontWeight="bold" color="teal.600">
+                        {item.name}
+                      </Text>
+                      <IconButton
+                        variant={"ghost"}
+                        size="sm"
+                        colorScheme="red"
+                        aria-label="Delete Donation"
+                        icon={<DeleteIcon />}
+                        onClick={() => {}}
+                      />
+                    </HStack>
+                    <Text mt={2} fontSize="sm" color="gray.600">
+                      {item.description}
+                    </Text>
+                    {index < subCategory.length - 1 && <Divider mt={4} />}
+                  </Box>
+                ))
               ) : (
                 <Text fontSize="lg" color="gray.500" textAlign="center">
-                  No Interests for this product yet
+                  No Sub-Category Found
                 </Text>
               )}
             </VStack>
@@ -404,4 +390,4 @@ const AdminProducts = () => {
   );
 };
 
-export default AdminProducts;
+export default AdminCategories;

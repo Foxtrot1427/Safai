@@ -19,9 +19,10 @@ import MiniLogo from "@rsces/assets/images/mini-logo.png";
 import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import { colors } from "@rsces/theme/colors";
 import React, { Fragment, useEffect, useState } from "react";
-import { FiSettings } from "react-icons/fi";
 import { LuMailQuestion } from "react-icons/lu";
 import { Link as ReactRouterLink, useLocation } from "react-router-dom";
+import { TbCategory } from "react-icons/tb";
+import { GrOrganization } from "react-icons/gr";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -54,14 +55,19 @@ const options = [
     link: NAVIGATION_ROUTES.ADMIN_PRODUCTS,
   },
   {
+    label: "Organizations",
+    icon: <GrOrganization size={20} />,
+    link: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
+  },
+  {
+    label: "Categories",
+    icon: <TbCategory size={20} />,
+    link: NAVIGATION_ROUTES.ADMIN_CATEGORIES,
+  },
+  {
     label: "Register",
     icon: <LuMailQuestion size={20} />,
     link: NAVIGATION_ROUTES.ADMIN_REGISTER,
-  },
-  {
-    label: "Organizations",
-    icon: <FiSettings size={20} />,
-    link: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
   },
 ];
 

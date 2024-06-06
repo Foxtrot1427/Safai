@@ -4,61 +4,77 @@ import {
   Box,
   Button,
   Flex,
-  FormControl as ChakraFormControl,
-  FormLabel,
-  Grid,
-  GridItem,
   HStack,
-  Image,
-  Input,
   Spinner,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { DataTable } from "@rsces/components/DataTable";
 import ModalForm from "@rsces/components/Modal/modalForm";
+import Dropzone, { FileWithPreview } from "@rsces/components/form/Dropzone";
 import FormControl from "@rsces/components/form/FormControl";
 import InputField from "@rsces/components/form/InputField";
 import Textarea from "@rsces/components/form/Textarea";
 import { useGetCategories } from "@rsces/service/service-categories";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
+  OrganizationDonation,
   useGetOneOrganization,
-  useOneOrganizationDonation,
   useSubmitDonation,
   useUpdateOrganization,
 } from "@rsces/service/service-organizations";
 import { colors } from "@rsces/theme/colors";
+import { createColumnHelper } from "@tanstack/react-table";
 import { toFormData } from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { BsPencilSquare, BsUpload } from "react-icons/bs";
+import { BsPencilSquare } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import * as yup from "yup";
 const defaultValues = {
   name: "",
-  image: null as unknown as File,
+  image: null as unknown as FileWithPreview[],
   description: "",
 };
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   description: yup.string().required("Price is required"),
-  image: yup.mixed<File>().required("Image is required"),
+  image: yup.mixed<FileWithPreview[]>().required("Image is required"),
 });
 const OrganizationProfile = () => {
+  const [imageUrl, setImageUrl] = useState("");
+  const {
+    data: imageFile,
+    isLoading: isImageFileLoading,
+    isFetching: isImageFileFetching,
+  } = useFileFromUrl(imageUrl);
+
   const { id } = useParams();
-  const [imageUrl] = useState("");
-  const { data: imageFile } = useFileFromUrl(imageUrl);
-  const { mutate: editOrganization } = useUpdateOrganization();
-  const { mutate: submitDonation } = useSubmitDonation();
-  const { data: orgDonations } = useOneOrganizationDonation(id ?? "");
+  const { mutate: editOrganization, isPending } = useUpdateOrganization();
+  const { mutate: submitDonation, isPending: isDonationSubmitting } =
+    useSubmitDonation();
+  // const { data: orgDonations } = useOneOrganizationDonation(id ?? "");
   const { data: organization, isLoading } = useGetOneOrganization(id ?? "");
-  console.log(organization, "organization");
-  console.log(orgDonations, "orgDonations");
 
   const { data: categories } = useGetCategories();
-
+  const columnHelper = createColumnHelper<OrganizationDonation>();
+  const donationColumn = useMemo(
+    () => [
+      columnHelper.display({
+        header: "S.N.",
+        cell: ({ row }) => row.index + 1,
+      }),
+      columnHelper.accessor("categories.name", {
+        header: "Category",
+      }),
+      columnHelper.accessor("donation", {
+        header: "Donation",
+      }),
+    ],
+    [],
+  );
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
@@ -72,8 +88,6 @@ const OrganizationProfile = () => {
   const {
     control,
     formState: { errors },
-    register,
-    watch,
     handleSubmit,
     reset,
     setValue,
@@ -99,12 +113,14 @@ const OrganizationProfile = () => {
     // resolver: yupResolver(schema),
   });
 
-  const imageRef = useRef<HTMLInputElement | null>(null);
-
-  const info = [{ email: "" }];
   useEffect(() => {
     if (!imageFile) return;
-    setValue("image", imageFile);
+
+    const file = Object.assign(imageFile, {
+      preview: URL.createObjectURL(imageFile),
+    });
+
+    setValue("image", [file]);
   }, [imageFile, setValue]);
   const onSubmit = (data: typeof defaultValues) => {
     const formdata = toFormData(data, undefined, {
@@ -125,7 +141,7 @@ const OrganizationProfile = () => {
     if (!id) return;
     const formattedData = {
       donation: +data.donation,
-      category: +data.category.value,
+      categories: +data.category.value,
       organizations: +id,
     };
     submitDonation(formattedData, {
@@ -141,7 +157,7 @@ const OrganizationProfile = () => {
     </Flex>
   ) : (
     <>
-      <Box height="80dvh" mt="42.5px">
+      <Box>
         <Box
           width="100%"
           position="relative"
@@ -196,13 +212,12 @@ const OrganizationProfile = () => {
             <HStack>
               <Button
                 onClick={() => {
-                  // setImageUrl(organization?.image);
                   reset({
                     name: organization?.name,
                     description: organization?.description,
-                    // image: organization?.image,
                   });
                   onEditOpen();
+                  setImageUrl(organization?.image ?? "");
                 }}
                 width=" 119.667px"
                 height="41px"
@@ -215,11 +230,6 @@ const OrganizationProfile = () => {
               </Button>
               <Button
                 onClick={() => {
-                  // setImageUrl(organization?.image);
-                  // reset({
-                  //   name: organization?.name,
-                  //   description: organization?.description,
-                  // });
                   onDonationsOpen();
                 }}
                 height="41px"
@@ -251,45 +261,10 @@ const OrganizationProfile = () => {
             p="40px"
             border={`2px solid ${colors.gray_100}`}
           >
-            <Grid templateColumns="repeat(2, 1fr)">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {info?.map((user: any, ind: number) => (
-                <GridItem key={`${ind}`}>
-                  <Flex mb="20px" gap="8px">
-                    <Text
-                      fontWeight="400"
-                      fontSize="14px"
-                      color={colors.gray_600}
-                      width="121px"
-                    >
-                      {Object.keys(user)[0].charAt(0).toLocaleUpperCase() +
-                        Object.keys(user)[0].slice(1)}
-                    </Text>
-                    <Text
-                      color={colors.gray_600}
-                      fontWeight="400"
-                      fontSize="14px"
-                      ml="24px"
-                      mr="16px"
-                    >
-                      :
-                    </Text>
-                    <Text
-                      width="211px"
-                      color={colors.gray_600}
-                      fontWeight="400"
-                      fontSize="14px"
-                    >
-                      {Object.values(user)[0] === Boolean(true)
-                        ? "True"
-                        : Object.values(user)[0] === Boolean(false)
-                        ? "False"
-                        : Object.values(user)}
-                    </Text>
-                  </Flex>
-                </GridItem>
-              ))}
-            </Grid>
+            <DataTable
+              data={organization?.organizationDonation ?? []}
+              columns={donationColumn}
+            />
           </Box>
         </Flex>
       </Box>
@@ -298,69 +273,39 @@ const OrganizationProfile = () => {
         onClose={() => {
           onEditClose();
           reset(defaultValues);
+          setImageUrl("");
         }}
-        title={"Add Organization"}
-        size={{ base: "full", md: "lg" }}
+        title={"Edit Organization Details"}
+        size={{ base: "full", md: "2xl" }}
         buttonLabel={"Add"}
         onSubmit={handleSubmit(onSubmit)}
-        // isSubmitting= {}
+        isSubmitting={isPending}
       >
-        <>
-          <InputField
-            control={control}
-            name="name"
-            label="Name"
-            placeholder="Enter Organization name"
-            errors={errors}
-          />
-          <Textarea
-            control={control}
-            name="description"
-            label="Description"
-            placeholder="Enter Organization Description"
-          />
-          <Flex>
-            <ChakraFormControl h={"full"}>
-              <Input
-                type="file"
-                display={"none"}
-                {...register("image")}
-                ref={e => {
-                  register("image").ref(e);
-                  imageRef.current = e;
-                }}
-                onChange={e => {
-                  if (!e.target.files) return;
-                  setValue("image", e.target.files?.[0]);
-                }}
-              />
-              <FormLabel fontSize={"sm"}>Item (Image)</FormLabel>
-              <Button
-                width={"full"}
-                variant={"outline"}
-                onClick={() => imageRef.current?.click()}
-              >
-                <HStack spacing={2}>
-                  <BsUpload />
-                  <Text>Upload</Text>
-                </HStack>
-              </Button>
-              {watch("image") && (
-                <Image
-                  src={
-                    watch("image")
-                      ? URL.createObjectURL(watch("image") || "")
-                      : ""
-                  }
-                  alt="Item image"
-                  h={48}
-                  mt={2}
-                  mx={"auto"}
-                />
-              )}
-            </ChakraFormControl>
+        <Flex gap={3}>
+          <Box flex={1}>
+            <InputField
+              control={control}
+              name="name"
+              label="Name"
+              placeholder="Enter Organization name"
+              errors={errors}
+            />
+
+            <Textarea
+              control={control}
+              name="description"
+              label="Description"
+              placeholder="Enter Organization Description"
+            />
+          </Box>
+          <Flex flex={1}>
+            <Dropzone
+              control={control}
+              name="image"
+              isLoading={isImageFileLoading || isImageFileFetching}
+            />
           </Flex>
-        </>
+        </Flex>
       </ModalForm>
       <ModalForm
         isOpen={isDonationsOpen}
@@ -369,7 +314,7 @@ const OrganizationProfile = () => {
         size={{ base: "full", md: "lg" }}
         buttonLabel={"Submit"}
         onSubmit={donationsHandleSubmit(donationsSubmit)}
-        // isSubmitting= {}
+        isSubmitting={isDonationSubmitting}
       >
         <VStack height={56} gap={8}>
           <FormControl
