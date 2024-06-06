@@ -14,7 +14,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/fohormohor/frontend
+            cd /var/www/fohormohor/fe-fohormohor
             ls -al
             git pull origin main
             sudo su
