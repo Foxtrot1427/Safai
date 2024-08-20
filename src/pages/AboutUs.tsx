@@ -185,28 +185,28 @@ const AboutUs = () => {
             >
               <Heading>Few Words About Us</Heading>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
-                Phohor Mohor is a pioneering company established in BS 2070,
+                Safai is a pioneering company established in BS 2070,
                 specializing in Recyclable and Reusable solid waste management,
                 Located in Madhyapur-3 Bhatapur. With a strong commitment to
                 excellence and sustainability.
               </Text>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
-                Phohor Mohor is dedicated to reduce the solid waste are being
-                dumped to dumping site and create awareness to our society of
-                the waste management. Our team of skilled professionals is
-                driven by a passion for innovation and a desire to create a
-                positive impact on the environment. At Phohor Mohor, we strive
-                to be a leader in our field, constantly seeking new ways to
-                improve and innovate. With a focus on research and development,
-                we are always looking for new technologies and methodologies to
-                enhance our services and deliver the best possible results to
-                our society and environment. Our mission is to promote 3R
-                whereas Reduce the waste or scrap are being emitted, Re-use the
-                waste or scrap are being emitted and Recycle the waste or scrap
-                are being emitted by human, While promoting environmental
-                sustainability and social responsibility. With a firm belief in
-                the power of collaboration and innovation, we are committed to
-                building a better future for generations to come.
+                Safai is dedicated to reduce the solid waste are being dumped to
+                dumping site and create awareness to our society of the waste
+                management. Our team of skilled professionals is driven by a
+                passion for innovation and a desire to create a positive impact
+                on the environment. At Safai, we strive to be a leader in our
+                field, constantly seeking new ways to improve and innovate. With
+                a focus on research and development, we are always looking for
+                new technologies and methodologies to enhance our services and
+                deliver the best possible results to our society and
+                environment. Our mission is to promote 3R whereas Reduce the
+                waste or scrap are being emitted, Re-use the waste or scrap are
+                being emitted and Recycle the waste or scrap are being emitted
+                by human, While promoting environmental sustainability and
+                social responsibility. With a firm belief in the power of
+                collaboration and innovation, we are committed to building a
+                better future for generations to come.
               </Text>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
                 Our mission is to promote 3R whereas Reduce the waste or scrap
