@@ -18,7 +18,6 @@ import Container from "@rsces/components/ui/Container";
 import Wrapper from "@rsces/components/ui/Wrapper";
 import { colors } from "@rsces/theme/colors";
 import { MISSIONS, SERVICES, VISIONS } from "../data";
-
 import { PiPaperPlaneRightFill } from "react-icons/pi";
 import { useStats } from "@rsces/service/service-stats";
 import { getYearsSince } from "@rsces/hooks/getYearsSince";
@@ -112,68 +111,28 @@ const AboutUs = () => {
                 </Text>
               </VStack>
 
-              <VStack flex={1} spacing={0}>
-                <Text
-                  position={"relative"}
-                  fontSize={"5xl"}
-                  fontWeight={"bold"}
-                  _after={{
-                    content: '"PCS"',
-                    display: "inline-block",
-                    fontSize: "2xl",
-                    position: "absolute",
-                    top: 4,
-                    left: "105%",
-                  }}
-                >
-                  {data[1]?.quantity}
-                </Text>
-                <Text fontSize={"2xl"} align={"center"}>
-                  {data[1]?.title}
-                </Text>
-              </VStack>
-
-              <VStack flex={1} spacing={0}>
-                <Text
-                  position={"relative"}
-                  fontSize={"5xl"}
-                  fontWeight={"bold"}
-                  _after={{
-                    content: '"KGS"',
-                    display: "inline-block",
-                    fontSize: "2xl",
-                    position: "absolute",
-                    top: 4,
-                    left: "105%",
-                  }}
-                >
-                  {data[2]?.quantity}
-                </Text>
-                <Text fontSize={"2xl"} align={"center"}>
-                  {data[2]?.title}
-                </Text>
-              </VStack>
-
-              <VStack flex={1} spacing={0}>
-                <Text
-                  position={"relative"}
-                  fontSize={"5xl"}
-                  fontWeight={"bold"}
-                  _after={{
-                    content: '"PCS"',
-                    display: "inline-block",
-                    fontSize: "2xl",
-                    position: "absolute",
-                    top: 4,
-                    left: "105%",
-                  }}
-                >
-                  {data[3]?.quantity}
-                </Text>
-                <Text fontSize={"2xl"} align={"center"}>
-                  {data[3]?.title}
-                </Text>
-              </VStack>
+              {data.slice(1, 4).map(item => (
+                <VStack flex={1} spacing={4}>
+                  <Text
+                    position={"relative"}
+                    fontSize={"5xl"}
+                    fontWeight={"bold"}
+                    _after={{
+                      // content: '"YRS"',
+                      display: "inline-block",
+                      fontSize: "2xl",
+                      position: "absolute",
+                      top: 4,
+                      left: "105%",
+                    }}
+                  >
+                    {item?.quantity}
+                  </Text>
+                  <Text fontSize={"2xl"} align={"center"}>
+                    {item?.title}
+                  </Text>
+                </VStack>
+              ))}
             </VStack>
 
             <VStack
@@ -185,28 +144,28 @@ const AboutUs = () => {
             >
               <Heading>Few Words About Us</Heading>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
-                Safai is a pioneering company established in BS 2070,
+                Phohor Mohor is a pioneering company established in BS 2070,
                 specializing in Recyclable and Reusable solid waste management,
                 Located in Madhyapur-3 Bhatapur. With a strong commitment to
                 excellence and sustainability.
               </Text>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
-                Safai is dedicated to reduce the solid waste are being dumped to
-                dumping site and create awareness to our society of the waste
-                management. Our team of skilled professionals is driven by a
-                passion for innovation and a desire to create a positive impact
-                on the environment. At Safai, we strive to be a leader in our
-                field, constantly seeking new ways to improve and innovate. With
-                a focus on research and development, we are always looking for
-                new technologies and methodologies to enhance our services and
-                deliver the best possible results to our society and
-                environment. Our mission is to promote 3R whereas Reduce the
-                waste or scrap are being emitted, Re-use the waste or scrap are
-                being emitted and Recycle the waste or scrap are being emitted
-                by human, While promoting environmental sustainability and
-                social responsibility. With a firm belief in the power of
-                collaboration and innovation, we are committed to building a
-                better future for generations to come.
+                Phohor Mohor is dedicated to reduce the solid waste are being
+                dumped to dumping site and create awareness to our society of
+                the waste management. Our team of skilled professionals is
+                driven by a passion for innovation and a desire to create a
+                positive impact on the environment. At Phohor Mohor, we strive
+                to be a leader in our field, constantly seeking new ways to
+                improve and innovate. With a focus on research and development,
+                we are always looking for new technologies and methodologies to
+                enhance our services and deliver the best possible results to
+                our society and environment. Our mission is to promote 3R
+                whereas Reduce the waste or scrap are being emitted, Re-use the
+                waste or scrap are being emitted and Recycle the waste or scrap
+                are being emitted by human, While promoting environmental
+                sustainability and social responsibility. With a firm belief in
+                the power of collaboration and innovation, we are committed to
+                building a better future for generations to come.
               </Text>
               <Text lineHeight={"2rem"} fontSize={"lg"}>
                 Our mission is to promote 3R whereas Reduce the waste or scrap
@@ -251,7 +210,7 @@ const AboutUs = () => {
         <Container px={6}>
           <Flex gap={10} direction={{ base: "column", lg: "row" }}>
             <Box w={{ base: "60%", lg: "40%" }} mx={"auto"}>
-              <Image src={ThreeR} alt={"recycle"} w={"full"} />
+              <Image src={ThreeR} alt={"recycle"} w={"full"} pt={28} />
             </Box>
             <Box w={{ lg: "60%" }}>
               <Text textTransform={"uppercase"} fontSize={"2xl"}>
