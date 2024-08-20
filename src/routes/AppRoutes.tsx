@@ -24,6 +24,22 @@ import { useMemo } from "react";
 import AdminOrganizations from "@rsces/pages/Admin/Organizations";
 import OrganizationProfile from "@rsces/pages/Admin/Organizations/profile";
 import AdminCategories from "@rsces/pages/Admin/Categories";
+import AdminBlogs from "@rsces/pages/Admin/Blogs";
+
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Blogs from "@rsces/pages/Blogs";
+import AdminStats from "@rsces/pages/Admin/Stats";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 const authRoutes: RouteObject[] = [
   {
@@ -43,7 +59,12 @@ const openRoutes: RouteObject[] = [
       },
       {
         path: NAVIGATION_ROUTES.ABOUT_US,
-        element: <AboutUs />,
+        element: (
+          <>
+            <ScrollToTop />
+            <AboutUs />
+          </>
+        ),
       },
       {
         path: NAVIGATION_ROUTES.WHAT_WE_BUY,
@@ -60,6 +81,10 @@ const openRoutes: RouteObject[] = [
       {
         path: NAVIGATION_ROUTES.CONTACT,
         element: <Contact />,
+      },
+      {
+        path: NAVIGATION_ROUTES.BLOGS,
+        element: <Blogs />,
       },
     ],
   },
@@ -108,6 +133,14 @@ const adminRoutes: RouteObject[] = [
       {
         path: NAVIGATION_ROUTES.ADMIN_CATEGORIES,
         element: <AdminCategories />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_BLOGS,
+        element: <AdminBlogs />,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_STATS,
+        element: <AdminStats />,
       },
     ],
   },

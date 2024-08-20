@@ -23,7 +23,8 @@
       "@rsces/routes/*": ["routes/*"],
       "@rsces/theme/*": ["theme/*"],
       "@rsces/service/*": ["service/*"],
-      "@rsces/utils/*": ["utils/*"]
+      "@rsces/utils/*": ["utils/*"],
+      "@rsces/hooks/*": ["hooks/*"]
     },
 
     /* Linting */

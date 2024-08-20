@@ -29,6 +29,7 @@ import {
   useCreateCategory,
   useCreateSubCategory,
   useDeleteCategory,
+  useDeleteSubCategory,
   useGetCategories,
   useUpdateCategory,
 } from "@rsces/service/service-categories";
@@ -37,7 +38,6 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrView } from "react-icons/gr";
 import { IoMdAdd } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import SearchBar from "../Layout/SearchBar";
 
@@ -67,7 +67,7 @@ const AdminCategories = () => {
     useUpdateCategory();
   const { mutate: createSubCategory, isPending: isSubCatPending } =
     useCreateSubCategory();
-  // const { mutate: deleteSubCategory } = useDeleteSubCategory();
+  const { mutate: deleteSubCategory } = useDeleteSubCategory();
   const [searchFilterData, setSearchFilterData] = useState("");
   const columnFilters: ColumnFiltersState = [];
   const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -77,7 +77,11 @@ const AdminCategories = () => {
     setSearchFilterData(childData);
   }
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+  const {
+    isOpen: isOpenSub,
+    onOpen: onOpenSub,
+    onClose: onCloseSub,
+  } = useDisclosure();
   const {
     isOpen: isAddOpen,
     onOpen: onAddOpen,
@@ -106,6 +110,16 @@ const AdminCategories = () => {
         onSuccess: () => {
           setDeleteId(null);
           onClose();
+        },
+      });
+    }
+  };
+  const onDeleteSubCategory = () => {
+    if (deleteId) {
+      deleteSubCategory(deleteId, {
+        onSuccess: () => {
+          setDeleteId(null);
+          onCloseSub();
         },
       });
     }
@@ -209,7 +223,7 @@ const AdminCategories = () => {
         ),
       }),
     ],
-    [columnHelper, onOpen, navigate],
+    [columnHelper, onOpen, onDrawerOpen, onEditOpen, reset],
   );
   const formFields = (
     <>
@@ -362,7 +376,9 @@ const AdminCategories = () => {
                         colorScheme="red"
                         aria-label="Delete Donation"
                         icon={<DeleteIcon />}
-                        onClick={() => {}}
+                        onClick={() => {
+                          onOpenSub();
+                        }}
                       />
                     </HStack>
                     <Text mt={2} fontSize="sm" color="gray.600">
@@ -386,6 +402,11 @@ const AdminCategories = () => {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <ConfirmationModel
+        isOpen={isOpenSub}
+        onClose={onCloseSub}
+        handleSubmit={onDeleteSubCategory}
+      />
     </>
   );
 };

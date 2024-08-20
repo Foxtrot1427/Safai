@@ -1,4 +1,4 @@
-import { Box, Button, Container, HStack, Text } from "@chakra-ui/react";
+import { Box, Container, HStack, Text } from "@chakra-ui/react";
 import Wrapper from "@rsces/components/ui/Wrapper";
 import { colors } from "@rsces/theme/colors";
 import Products from "./products";
@@ -6,7 +6,7 @@ import Products from "./products";
 const AvailableWithUs = () => {
   return (
     <>
-      <Wrapper py={40}>
+      <Wrapper py={28}>
         <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
           You can order online
         </Text>
@@ -48,17 +48,6 @@ const AvailableWithUs = () => {
             />
           </HStack>
           <Products />
-          <HStack justify={"center"} mt={12}>
-            <Button
-              borderRadius={"none"}
-              bg={colors.primary}
-              color={colors.white}
-              px={12}
-              py={4}
-            >
-              Load More
-            </Button>
-          </HStack>
         </Container>
       </Box>
     </>

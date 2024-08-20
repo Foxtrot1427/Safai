@@ -1,11 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Response, api } from './service-api';
-import { HttpClient } from './service-axios';
-import { toastFail, toastSuccess } from './service-toast';
-import serverErrorResponse from './service-error';
-import { GenericFormData } from 'axios';
-import { IDonation } from '@rsces/pages/Admin/donations/interface';
-import { generatePath } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Response, api } from "./service-api";
+import { HttpClient } from "./service-axios";
+import { toastFail, toastSuccess } from "./service-toast";
+import serverErrorResponse from "./service-error";
+import { GenericFormData } from "axios";
+import { IDonation } from "@rsces/pages/Admin/donations/interface";
+import { generatePath } from "react-router-dom";
 
 const getDonations = async () => {
   const response = await HttpClient.get<Response<IDonation[]>>(
@@ -18,7 +18,7 @@ export const useDonations = () => {
   return useQuery({
     queryKey: [api.donation.get],
     queryFn: getDonations,
-    select: (response) => response.data.results,
+    select: response => response.data.results,
   });
 };
 
@@ -28,7 +28,7 @@ const createDonation = async (data: GenericFormData) => {
     data,
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     },
   );
@@ -40,15 +40,15 @@ export const useCreateDonation = () => {
 
   return useMutation({
     mutationFn: createDonation,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.donation.get],
       });
-      toastSuccess(response.data.toast || 'Donation created');
+      toastSuccess(response.data.toast || "Donation created");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to create donation');
+      toastFail(errorMsg || "Failed to create donation");
     },
   });
 };
@@ -65,43 +65,45 @@ export const useDeleteDonation = () => {
 
   return useMutation({
     mutationFn: deleteDonation,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.donation.get],
       });
-      toastSuccess(response.data.toast || 'Donation deleted');
+      toastSuccess(response.data.toast || "Donation deleted");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to delete donation');
+      toastFail(errorMsg || "Failed to delete donation");
     },
   });
 };
-const updateDonation = async ({data, id}:{data: {isAccepted: boolean}, id: number}) => {
+
+const updateDonation = async ({
+  data,
+  id,
+}: {
+  data: { isAccepted: string };
+  id: number;
+}) => {
   const response = await HttpClient.patch<Response<IDonation>>(
     generatePath(api.donation.update, { id }),
     data,
-    // {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // },
   );
   return response;
-}
+};
 export const useUpdateDonation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateDonation,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.donation.get],
       });
-      toastSuccess(response.data.toast || 'Donation updated');
+      toastSuccess(response.data.toast || "Donation updated");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to update donation');
+      toastFail(errorMsg || "Failed to update donation");
     },
   });
-}
+};

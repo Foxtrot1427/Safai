@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError } from "axios";
 export interface ServerError {
   message: string;
   success: boolean;
@@ -10,9 +10,9 @@ const serverErrorResponse = (error: unknown, customMessage?: string) => {
 
     const errorObject = err?.response?.data?.message;
 
-    return errorObject || customMessage || 'Something went wrong.';
+    return errorObject || customMessage || "Something went wrong.";
   }
-  return 'Something went wrong.';
+  return "Something went wrong.";
 };
 
 export default serverErrorResponse;

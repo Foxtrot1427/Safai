@@ -6,7 +6,7 @@ import {
   Grid,
   HStack,
   Image,
-  Square,
+  Stack,
   StackDivider,
   Tab,
   TabList,
@@ -18,10 +18,6 @@ import {
 } from "@chakra-ui/react";
 import {
   Carton,
-  ClientFlatIron,
-  ClientHotelHimalaya,
-  ClientNamaste,
-  ClientVaishali,
   HomeBanner,
   LogisticServices,
   Logistics,
@@ -34,47 +30,95 @@ import {
   TrashTransform,
 } from "@rsces/assets/images";
 import Container from "@rsces/components/ui/Container";
-import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
-import { colors } from "@rsces/theme/colors";
-import { IconType } from "react-icons";
-import { BsEnvelope } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { STATISTICS } from "../data";
 import Wrapper from "@rsces/components/ui/Wrapper";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
+import { useGetAllOrganizations } from "@rsces/service/service-organizations";
+import { useStats } from "@rsces/service/service-stats";
+import { colors } from "@rsces/theme/colors";
+import { BsEnvelope } from "react-icons/bs";
+import { FaRecycle } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import Slider, { Settings } from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import { IoStatsChartOutline } from "react-icons/io5";
+import { getYearsSince } from "@rsces/hooks/getYearsSince";
 
-function renderIcon(icon: IconType) {
-  const Icon = icon;
-  return <Icon fontSize={60} color={"#aaa"} />;
-}
+const settings: Settings = {
+  dots: true,
+  arrows: false,
+  infinite: true,
+  centerMode: true,
+  centerPadding: "0px",
+  slidesToShow: 3,
+  speed: 500,
+  autoplay: true,
+  autoplaySpeed: 3000,
+  slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 1,
+      },
+    },
+  ],
+};
 
 const Home = () => {
+  const { data: statsData } = useStats();
+  const catData = statsData ? statsData?.categories : [];
+  const yearsSince = getYearsSince("2014-01-26");
   const navigate = useNavigate();
-
+  const { data: orgData } = useGetAllOrganizations();
   const navigateToAboutUs = () => {
-    navigate(NAVIGATION_ROUTES.ABOUT_US);
+    navigate(NAVIGATION_ROUTES.ABOUT_US, {
+      preventScrollReset: false,
+    });
   };
 
   return (
     <>
       {/* Banner */}
-      <Wrapper bannerImg={HomeBanner}>
-        <Container>
+      <Wrapper bannerImg={HomeBanner} py={{ base: 24, lg: 64 }}>
+        <Container height={24}>
           <Box>
-            <Box position={"relative"} zIndex={20}>
+            <Box
+              position={"relative"}
+              zIndex={20}
+              maxW={{ base: "90%", lg: "50%" }}
+              mx={{ base: "auto", lg: "unset" }}
+            >
               <Text
                 textTransform={"uppercase"}
-                fontSize={"5xl"}
+                fontSize={{ base: "3xl", lg: "4xl" }}
                 fontWeight={"bold"}
                 color={colors.white}
               >
-                Got Trash?
+                Uncover Hidden Value of Scraps
               </Text>
 
-              <Text maxW={"40%"} mt={4} color={colors.white} fontSize={"xl"}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
-                optio earum quis beatae, tempore tempora nisi, blanditiis sunt
-                rerum aliquam labore amet soluta tenetur dolores quas asperiores
-                nihil accusantium consequatur?
+              <Text
+                mt={4}
+                color={colors.white}
+                fontSize={{ base: "sm", lg: "lg" }}
+                fontWeight={400}
+              >
+                We specialize in collecting, sorting, and recycling waste to
+                promote sustainability and reduce landfill impact. Let us help
+                you turn your trash into valuable resources for a greener
+                future.
               </Text>
 
               <Button
@@ -86,10 +130,7 @@ const Home = () => {
                 borderRadius={"none"}
                 py={6}
                 px={8}
-                _hover={{
-                  bg: colors.white,
-                  color: colors.black,
-                }}
+                onClick={() => navigate(NAVIGATION_ROUTES.WHAT_WE_BUY)}
               >
                 Sell to us
               </Button>
@@ -98,10 +139,14 @@ const Home = () => {
         </Container>
       </Wrapper>
 
-      <Box as={"section"} py={48}>
+      <Box as={"section"} py={{ base: 16, lg: 48 }}>
         <Container>
-          <Flex gap={12}>
-            <HStack flex={1}>
+          <Flex gap={12} direction={{ base: "column", lg: "row" }} px={8}>
+            <Stack
+              flex={1}
+              direction={{ base: "column", lg: "row" }}
+              alignItems={{ base: "unset", lg: "start" }}
+            >
               <Box flex={1}>
                 <Image
                   src={Carton}
@@ -117,19 +162,19 @@ const Home = () => {
                 align={"start"}
                 spacing={0}
               >
-                <Text fontSize={"5xl"} fontWeight={"bold"}>
+                <Text fontSize={"3xl"} fontWeight={"bold"}>
                   About
                 </Text>
                 <Text
-                  fontSize={"7xl"}
+                  fontSize={"4xl"}
                   fontWeight={"black"}
                   color={colors.gray}
-                  mt={"-24px"}
+                  mt={"-14px"}
                 >
-                  RSCES
+                  Phohormohor
                 </Text>
               </VStack>
-            </HStack>
+            </Stack>
 
             <VStack
               flex={1}
@@ -138,14 +183,15 @@ const Home = () => {
               justifyContent={"center"}
             >
               <Text lineHeight={"taller"} fontSize={"lg"}>
-                Phohor Mohor (Research for Scrap and Civil Engineering Service
-                Pvt., Ltd) is a waste management company established in 2070 BS
-                with a mission to promote sustainable development by purchasing
-                recyclable and reusable waste materials. We aim to reduce waste
-                going to landfills and contribute towards a cleaner and greener
-                environment. Our team of experts works with households,
-                businesses, and industries to collect, sort, and recycle waste
-                materials.
+                Phohor Mohor is a pioneering company established in BS 2070,
+                specializing in Recyclable and Reusable solid waste management,
+                Located in Madhyapur-3 Bhatapur. With a strong commitment to
+                excellence and sustainability, Phohor Mohor is dedicated to
+                reduce the solid waste are being dumped to dumping site and
+                create awareness to our society of the waste management. Our
+                team of skilled professionals is driven by a passion for
+                innovation and a desire to create a positive impact on the
+                environment.
               </Text>
               <Button
                 mt={4}
@@ -154,14 +200,15 @@ const Home = () => {
                 py={6}
                 borderRadius={"none"}
                 border={"1px solid"}
-                borderColor={colors.gray_200}
-                borderTop={`3px solid ${colors.black}`}
+                borderColor={colors.primary}
+                borderTop={`3px solid ${colors.green_300}`}
                 bg={colors.white}
                 color={colors.black}
+                transition={"all 300ms ease"}
                 _hover={{
-                  bg: colors.black,
+                  background: colors.green_200,
                   color: colors.white,
-                  borderColor: colors.black,
+                  borderColor: colors.primary,
                 }}
                 onClick={navigateToAboutUs}
               >
@@ -174,43 +221,83 @@ const Home = () => {
 
       <Box as={"section"} py={8} bgColor={colors.gray_100}>
         <Container>
-          <Flex align={"center"} justify={"space-between"}>
-            <HStack>
+          <Stack
+            align={"center"}
+            justify={"space-between"}
+            direction={{ base: "column", lg: "row" }}
+            gap={16}
+            divider={
+              <StackDivider
+                display={{ base: "flex", lg: "none" }}
+                border={"1px solid"}
+                borderColor={"gray.300"}
+              />
+            }
+          >
+            <Stack
+              direction={{ base: "column", lg: "row" }}
+              alignItems={"center"}
+            >
               <BsEnvelope fontSize={48} color={"#aaa"} />
-              <HStack flex={1} spacing={4} ml={4}>
-                <Text fontSize={"6xl"} fontWeight={"bold"}>
-                  4
+              <Stack
+                flex={1}
+                ml={4}
+                gap={{ base: 4, lg: 0 }}
+                align={{ base: "center", lg: "unset" }}
+                direction={{ base: "row", lg: "column" }}
+              >
+                <Text fontSize={"4xl"} fontWeight={"bold"}>
+                  {yearsSince}
                 </Text>
-                <Text fontSize={"2xl"}>
-                  Years of <br /> Establishment
-                </Text>
-              </HStack>
-            </HStack>
-
-            {STATISTICS.map(item => (
-              <HStack key={item.id} flex={1} justify={"center"}>
-                {renderIcon(item.icon)}
-                <VStack spacing={0}>
-                  <Text
-                    position={"relative"}
-                    fontSize={"6xl"}
-                    fontWeight={"bold"}
-                    _after={{
-                      content: `"${item.unit}"`,
-                      display: "inline-block",
-                      fontSize: "2xl",
-                      position: "absolute",
-                      top: 4,
-                      left: "105%",
-                    }}
+                <Text fontSize={"2xl"}>Years of Establishment</Text>
+              </Stack>
+            </Stack>
+            <Box
+              position={"relative"}
+              height={"full"}
+              width={"full"}
+              overflow={"hidden"}
+            >
+              <Slider {...settings}>
+                {catData?.map(item => (
+                  <Stack
+                    key={item.id}
+                    flex={1}
+                    justify={"center"}
+                    direction={{ base: "column", lg: "row" }}
+                    pb={8}
+                    alignItems={"center"}
                   >
-                    {item.quantity}
-                  </Text>
-                  <Text fontSize={"2xl"}>{item.material}</Text>
-                </VStack>
-              </HStack>
-            ))}
-          </Flex>
+                    <IoStatsChartOutline fontSize={24} color={"#aaa"} />
+                    <VStack align={"center"} ml={4}>
+                      <Text fontSize={"4xl"} fontWeight={"bold"}>
+                        {item.donation}
+                      </Text>
+                      <Text fontSize={"2xl"}>{item.name}</Text>
+                    </VStack>
+                  </Stack>
+                ))}
+              </Slider>
+            </Box>
+            <Stack
+              direction={{ base: "column", lg: "row" }}
+              alignItems={"center"}
+            >
+              <FaRecycle fontSize={48} color={"#aaa"} />
+              <Stack
+                flex={1}
+                ml={4}
+                gap={{ base: 4, lg: 0 }}
+                align={{ base: "center", lg: "unset" }}
+                direction={{ base: "row", lg: "column" }}
+              >
+                <Text fontSize={"4xl"} fontWeight={"bold"}>
+                  {statsData?.totalDonation}
+                </Text>
+                <Text fontSize={"2xl"}>Total collection</Text>
+              </Stack>
+            </Stack>
+          </Stack>
         </Container>
       </Box>
 
@@ -236,7 +323,7 @@ const Home = () => {
                   },
                 }}
               >
-                <Image src={Recycle} alt="Recycle" h={24} />
+                <Image src={Recycle} alt="Recycle" h={{ base: 12, lg: 24 }} />
                 <Text>Recycle Services</Text>
               </Tab>
               <Tab
@@ -257,7 +344,11 @@ const Home = () => {
                   },
                 }}
               >
-                <Image src={Logistics} alt="Logistics" h={24} />
+                <Image
+                  src={Logistics}
+                  alt="Logistics"
+                  h={{ base: 12, lg: 24 }}
+                />
                 <Text>Logistic Services</Text>
               </Tab>
             </HStack>
@@ -265,9 +356,9 @@ const Home = () => {
         </Box>
 
         <Container>
-          <TabPanels py={8}>
+          <TabPanels py={{ base: 12, lg: 24 }}>
             <TabPanel>
-              <Flex gap={8}>
+              <Box>
                 <Box>
                   <Image
                     src={RecycleServices}
@@ -276,6 +367,10 @@ const Home = () => {
                     aspectRatio={4 / 3}
                     objectFit={"cover"}
                     objectPosition={"center"}
+                    borderRadius={"10%"}
+                    float={"right"}
+                    ml={8}
+                    mb={8}
                   />
                 </Box>
 
@@ -284,32 +379,42 @@ const Home = () => {
                     Recycle Service
                   </Text>
 
-                  <Text mt={4}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Iusto at eum nisi harum nulla placeat, dolorum eveniet
-                    pariatur, ea deleniti nam reprehenderit dolorem, nemo sequi
-                    earum possimus ipsa fugit vel! A ipsa aperiam soluta nisi
-                    quasi rem voluptate, officia deserunt perspiciatis
-                    laboriosam. Dolor ipsam saepe consectetur inventore
-                    accusamus veniam deleniti architecto cum cupiditate nihil
-                    iste quae, quod voluptatibus itaque illo. Lorem ipsum dolor
-                    sit amet consectetur adipisicing elit. Voluptas aspernatur
-                    exercitationem quas laboriosam modi pariatur quidem!
-                    Mollitia, corporis, alias corrupti dolorem facilis quaerat
-                    modi facere quae repellendus eveniet numquam repellat? Omnis
-                    cupiditate tenetur repellendus! Quia maxime eveniet delectus
-                    facere magni odit veritatis atque reiciendis ipsa dicta
-                    quos, possimus quasi cumque illo dolorum tempora voluptatum
-                    corrupti illum, velit libero? Nihil, tempore. Aperiam
-                    quisquam eligendi, inventore deleniti nam ipsam sapiente?
-                    Libero facere quod vel debitis officia, eum commodi culpa
-                    iste.
+                  <Text mt={4} lineHeight={"1.75rem"}>
+                    At Phohor Mohor, our Recycle Services are at the heart of
+                    our mission to promote environmental sustainability and
+                    social responsibility. We take pride in our meticulous waste
+                    sorting process, where we categorize waste materials such as
+                    plastic, paper, rubber, metal, used oil, mobil, shoes,
+                    clothes, and glass. By collaborating with trusted recycling
+                    facilities, we ensure that each material is processed
+                    responsibly, transforming waste into valuable resources. Our
+                    in-house recycling of plastic materials exemplifies our
+                    commitment to innovation, turning discarded plastic into
+                    useful products that contribute to a circular economy.
+                    Through these efforts, we significantly reduce the volume of
+                    waste heading to landfills, fostering a cleaner, greener
+                    environment for future generations.
+                  </Text>
+                  <Text mt={4} lineHeight={"1.75rem"}>
+                    Our comprehensive recycling services extend beyond waste
+                    processing. We work closely with businesses, industries, and
+                    institutions to provide expert consulting on sustainable
+                    waste management practices. Our team of skilled
+                    professionals offers tailored advice on waste reduction
+                    strategies, helping our clients minimize their environmental
+                    impact and achieve their sustainability goals. By raising
+                    awareness and encouraging the adoption of responsible waste
+                    management practices, we strive to create a positive ripple
+                    effect that benefits both society and the environment. At
+                    Phohor Mohor, we believe that every effort counts, and our
+                    recycling services are designed to make a meaningful
+                    difference in the pursuit of a sustainable future.
                   </Text>
                 </Box>
-              </Flex>
+              </Box>
             </TabPanel>
             <TabPanel>
-              <Flex gap={8}>
+              <Box>
                 <Box>
                   <Image
                     src={LogisticServices}
@@ -318,6 +423,10 @@ const Home = () => {
                     aspectRatio={4 / 3}
                     objectFit={"cover"}
                     objectPosition={"center"}
+                    borderRadius={"10%"}
+                    float={"right"}
+                    ml={8}
+                    mb={8}
                   />
                 </Box>
 
@@ -326,36 +435,43 @@ const Home = () => {
                     Logistic Service
                   </Text>
 
-                  <Text mt={4}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Expedita veritatis, recusandae nostrum cumque odit quas
-                    vitae, error earum provident ratione dicta quia impedit
-                    debitis incidunt doloremque non dolor natus aperiam.
-                    Asperiores laudantium, voluptas enim itaque aliquid
-                    laboriosam vero unde consectetur, fugiat error nisi nam
-                    rerum eligendi modi dolores doloribus officia, facilis esse.
-                    Velit sint porro nobis earum blanditiis animi molestiae.
-                    Debitis facere enim consequatur minus ipsam sint velit
-                    ducimus totam veritatis facilis quisquam alias sunt repellat
-                    maxime, cum eaque tempora corrupti excepturi, blanditiis
-                    odit doloremque laudantium incidunt? Labore, magni quia?
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Ullam magnam officiis et perspiciatis consequuntur,
-                    dignissimos soluta quo fugit temporibus, odit dicta
-                    distinctio pariatur similique voluptates inventore. Aliquam
-                    quasi dolor distinctio. Velit aut sit sint doloribus magni,
-                    optio itaque voluptate ratione temporibus quae voluptatum
-                    obcaecati? Velit blanditiis ipsam quibusdam quo non
-                    aspernatur reprehenderit.
+                  <Text mt={4} lineHeight={"1.75rem"}>
+                    Phohor Mohor's Logistic Services are designed to ensure the
+                    efficient and safe collection of recyclable and reusable
+                    waste materials from various sources, including households,
+                    businesses, industries, institutions, and social
+                    organizations. Our team utilizes specialized equipment and
+                    vehicles to handle waste collection with precision and care,
+                    ensuring that the materials are transported securely to our
+                    sorting and recycling facilities. By streamlining the
+                    logistics of waste management, we provide a reliable and
+                    convenient solution for our clients, making it easy for them
+                    to contribute to environmental sustainability.
+                  </Text>
+
+                  <Text mt={4} lineHeight={"1.75rem"}>
+                    Our logistics expertise goes beyond collection. We offer
+                    tailored waste management solutions that cater to the unique
+                    needs of each client, ensuring that their waste is handled
+                    in the most sustainable manner possible. Our consulting
+                    services provide businesses and industries with actionable
+                    insights on reducing waste generation and optimizing their
+                    waste management processes. By integrating advanced
+                    technologies and methodologies, we continuously seek to
+                    enhance our logistic operations, delivering top-notch
+                    services that align with our mission to promote sustainable
+                    development. At Phohor Mohor, we are committed to building a
+                    cleaner, greener future through efficient and innovative
+                    waste management logistics.
                   </Text>
                 </Box>
-              </Flex>
+              </Box>
             </TabPanel>
           </TabPanels>
         </Container>
       </Tabs>
 
-      <Box as={"section"} bgColor={colors.primary} py={24}>
+      <Box as={"section"} bgColor={colors.primary} py={{ base: 12, lg: 24 }}>
         <Container>
           <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
             Collecting Trash
@@ -369,10 +485,14 @@ const Home = () => {
             How it works
           </Text>
 
-          <Flex mt={24}>
+          <Flex
+            mt={{ base: 12, lg: 24 }}
+            direction={{ base: "column", lg: "row" }}
+            gap={8}
+          >
             {[
               {
-                title: "Donate Your Trash",
+                title: "Sell Your Trash",
                 description:
                   "Shape a sustainable tomorrow with your recyclables.",
                 image: TrashDonation,
@@ -402,93 +522,84 @@ const Home = () => {
                 image: ShopRecycled,
               },
             ].map((item, index) => (
-              <Flex
-                flex={1}
-                key={item.title}
-                flexDir={(index + 1) % 2 === 0 ? "column-reverse" : "column"}
-                align={"center"}
-                gap={6}
-                color={colors.gray_200}
-              >
-                <Flex gap={2}>
-                  <Text fontSize={"5xl"} fontWeight={"bold"} mt={-3}>
-                    {index + 1}
-                  </Text>
-                  <VStack align={"start"}>
-                    <Text fontWeight={700} fontSize={"lg"}>
-                      {item.title}
+              <>
+                <Flex
+                  display={{ base: "none", lg: "flex" }}
+                  flex={1}
+                  key={item.title}
+                  flexDir={(index + 1) % 2 === 0 ? "column-reverse" : "column"}
+                  align={"center"}
+                  gap={6}
+                  color={colors.gray_200}
+                >
+                  <Flex gap={2}>
+                    <Text fontSize={"5xl"} fontWeight={"bold"} mt={-3}>
+                      {index + 1}
                     </Text>
-                    <Text>{item.description}</Text>
-                  </VStack>
+                    <VStack align={"start"}>
+                      <Text fontWeight={700} fontSize={"lg"}>
+                        {item.title}
+                      </Text>
+                      <Text>{item.description}</Text>
+                    </VStack>
+                  </Flex>
+                  <Circle
+                    position={"relative"}
+                    zIndex={1}
+                    size={48}
+                    bgColor={"black"}
+                    style={{
+                      transformStyle: "preserve-3d",
+                    }}
+                    _before={{
+                      display: index >= 4 ? "none" : "block",
+                      content: '""',
+                      width: "280px",
+                      height: 0,
+                      position: "relative",
+                      border: "4px dashed",
+                      borderColor: "gray.300",
+                      right: 0,
+                      transformOrigin: `100px ${
+                        (index + 1) % 2 === 0 ? "140px" : "-140px"
+                      }`,
+                      transform: `rotate(${
+                        (index + 1) % 2 === 0 ? "40deg" : "-40deg"
+                      }) translateZ(-1px)`,
+                    }}
+                    bgImage={item.image}
+                    bgSize={"cover"}
+                  />
                 </Flex>
-                <Circle
-                  position={"relative"}
-                  zIndex={1}
-                  size={48}
-                  bgColor={"black"}
-                  style={{
-                    transformStyle: "preserve-3d",
-                  }}
-                  _before={{
-                    display: index >= 4 ? "none" : "block",
-                    content: '""',
-                    width: "280px",
-                    height: 0,
-                    position: "relative",
-                    border: "4px dashed gray",
-                    right: 0,
-                    transformOrigin: `100px ${
-                      (index + 1) % 2 === 0 ? "130px" : "-130px"
-                    }`,
-                    transform: `rotate(${
-                      (index + 1) % 2 === 0 ? "40deg" : "-40deg"
-                    }) translateZ(-1px)`,
-                  }}
-                  bgImage={item.image}
-                  bgSize={"cover"}
-                ></Circle>
-              </Flex>
+                <Flex
+                  direction={"column"}
+                  align={"center"}
+                  gap={4}
+                  color={"white"}
+                  display={{ base: "flex", lg: "none" }}
+                >
+                  <Circle
+                    position={"relative"}
+                    zIndex={1}
+                    size={48}
+                    bgColor={"black"}
+                    bgImage={item.image}
+                    bgSize={"cover"}
+                  />
+                  <Flex gap={2} maxW={"70%"}>
+                    <Text fontSize={"5xl"} fontWeight={"bold"} mt={-3}>
+                      {index + 1}
+                    </Text>
+                    <VStack align={"start"}>
+                      <Text fontWeight={700} fontSize={"lg"}>
+                        {item.title}
+                      </Text>
+                      <Text>{item.description}</Text>
+                    </VStack>
+                  </Flex>
+                </Flex>
+              </>
             ))}
-          </Flex>
-        </Container>
-      </Box>
-
-      <Box as="section" py={24}>
-        <Container>
-          <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
-            What we recycle
-          </Text>
-          <Text
-            textTransform={"uppercase"}
-            align={"center"}
-            fontSize={"5xl"}
-            fontWeight={"bold"}
-          >
-            What we buy?
-          </Text>
-
-          <Grid
-            mt={24}
-            gridTemplateColumns={"repeat(auto-fit, minmax(250px, 1fr))"}
-            gap={8}
-            justifyItems={"center"}
-          >
-            {Array.from(new Array(8)).map((_, index) => (
-              <Square size={56} key={index} bgColor={colors.gray_100}></Square>
-            ))}
-          </Grid>
-
-          <Flex justify={"center"} mt={8}>
-            <Button
-              bg={colors.primary}
-              color={colors.white}
-              px={16}
-              py={6}
-              borderRadius={"none"}
-              border={`1px solid ${colors.primary}`}
-            >
-              View All
-            </Button>
           </Flex>
         </Container>
       </Box>
@@ -507,16 +618,29 @@ const Home = () => {
             Our clients
           </Text>
 
-          <Flex gap={8} justifyContent={"center"} mt={12}>
-            {[
-              { id: 1, name: "Flat Iron", image: ClientFlatIron },
-              { id: 2, name: "Hotel Himalaya", image: ClientHotelHimalaya },
-              { id: 3, name: "Namaste", image: ClientNamaste },
-              { id: 4, name: "Vaishali", image: ClientVaishali },
-            ].map(item => (
-              <Image key={item.id} src={item.image} alt={item.name} h={48} />
+          <Grid
+            templateColumns={"repeat(auto-fit, minmax(250px, 1fr))"}
+            justifyItems={"center"}
+            gap={8}
+            mt={12}
+          >
+            {orgData?.map(item => (
+              <VStack>
+                <Image
+                  key={item?.id}
+                  src={item?.image}
+                  alt={item?.name}
+                  h={48}
+                />
+                <Text>{item?.name}</Text>
+                <Text>
+                  Total Contribution:{" "}
+                  {item?.contribution ? item?.contribution?.toFixed(2) : "0"}%
+                </Text>
+                {/* <Text>Total Collection: {item?.total}</Text> */}
+              </VStack>
             ))}
-          </Flex>
+          </Grid>
         </Container>
       </Box>
     </>

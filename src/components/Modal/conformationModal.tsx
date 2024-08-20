@@ -6,8 +6,8 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-} from '@chakra-ui/react';
-import React from 'react';
+} from "@chakra-ui/react";
+import React from "react";
 type CProp = {
   handleSubmit: () => void;
   isOpen: boolean;
@@ -18,12 +18,12 @@ type CProp = {
 };
 
 const ConfirmationModel: React.FC<CProp> = ({
-  title = 'Confirm Deletion',
+  title = "Confirm Deletion",
   handleSubmit,
   onClose,
   isOpen,
   confirmationMessage = " Are you sure? You can't undo this action afterwards.",
-  deleteLabel = 'Delete',
+  deleteLabel = "Delete",
 }) => {
   const cancelRef = React.useRef(null);
 

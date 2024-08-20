@@ -1,8 +1,13 @@
-import { Box } from '@chakra-ui/react';
+import { Box, ContainerProps as ChakraContainerProps } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
-const Container = ({ children }: { children: React.ReactNode }) => {
+interface ContainerProps extends ChakraContainerProps {
+  children: ReactNode;
+}
+
+const Container = ({ children, ...rest }: ContainerProps) => {
   return (
-    <Box maxW={'7xl'} mx={'auto'}>
+    <Box maxW={"7xl"} mx={"auto"} {...rest}>
       {children}
     </Box>
   );

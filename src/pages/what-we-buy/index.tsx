@@ -13,7 +13,7 @@ import Donation from "./donation/Donation";
 const WhatWeBuy = () => {
   return (
     <>
-      <Wrapper bannerImg={WhatWeBuyBanner} py={40}>
+      <Wrapper bannerImg={WhatWeBuyBanner} py={28}>
         <Text
           textTransform={"uppercase"}
           align={"center"}
@@ -34,19 +34,19 @@ const WhatWeBuy = () => {
       </Wrapper>
       <Box bgColor={colors.gray_200} py={24}>
         <Container>
-          <Text textTransform={"uppercase"} fontSize={"2xl"} align={"center"}>
-            Fill up form to sell trash
-          </Text>
-          <Text
-            textTransform={"uppercase"}
-            fontSize={"5xl"}
-            fontWeight={"bold"}
-            align={"center"}
-          >
-            Sell Now
-          </Text>
+          {/* <Text textTransform={"uppercase"} fontSize={"2xl"} align={"center"}>
+              Fill up form to sell trash
+            </Text>
+            <Text
+              textTransform={"uppercase"}
+              fontSize={"5xl"}
+              fontWeight={"bold"}
+              align={"center"}
+            >
+              Sell Now
+            </Text> */}
 
-          <Flex mt={12} gap={16}>
+          <Flex mt={12} gap={16} direction={{ base: "column", lg: "row" }}>
             <Box flex={0.6}>
               <VStack>
                 <Text

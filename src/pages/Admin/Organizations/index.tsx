@@ -62,7 +62,6 @@ const AdminOrganizations = () => {
   });
   const { data: orgData, isLoading } = useGetAllOrganizations();
   const { mutate: createOrganization, isPending } = useCreateOrganization();
-  console.log(orgData, "orgData");
 
   const [searchFilterData, setSearchFilterData] = useState("");
   const columnFilters: ColumnFiltersState = [];
@@ -103,7 +102,6 @@ const AdminOrganizations = () => {
   };
   //Create Product on modal button submit
   const onSubmit = (data: typeof defaultValues) => {
-    console.log(data);
     const formdata = toFormData(data, undefined, {
       indexes: null,
     });

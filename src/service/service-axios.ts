@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-import TokenService from './service-token';
+import TokenService from "./service-token";
 
 const THREE_MINUTES = 3 * 60 * 1000;
 export const baseURL = import.meta.env.VITE_APP_BACKEND_API;
@@ -17,15 +17,15 @@ const HttpClient = axios.create({
 /**
  * Pass API Key in Header
  */
-HttpClient.interceptors.request.use(async (config) => {
+HttpClient.interceptors.request.use(async config => {
   const token = TokenService.getToken()?.token;
 
   if (config && config.headers) {
-    if (token && config.headers['Authorization'] !== '') {
-      config.headers['Authorization'] = 'Bearer ' + token;
+    if (token && config.headers["Authorization"] !== "") {
+      config.headers["Authorization"] = "Bearer " + token;
     }
-    if (config.headers['Authorization'] === '') {
-      delete config.headers['Authorization'];
+    if (config.headers["Authorization"] === "") {
+      delete config.headers["Authorization"];
     }
   }
   return config;

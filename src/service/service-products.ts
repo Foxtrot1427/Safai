@@ -4,7 +4,6 @@ import { HttpClient } from "./service-axios";
 import { toastFail, toastSuccess } from "./service-toast";
 import serverErrorResponse from "./service-error";
 import { GenericFormData } from "axios";
-import { generatePath } from "react-router-dom";
 
 export interface IProduct {
   id: number;
@@ -108,8 +107,13 @@ const editProduct = async ({
   id: number;
 }) => {
   const response = await HttpClient.patch<Response<IProductCreate>>(
-    generatePath(api.products.update, { id }),
+    `${api.products.update}/${id}`,
     data,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    },
   );
   return response;
 };

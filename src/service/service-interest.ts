@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Response, api } from './service-api';
-import { HttpClient } from './service-axios';
-import { toastFail, toastSuccess } from './service-toast';
-import serverErrorResponse from './service-error';
-import { generatePath } from 'react-router-dom';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Response, api } from "./service-api";
+import { HttpClient } from "./service-axios";
+import { toastFail, toastSuccess } from "./service-toast";
+import serverErrorResponse from "./service-error";
+import { generatePath } from "react-router-dom";
 
 interface IInterestRequest {
   name: string;
@@ -39,15 +39,15 @@ export const useCreateInterest = () => {
 
   return useMutation({
     mutationFn: createInterest,
-    onSuccess: (response) => {
+    onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: [api.interest.get],
       });
-      toastSuccess(response.data.toast || 'Interest marked');
+      toastSuccess(response.data.toast || "Interest marked");
     },
-    onError: (error) => {
+    onError: error => {
       const errorMsg = serverErrorResponse(error);
-      toastFail(errorMsg || 'Failed to mark interest');
+      toastFail(errorMsg || "Failed to mark interest");
     },
   });
 };

@@ -19,6 +19,7 @@ export default defineConfig({
       "@rsces/theme": path.resolve("src/theme"),
       "@rsces/service": path.resolve("src/service"),
       "@rsces/utils": path.resolve("src/utils"),
+      "@rsces/hooks": path.resolve("src/hooks"),
     },
   },
 });

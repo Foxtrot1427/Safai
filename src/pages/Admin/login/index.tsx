@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Flex, Image, Text, VStack } from '@chakra-ui/react';
-import { LoginBanner, Logo } from '@rsces/assets/images';
-import InputField from '@rsces/components/form/InputField';
-import { colors } from '@rsces/theme/colors';
-import { useForm } from 'react-hook-form';
-import { defaultValues, schema } from './constant';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useLogin } from '@rsces/service/service-auth';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Flex, Image, Text, VStack } from "@chakra-ui/react";
+import { LoginBanner, Logo } from "@rsces/assets/images";
+import InputField from "@rsces/components/form/InputField";
+import { colors } from "@rsces/theme/colors";
+import { useForm } from "react-hook-form";
+import { defaultValues, schema } from "./constant";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useLogin } from "@rsces/service/service-auth";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues,
     resolver: yupResolver(schema),
   });
@@ -29,48 +29,48 @@ const Login = () => {
 
   return (
     <Flex
-      direction={{ base: 'column', xl: 'row' }}
+      direction={{ base: "column", xl: "row" }}
       bg={colors.gray_200}
-      minHeight={'100vh'}
+      minHeight={"100vh"}
     >
       <Flex
         flex={1}
-        bg={'#52AD9C'}
-        justify={'center'}
-        align={'center'}
-        position={'relative'}
+        bg={"#52AD9C"}
+        justify={"center"}
+        align={"center"}
+        position={"relative"}
       >
         <VStack>
           <Image src={LoginBanner} h={96} />
-          <Text fontSize={'4xl'} fontWeight={700}>
+          <Text fontSize={"4xl"} fontWeight={700}>
             सफा, सजिलो, संरचना
           </Text>
         </VStack>
         <Text
-          position={'absolute'}
+          position={"absolute"}
           bottom={8}
           right={8}
-          fontSize={'xs'}
+          fontSize={"xs"}
           fontWeight={500}
         >
           All rights reserved © 2023 फोहोर मोहोर
         </Text>
       </Flex>
-      <Flex flex={1} justify={'center'} align={'center'} position={'relative'}>
+      <Flex flex={1} justify={"center"} align={"center"} position={"relative"}>
         <Image
           src={Logo}
           h={20}
-          position={'absolute'}
+          position={"absolute"}
           left={8}
           top={8}
-          cursor={'pointer'}
+          cursor={"pointer"}
           onClick={() => navigate(NAVIGATION_ROUTES.BASE)}
         />
-        <Box w={'400px'}>
-          <Text fontSize={'4xl'} fontWeight={700} mb={6}>
+        <Box w={"400px"}>
+          <Text fontSize={"4xl"} fontWeight={700} mb={6}>
             Log in
           </Text>
-          <VStack as={'form'} spacing={4} onSubmit={handleSubmit(onSubmit)}>
+          <VStack as={"form"} spacing={4} onSubmit={handleSubmit(onSubmit)}>
             <InputField
               name="email"
               control={control}
@@ -88,10 +88,10 @@ const Login = () => {
             />
             <Button
               type="submit"
-              alignSelf={'start'}
+              alignSelf={"start"}
               mt={2}
-              w={'160px'}
-              borderRadius={'50px'}
+              w={"160px"}
+              borderRadius={"50px"}
               isLoading={isLoggingIn}
             >
               Login

@@ -1,26 +1,26 @@
-import { Box } from '@chakra-ui/react'
+import { Box } from "@chakra-ui/react";
 
 const IconWrapper = ({
   children,
-  childHoverColor = 'primary.500',
+  childHoverColor = "primary.500",
 }: IconWrapperProps) => {
   return (
     <Box
       __css={{
-        '&:hover > *': {
+        "&:hover > *": {
           color: `${childHoverColor} !important`,
-          transition: 'color 0.2s ease-in-out',
+          transition: "color 0.2s ease-in-out",
         },
       }}
     >
       {children}
     </Box>
-  )
-}
+  );
+};
 
-export default IconWrapper
+export default IconWrapper;
 
 type IconWrapperProps = {
-  children: React.ReactNode
-  childHoverColor?: string
-}
+  children: React.ReactNode;
+  childHoverColor?: string;
+};

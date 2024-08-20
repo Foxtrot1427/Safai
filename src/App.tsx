@@ -1,5 +1,5 @@
-import Provider from '@rsces/providers/index';
-import AppRoutes from '@rsces/routes/AppRoutes';
+import Provider from "@rsces/providers/index";
+import AppRoutes from "@rsces/routes/AppRoutes";
 
 function App() {
   return (

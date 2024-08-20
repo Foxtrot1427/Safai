@@ -5,13 +5,13 @@ export interface TokenInfo {
 }
 
 function setToken(token: string) {
-  localStorage.setItem('token', token);
+  localStorage.setItem("token", token);
 }
 
 function getToken(): { token: string } | null {
   try {
     return {
-      token: localStorage.getItem('token') ?? '',
+      token: localStorage.getItem("token") ?? "",
     };
   } catch (e) {
     return null;
@@ -22,7 +22,7 @@ function getTokenDetails(): TokenInfo | null {
   try {
     const token = getToken();
     return token
-      ? (JSON.parse(window.atob(token.token.split('.')[1])) as TokenInfo)
+      ? (JSON.parse(window.atob(token.token.split(".")[1])) as TokenInfo)
       : null;
   } catch (e) {
     return null;
@@ -39,8 +39,8 @@ function isAuthenticated() {
 }
 
 function clearToken() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('refresh_token');
+  localStorage.removeItem("token");
+  localStorage.removeItem("refresh_token");
 }
 
 export const getRole = () => {

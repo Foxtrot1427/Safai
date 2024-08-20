@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   HStack,
+  IconButton,
   Spinner,
   Text,
   VStack,
@@ -12,15 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@rsces/components/DataTable";
+import ConfirmationModel from "@rsces/components/Modal/conformationModal";
 import ModalForm from "@rsces/components/Modal/modalForm";
 import Dropzone, { FileWithPreview } from "@rsces/components/form/Dropzone";
 import FormControl from "@rsces/components/form/FormControl";
 import InputField from "@rsces/components/form/InputField";
 import Textarea from "@rsces/components/form/Textarea";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import { useGetCategories } from "@rsces/service/service-categories";
 import { useFileFromUrl } from "@rsces/service/service-file";
 import {
   OrganizationDonation,
+  useDeleteDonation,
+  useDeleteOrganization,
   useGetOneOrganization,
   useSubmitDonation,
   useUpdateOrganization,
@@ -31,7 +36,7 @@ import { toFormData } from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPencilSquare } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 const defaultValues = {
   name: "",
@@ -40,11 +45,26 @@ const defaultValues = {
 };
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  description: yup.string().required("Price is required"),
+  description: yup.string().required("Description is required"),
   image: yup.mixed<FileWithPreview[]>().required("Image is required"),
 });
+type SubCategory = {
+  id: number;
+  name: string;
+};
 const OrganizationProfile = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+  const { mutate: deleteOrg } = useDeleteOrganization();
+
   const [imageUrl, setImageUrl] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [orgDeleteId, setOrgDeleteId] = useState("");
+  const [subCategory, setSubCategory] = useState<SubCategory[]>([]);
   const {
     data: imageFile,
     isLoading: isImageFileLoading,
@@ -52,12 +72,13 @@ const OrganizationProfile = () => {
   } = useFileFromUrl(imageUrl);
 
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const { mutate: editOrganization, isPending } = useUpdateOrganization();
   const { mutate: submitDonation, isPending: isDonationSubmitting } =
     useSubmitDonation();
-  // const { data: orgDonations } = useOneOrganizationDonation(id ?? "");
   const { data: organization, isLoading } = useGetOneOrganization(id ?? "");
-
+  const { mutate: deleteDonation } = useDeleteDonation();
   const { data: categories } = useGetCategories();
   const columnHelper = createColumnHelper<OrganizationDonation>();
   const donationColumn = useMemo(
@@ -69,11 +90,38 @@ const OrganizationProfile = () => {
       columnHelper.accessor("categories.name", {
         header: "Category",
       }),
+      columnHelper.accessor(row => row.categories?.subCategories[0]?.name, {
+        header: "Sub Category",
+      }),
       columnHelper.accessor("donation", {
-        header: "Donation",
+        header: "Quantity",
+      }),
+      columnHelper.accessor("unit", {
+        header: "Unit",
+      }),
+      columnHelper.accessor("date", {
+        header: "Date",
+        cell: ({ row }) => new Date(row.original.date).toDateString(),
+      }),
+      columnHelper.accessor("id", {
+        header: "Action",
+        cell: ({ row }) => (
+          <>
+            <IconButton
+              variant={"ghost"}
+              aria-label="Delete Donation"
+              icon={<DeleteIcon />}
+              colorScheme="red"
+              onClick={() => {
+                setDeleteId(row.original.id);
+                onOpen();
+              }}
+            />
+          </>
+        ),
       }),
     ],
-    [],
+    [columnHelper, onOpen],
   );
   const {
     isOpen: isEditOpen,
@@ -99,13 +147,17 @@ const OrganizationProfile = () => {
   const donationsDefaultValues = {
     donation: "",
     category: { label: "", value: "" },
+    subCategory: { label: "", value: "" },
+    date: "",
     organizations: id,
+    unit: { label: "", value: "" },
   };
 
   const {
     control: donationsControl,
     formState: { errors: donationsErrors },
     handleSubmit: donationsHandleSubmit,
+    watch: donationsWatch,
     reset: res,
   } = useForm({
     mode: "onChange",
@@ -137,12 +189,34 @@ const OrganizationProfile = () => {
         },
       );
   };
+
+  const onDeleteOrg = () => {
+    if (orgDeleteId) {
+      // Delete org
+      deleteOrg(+orgDeleteId, {
+        onSuccess: () => {
+          setDeleteId("");
+          onClose();
+          navigate(NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS);
+        },
+      });
+    }
+  };
+  const onDelete = () => {
+    deleteId &&
+      deleteDonation(+deleteId, {
+        onSuccess: () => {
+          onClose();
+        },
+      });
+  };
   function donationsSubmit(data: typeof donationsDefaultValues) {
     if (!id) return;
     const formattedData = {
       donation: +data.donation,
       categories: +data.category.value,
       organizations: +id,
+      unit: data.unit.value,
     };
     submitDonation(formattedData, {
       onSuccess: () => {
@@ -151,6 +225,15 @@ const OrganizationProfile = () => {
       },
     });
   }
+  const donaWatch = donationsWatch()?.category;
+  useEffect(() => {
+    if (!donationsWatch().category) return;
+    const subCategories = categories?.find(
+      category => category.id.toString() === donationsWatch().category.value,
+    )?.subCategories;
+    setSubCategory(subCategories ?? []);
+  }, [categories, donaWatch, donationsWatch]);
+
   return isLoading ? (
     <Flex justifyContent="center" alignItems="center" height="80vh">
       <Spinner />
@@ -200,6 +283,9 @@ const OrganizationProfile = () => {
             <Text letterSpacing="0.25px" fontWeight="500" fontSize="30px">
               {organization?.name}
             </Text>
+            <Text letterSpacing="0.25px" fontWeight="500" fontSize="30px">
+              Total Quantity: {organization?.total}
+            </Text>
             <Text
               mt="8px"
               fontWeight="400"
@@ -207,7 +293,16 @@ const OrganizationProfile = () => {
               color={colors.gray_700}
               letterSpacing="0.25px"
             >
-              {organization?.description}
+              Description: {organization?.description}
+            </Text>
+            <Text
+              mt="8px"
+              fontWeight="400"
+              fontSize="14px"
+              color={colors.gray_700}
+              letterSpacing="0.25px"
+            >
+              Overall Contribution: {organization?.contribution.toFixed(2)}%
             </Text>
             <HStack>
               <Button
@@ -233,7 +328,7 @@ const OrganizationProfile = () => {
                   onDonationsOpen();
                 }}
                 height="41px"
-                variant={"edit"}
+                variant={"edit2"}
                 gap="8px"
                 mt="20px"
               >
@@ -241,7 +336,10 @@ const OrganizationProfile = () => {
                 Donations
               </Button>
               <Button
-                // onClick={onOpen}
+                onClick={() => {
+                  setOrgDeleteId(id ?? "");
+                  onDeleteOpen();
+                }}
                 variant={"delete"}
                 width=" 119.667px"
                 height="41px"
@@ -311,32 +409,79 @@ const OrganizationProfile = () => {
         isOpen={isDonationsOpen}
         onClose={onDonationsClose}
         title={"Donations"}
-        size={{ base: "full", md: "lg" }}
+        size={{ base: "full", md: "xl" }}
         buttonLabel={"Submit"}
         onSubmit={donationsHandleSubmit(donationsSubmit)}
         isSubmitting={isDonationSubmitting}
       >
-        <VStack height={56} gap={8}>
+        <VStack height={68}>
           <FormControl
             inputControl="select"
             control={donationsControl}
             name="category"
             label="Category"
             placeholder="Select Category"
-            options={categories?.map((category: any) => ({
-              label: category.name,
-              value: category.id,
-            }))}
+            options={
+              categories?.map(category => ({
+                label: category.name,
+                value: category.id.toString(),
+              })) ?? []
+            }
           />
+          <FormControl
+            inputControl="select"
+            control={donationsControl}
+            name="subCategory"
+            label="Sub Category"
+            placeholder="Select Sub Category"
+            options={
+              subCategory.map((subCategory: SubCategory) => ({
+                label: subCategory.name,
+                value: subCategory.id.toString(),
+              })) ?? []
+            }
+          />
+
           <InputField
             control={donationsControl}
             name="donation"
-            label="Donation"
-            placeholder="Enter Donation"
+            label="Quantity"
+            placeholder="Enter Quantity"
+            errors={donationsErrors}
+          />
+          <FormControl
+            inputControl="select"
+            control={donationsControl}
+            name="unit"
+            label="Unit"
+            placeholder="Enter Unit"
+            options={[
+              { label: "Kg", value: "kg" },
+              { label: "Litre", value: "litre" },
+              { label: "Piece", value: "piece" },
+            ]}
+          />
+          <InputField
+            control={donationsControl}
+            type="date"
+            name="date"
+            label="Date"
+            placeholder="Enter Date"
             errors={donationsErrors}
           />
         </VStack>
       </ModalForm>
+      <ConfirmationModel
+        isOpen={isOpen}
+        onClose={onClose}
+        handleSubmit={onDelete}
+      />
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModel
+        isOpen={isDeleteOpen}
+        onClose={onDeleteClose}
+        handleSubmit={onDeleteOrg}
+      />
     </>
   );
 };

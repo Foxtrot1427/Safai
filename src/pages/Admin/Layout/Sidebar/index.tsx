@@ -23,6 +23,7 @@ import { LuMailQuestion } from "react-icons/lu";
 import { Link as ReactRouterLink, useLocation } from "react-router-dom";
 import { TbCategory } from "react-icons/tb";
 import { GrOrganization } from "react-icons/gr";
+import { MdOutlineAddToPhotos } from "react-icons/md";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -45,7 +46,7 @@ interface SidebarItemProps extends CommonSidebarItemProps {
 
 const options = [
   {
-    label: "Donations",
+    label: "Queries",
     icon: <DonationIcon />,
     link: NAVIGATION_ROUTES.ADMIN_DONATIONS,
   },
@@ -58,6 +59,11 @@ const options = [
     label: "Organizations",
     icon: <GrOrganization size={20} />,
     link: NAVIGATION_ROUTES.ADMIN_ORGANIZATIONS,
+  },
+  {
+    label: "Blogs",
+    icon: <MdOutlineAddToPhotos size={20} />,
+    link: NAVIGATION_ROUTES.ADMIN_BLOGS,
   },
   {
     label: "Categories",

@@ -61,7 +61,7 @@ const Product = ({
       <ModalContent>
         <ModalCloseButton />
         <ModalBody mt={12} px={8} py={4}>
-          <Flex gap={8}>
+          <Flex gap={8} direction={{ base: "column", lg: "row" }}>
             <Box flex={0.7} position={"relative"}>
               <Box>
                 <Image

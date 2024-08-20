@@ -17,8 +17,8 @@ import {
   Thead,
   Tooltip,
   Tr,
-} from '@chakra-ui/react';
-import { rankItem } from '@tanstack/match-sorter-utils';
+} from "@chakra-ui/react";
+import { rankItem } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,14 +33,14 @@ import {
   RowData,
   SortingState,
   useReactTable,
-} from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { AiOutlinePushpin } from 'react-icons/ai';
-import ReactPaginate from 'react-paginate';
+} from "@tanstack/react-table";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AiOutlinePushpin } from "react-icons/ai";
+import ReactPaginate from "react-paginate";
 
-import { BiSkipNext, BiSkipPrevious } from 'react-icons/bi';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { colors } from '@rsces/theme/colors';
+import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { colors } from "@rsces/theme/colors";
 
 export type DataTableProps<TData> = {
   data: TData[];
@@ -62,6 +62,7 @@ export type DataTableProps<TData> = {
   };
   sortingColumn?: string;
   setTable?: (table: unknown) => void;
+  rowSize?: number;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,7 +79,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-const tooltipLabel = 'Select the number of items to be displayed';
+const tooltipLabel = "Select the number of items to be displayed";
 
 export function DataTable<TData extends RowData>({
   data,
@@ -90,6 +91,7 @@ export function DataTable<TData extends RowData>({
   pinColumnAccess,
   showFooter,
   sortingColumn,
+  rowSize,
 }: DataTableProps<TData>) {
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -162,7 +164,7 @@ export function DataTable<TData extends RowData>({
   }, [table, setTable, pagination?.count]);
 
   useEffect(() => {
-    table.getHeaderGroups().map((headerGroup) =>
+    table.getHeaderGroups().map(headerGroup =>
       headerGroup.headers.map(({ index }) => {
         columns[index]?.enablePinning && setStickyColumn(index + 1);
       }),
@@ -193,39 +195,39 @@ export function DataTable<TData extends RowData>({
         </Box>
       ) : (
         <Box
-          overflowX={isLoading ? 'hidden' : 'scroll'}
+          overflowX={isLoading ? "hidden" : "scroll"}
           pb={2}
           css={{
-            scrollbarGutter: 'stable',
-            '&::-webkit-scrollbar': {
-              width: '0.2rem',
-              height: '0.6rem',
-              position: 'absolute',
+            scrollbarGutter: "stable",
+            "&::-webkit-scrollbar": {
+              width: "0.2rem",
+              height: "0.6rem",
+              position: "absolute",
             },
-            '&::-webkit-scrollbar-track': {
-              position: 'absolute',
+            "&::-webkit-scrollbar-track": {
+              position: "absolute",
               background: `${colors.white}`,
               opacity: 0.1,
             },
-            '&::-webkit-scrollbar-thumb': {
+            "&::-webkit-scrollbar-thumb": {
               background: `${colors.gray_100}`,
               borderRadius: 20,
             },
           }}
           borderRadius={8}
         >
-          <Table bg={colors.white} fontSize={'13px'}>
+          <Table bg={colors.white} fontSize={"13px"}>
             <Thead bgColor="#EDF2F7" fill="solid" bg={colors.gray_100}>
-              {table?.getHeaderGroups()?.map((headerGroup) => (
+              {table?.getHeaderGroups()?.map(headerGroup => (
                 <Tr
                   key={headerGroup.id}
                   css={{
                     [`th:nth-of-type(${stickyColumn})`]: {
-                      position: 'sticky',
-                      left: '-1px',
-                      right: '-1px',
+                      position: "sticky",
+                      left: "-1px",
+                      right: "-1px",
                       zIndex: 40,
-                      boxShadow: 'inset 1px 0 0 white,inset -1px 0 0 white',
+                      boxShadow: "inset 1px 0 0 white,inset -1px 0 0 white",
                     },
                   }}
                 >
@@ -238,17 +240,17 @@ export function DataTable<TData extends RowData>({
                         whiteSpace="nowrap"
                         style={{
                           color: colors.gray_500,
-                          fontSize: '13px',
+                          fontSize: "13px",
                           width: `${columns[index]?.size}%` ?? header.getSize(),
                           textAlign:
-                            header.id == 'Actions' ||
-                            header.id == 'Action' ||
+                            header.id == "Actions" ||
+                            header.id == "Action" ||
                             header.colSpan > 1
-                              ? 'center'
-                              : 'left',
+                              ? "center"
+                              : "left",
                         }}
                       >
-                        <HStack justifyContent={'space-between'}>
+                        <HStack justifyContent={"space-between"}>
                           <Text
                             flex={1}
                             color={colors.primary}
@@ -262,12 +264,12 @@ export function DataTable<TData extends RowData>({
                                   header.getContext(),
                                 )}
                           </Text>
-                          {pinColumnAccess && header.id != 'S.N.' && (
+                          {pinColumnAccess && header.id != "S.N." && (
                             <IconButton
                               variant="outline"
                               px={1}
                               py={1}
-                              size={'small'}
+                              size={"small"}
                               aria-label="Minify sidebar"
                               color="inherit"
                               onClick={() => {
@@ -278,8 +280,8 @@ export function DataTable<TData extends RowData>({
                               ml={4}
                               bg={
                                 stickyColumn == index + 1
-                                  ? 'white'
-                                  : 'transparent'
+                                  ? "white"
+                                  : "transparent"
                               }
                             >
                               <AiOutlinePushpin />
@@ -296,7 +298,7 @@ export function DataTable<TData extends RowData>({
               {isLoading ? (
                 <Tr>
                   <Td colSpan={table.getHeaderGroups()[0].headers.length}>
-                    <HStack justifyContent="center" pb={'144px'}>
+                    <HStack justifyContent="center" pb={"144px"}>
                       <Spinner
                         thickness="4px"
                         speed="0.65s"
@@ -308,25 +310,26 @@ export function DataTable<TData extends RowData>({
                   </Td>
                 </Tr>
               ) : (
-                table?.getRowModel()?.rows.map((row) => (
+                table?.getRowModel()?.rows.map(row => (
                   <Tr
                     key={row.id}
+                    h={rowSize ? rowSize : "auto"}
                     css={{
                       [`td:nth-of-type(${stickyColumn})`]: {
-                        position: 'sticky',
-                        right: '-1px',
-                        left: '-1px',
+                        position: "sticky",
+                        right: "-1px",
+                        left: "-1px",
                         zIndex: 40,
                         boxShadow:
-                          'inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7',
+                          "inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7",
                       },
                       [`td:nth-of-type(${stickyColumn}) , td:not(:last-child)`]:
                         {
-                          boxShadow: 'inset 1px 0 0 #edf2f7',
+                          boxShadow: "inset 1px 0 0 #edf2f7",
                         },
                     }}
                   >
-                    {row?.getVisibleCells()?.map((cell) => {
+                    {row?.getVisibleCells()?.map(cell => {
                       return (
                         <Td
                           key={cell.id}
@@ -347,9 +350,9 @@ export function DataTable<TData extends RowData>({
             </Tbody>
             {showFooter ? (
               <Tfoot>
-                {table?.getFooterGroups()?.map((footerGroup) => (
+                {table?.getFooterGroups()?.map(footerGroup => (
                   <Tr key={footerGroup.id}>
-                    {footerGroup.headers.map((header) => (
+                    {footerGroup.headers.map(header => (
                       <Th key={header.id}>
                         {header.isPlaceholder
                           ? null
@@ -363,25 +366,25 @@ export function DataTable<TData extends RowData>({
                 ))}
               </Tfoot>
             ) : (
-              ''
+              ""
             )}
           </Table>
         </Box>
       )}
       {pagination && pagination?.count > 0 ? (
-        <HStack justifyContent={'space-between'} flexWrap="wrap" mt={3}>
+        <HStack justifyContent={"space-between"} flexWrap="wrap" mt={3}>
           <HStack>
             <FormControl
-              variant={'floating'}
-              display={'flex'}
-              alignItems={'center'}
-              columnGap={'16px'}
+              variant={"floating"}
+              display={"flex"}
+              alignItems={"center"}
+              columnGap={"16px"}
             >
               <FormLabel
-                marginInlineStart={'5% !important'}
-                marginStart={'5% !important'}
+                marginInlineStart={"5% !important"}
+                marginStart={"5% !important"}
                 m={0}
-                fontSize={'12px'}
+                fontSize={"12px"}
                 color={colors.black}
               >
                 Show
@@ -390,36 +393,36 @@ export function DataTable<TData extends RowData>({
                 <Tooltip
                   label={`${tooltipLabel}`}
                   placement="top"
-                  borderRadius={'20px'}
-                  fontSize={'12px'}
+                  borderRadius={"20px"}
+                  fontSize={"12px"}
                   boxShadow="14px 17px 40px 4px rgba(112, 144, 176, 0.08)"
                 >
                   <Select
                     icon={
                       <MdKeyboardArrowDown
-                        fontSize={'0px'}
-                        fontWeight={'thin'}
+                        fontSize={"0px"}
+                        fontWeight={"thin"}
                       />
                     }
-                    w={'57px'}
-                    h={'34px'}
-                    ps={'8px'}
-                    border={'1px solid #E9E9E9'}
-                    borderRadius={'8px'}
-                    colorScheme={'purple'}
-                    fontSize={'11px'}
-                    cursor={'pointer'}
+                    w={"57px"}
+                    h={"34px"}
+                    ps={"8px"}
+                    border={"1px solid #E9E9E9"}
+                    borderRadius={"8px"}
+                    colorScheme={"purple"}
+                    fontSize={"11px"}
+                    cursor={"pointer"}
                     value={limit}
                     style={{
-                      paddingInline: '8px',
-                      textAlign: 'left',
+                      paddingInline: "8px",
+                      textAlign: "left",
                     }}
-                    onChange={(e) => {
+                    onChange={e => {
                       setLimit(Number(e.target.value));
                       pagination?.onSortChange?.(Number(e.target.value));
                     }}
                   >
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                    {[10, 20, 30, 40, 50].map(pageSize => (
                       <option key={pageSize} value={pageSize}>
                         {pageSize}
                       </option>
@@ -432,16 +435,16 @@ export function DataTable<TData extends RowData>({
                 right="3px"
                 top="50%"
                 transform="translateY(-50%)"
-                zIndex={'-1'}
+                zIndex={"-1"}
               >
-                <MdKeyboardArrowDown fontSize={'16px'} fontWeight={'thin'} />
+                <MdKeyboardArrowDown fontSize={"16px"} fontWeight={"thin"} />
               </Box>
             </FormControl>
           </HStack>
           <Box className="pagination" display="flex" alignItems="center">
             <ReactPaginate
               breakLabel="..."
-              previousLabel={<BiSkipPrevious size={'23px'} />}
+              previousLabel={<BiSkipPrevious size={"23px"} />}
               onPageChange={({ selected }) => {
                 pagination?.onPageChange?.(selected ?? 0);
                 setCurrentPage(selected);
@@ -449,13 +452,13 @@ export function DataTable<TData extends RowData>({
               forcePage={currentPage}
               pageRangeDisplayed={5}
               pageCount={pageCount ?? 0}
-              nextLabel={<BiSkipNext size={'23px'} />}
+              nextLabel={<BiSkipNext size={"23px"} />}
               renderOnZeroPageCount={null}
             />
           </Box>
         </HStack>
       ) : (
-        ''
+        ""
       )}
     </>
   );

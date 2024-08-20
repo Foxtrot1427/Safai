@@ -1,10 +1,10 @@
-import { defineStyleConfig } from '@chakra-ui/react';
-import { colors } from '../colors';
+import { defineStyleConfig } from "@chakra-ui/react";
+import { colors } from "../colors";
 
 export const Button = defineStyleConfig({
   baseStyle: {
-    fontSize: '14px',
-    borderRadius: '12px',
+    fontSize: "14px",
+    borderRadius: "12px",
     px: 6,
     py: 4,
   },
@@ -14,8 +14,7 @@ export const Button = defineStyleConfig({
       color: colors.gray_100,
       border: `1px solid ${colors.primary}`,
       _hover: {
-        bg: colors.gray_100,
-        color: colors.primary,
+        bg: "green.700",
         border: `1px solid ${colors.primary}`,
       },
     },
@@ -55,6 +54,14 @@ export const Button = defineStyleConfig({
         color: colors.gray_100,
       },
     },
+    edit2: {
+      bg: colors.primary,
+      color: colors.gray_100,
+      _hover: {
+        bg: colors.gray_700,
+        color: colors.gray_100,
+      },
+    },
     delete: {
       bg: colors.delete,
       color: colors.gray_100,
@@ -81,7 +88,6 @@ export const Button = defineStyleConfig({
     },
   },
   defaultProps: {
-    variant: 'primary',
-
+    variant: "primary",
   },
 });

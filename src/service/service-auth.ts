@@ -1,21 +1,21 @@
 import {
   ILoginRequest,
   ILoginResponseData,
-} from '@rsces/pages/Admin/login/interface';
-import { HttpClient } from './service-axios';
-import { Response, api } from './service-api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toastFail, toastSuccess } from './service-toast';
-import TokenService from './service-token';
-import { useNavigate } from 'react-router-dom';
-import { NAVIGATION_ROUTES } from '@rsces/routes/routes.constant';
-import serverErrorResponse from './service-error';
+} from "@rsces/pages/Admin/login/interface";
+import { HttpClient } from "./service-axios";
+import { Response, api } from "./service-api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toastFail, toastSuccess } from "./service-toast";
+import TokenService from "./service-token";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
+import serverErrorResponse from "./service-error";
 import {
   ISignupRequest,
   ISignupResponse,
-} from '@rsces/pages/Admin/register/interface';
+} from "@rsces/pages/Admin/register/interface";
 
-export const authTokenKey = 'authToken';
+export const authTokenKey = "authToken";
 
 const initLogout = async () => {
   try {
@@ -35,10 +35,10 @@ export const useLogout = () => {
     onSuccess: () => {
       queryClient.setQueryData([authTokenKey], () => false);
       navigate(NAVIGATION_ROUTES.BASE, { replace: true });
-      toastSuccess('Logged Out');
+      toastSuccess("Logged Out");
     },
-    onError: (error) => {
-      const errorMsg = serverErrorResponse(error, 'Logout Failed');
+    onError: error => {
+      const errorMsg = serverErrorResponse(error, "Logout Failed");
       toastFail(errorMsg);
     },
   });
@@ -58,14 +58,14 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: initLogin,
-    onSuccess: (response) => {
+    onSuccess: response => {
       TokenService.setToken(response?.data?.results?.accessToken);
       queryClient.setQueryData([authTokenKey], () => true);
       navigate(NAVIGATION_ROUTES.ADMIN_DONATIONS);
-      toastSuccess(response.data.toast || 'Login Success');
+      toastSuccess(response.data.toast || "Login Success");
     },
-    onError: (error) => {
-      const errorMsg = serverErrorResponse(error, 'Login Failed');
+    onError: error => {
+      const errorMsg = serverErrorResponse(error, "Login Failed");
       toastFail(errorMsg);
     },
   });
@@ -84,12 +84,12 @@ export const useRegisterAdmin = () => {
 
   return useMutation({
     mutationFn: initRegister,
-    onSuccess: (response) => {
+    onSuccess: response => {
       navigate(NAVIGATION_ROUTES.ADMIN_LOGIN);
-      toastSuccess(response.data.toast || 'Registered Admin Successfully');
+      toastSuccess(response.data.toast || "Registered Admin Successfully");
     },
-    onError: (error) => {
-      const errorMsg = serverErrorResponse(error, 'Register Failed');
+    onError: error => {
+      const errorMsg = serverErrorResponse(error, "Register Failed");
       toastFail(errorMsg);
     },
   });

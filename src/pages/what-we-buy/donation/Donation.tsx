@@ -8,16 +8,16 @@ import {
   Image,
   Input,
   Text,
-} from '@chakra-ui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import InputField from '@rsces/components/form/InputField';
-import Textarea from '@rsces/components/form/Textarea';
-import { useCreateDonation } from '@rsces/service/service-donation';
-import { toFormData } from 'axios';
-import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { BsUpload } from 'react-icons/bs';
-import { defaultValues, schema } from './constant';
+} from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import InputField from "@rsces/components/form/InputField";
+import Textarea from "@rsces/components/form/Textarea";
+import { useCreateDonation } from "@rsces/service/service-donation";
+import { toFormData } from "axios";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { BsUpload } from "react-icons/bs";
+import { defaultValues, DonationFormValues, schema } from "./constant";
 
 const Donation = () => {
   const imageRef = useRef<HTMLInputElement | null>(null);
@@ -32,36 +32,39 @@ const Donation = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  
+
   const { mutateAsync: createDonation, isPending: isCreatingDonation } =
     useCreateDonation();
 
-  const onSubmit = async (data: typeof defaultValues) => {
-    const pickUpTime = new Date(
-      data.pickUpDate + 'T' + data.pickUpTime,
-    ).toISOString();
-    const formattedData = {
-      ...data,
-      pickUpTime,
-    };
-    const formdata = toFormData(formattedData, undefined, {
+  const onSubmit = async (data: DonationFormValues) => {
+    if (data.pickUpDate) {
+      data.pickUpDate = new Date(data.pickUpDate).toISOString();
+      if (data.pickUpTime) {
+        data.pickUpDate = new Date(
+          data.pickUpDate + "T" + data.pickUpTime,
+        ).toISOString();
+      }
+    }
+    const formdata = toFormData(data, undefined, {
       indexes: null,
-    });    
+    });
     await createDonation(formdata);
     reset(defaultValues);
   };
-
   return (
     <Grid
-      as={'form'}
-      templateColumns={'repeat(2, 1fr)'}
+      as={"form"}
+      templateColumns={{
+        base: "repeat(auto-fit, minmax(200px, 1fr))",
+        lg: "repeat(2, 1fr)",
+      }}
       columnGap={6}
       onSubmit={handleSubmit(onSubmit)}
     >
       <InputField
         name="name"
         label="Name"
-        placeholder={'Your Name'}
+        placeholder={"Your Name"}
         control={control}
         errors={errors}
       />
@@ -88,20 +91,20 @@ const Donation = () => {
         errors={errors}
       />
       <GridItem rowSpan={3}>
-        <FormControl h={'full'}>
+        <FormControl h={"full"}>
           <Input
             type="file"
-            display={'none'}
-            {...register('image')}
-            ref={(e) => {
-              register('image').ref(e);
+            display={"none"}
+            {...register("image")}
+            ref={e => {
+              register("image").ref(e);
               imageRef.current = e;
             }}
           />
-          <FormLabel fontSize={'sm'}>Item (Image)</FormLabel>
+          <FormLabel fontSize={"sm"}>Item (Image)</FormLabel>
           <Button
-            width={'full'}
-            variant={'outline'}
+            width={"full"}
+            variant={"outline"}
             onClick={() => imageRef.current?.click()}
           >
             <HStack spacing={2}>
@@ -109,17 +112,17 @@ const Donation = () => {
               <Text>Upload</Text>
             </HStack>
           </Button>
-          {watch('image')?.[0] && (
+          {watch("image")?.[0] && (
             <Image
               src={
-                watch('image')
-                  ? URL.createObjectURL(watch('image')?.[0] || '')
-                  : ''
+                watch("image")
+                  ? URL.createObjectURL(watch("image")?.[0] ?? new File([], ""))
+                  : ""
               }
               alt="Item image"
               h={48}
               mt={2}
-              mx={'auto'}
+              mx={"auto"}
             />
           )}
         </FormControl>
@@ -141,8 +144,8 @@ const Donation = () => {
       <Button
         mt={4}
         type="submit"
-        w={'160px'}
-        justifySelf={'flex-end'}
+        w={"160px"}
+        justifySelf={"flex-end"}
         isLoading={isCreatingDonation}
       >
         Submit

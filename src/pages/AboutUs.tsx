@@ -1,26 +1,76 @@
 import {
   Box,
+  Card,
+  CardBody,
   Flex,
+  Heading,
+  Image,
   ListIcon,
   ListItem,
-  Square,
+  SimpleGrid,
   StackDivider,
   Text,
   UnorderedList,
   VStack,
-  Image,
 } from "@chakra-ui/react";
 import { ThreeR } from "@rsces/assets/images";
 import Container from "@rsces/components/ui/Container";
 import Wrapper from "@rsces/components/ui/Wrapper";
 import { colors } from "@rsces/theme/colors";
+import { MISSIONS, SERVICES, VISIONS } from "../data";
 
 import { PiPaperPlaneRightFill } from "react-icons/pi";
+import { useStats } from "@rsces/service/service-stats";
+import { getYearsSince } from "@rsces/hooks/getYearsSince";
+
+const Service = ({ service }: { service: (typeof SERVICES)[0] }) => {
+  const { icon, title, description } = service;
+
+  return (
+    <Card variant={"outline"}>
+      <CardBody
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        gap={2}
+      >
+        <Image src={icon} alt={title} width={16} />
+        <Heading as={"h2"} fontSize={"2xl"} mt={6}>
+          {title}
+        </Heading>
+        <Text align={"center"} maxW={"80%"}>
+          {description}
+        </Text>
+      </CardBody>
+    </Card>
+  );
+};
+
+const CustomListItem = ({
+  item,
+}: {
+  item: {
+    id: number;
+    label: string;
+  };
+}) => {
+  const { label } = item;
+  return (
+    <ListItem>
+      <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
+      {label}
+    </ListItem>
+  );
+};
 
 const AboutUs = () => {
+  const { data: statsData } = useStats();
+  const data = statsData ? statsData?.dashboard : [];
+  const yearsSince = getYearsSince("2014-01-26");
+
   return (
     <>
-      <Wrapper py={40}>
+      <Wrapper py={28}>
         <Text textTransform={"uppercase"} align={"center"} fontSize={"2xl"}>
           Our Company & Motto
         </Text>
@@ -33,16 +83,18 @@ const AboutUs = () => {
           About us
         </Text>
       </Wrapper>
-
       <Box as={"section"} py={24} bgColor={colors.gray_200}>
         <Container>
           <Flex gap={48}>
-            <VStack divider={<StackDivider borderColor={colors.gray} />}>
-              {/* Icon */}
+            <VStack
+              display={{ base: "none", lg: "flex" }}
+              divider={<StackDivider borderColor={colors.gray} />}
+              spacing={4}
+            >
               <VStack flex={1} spacing={4}>
                 <Text
                   position={"relative"}
-                  fontSize={"6xl"}
+                  fontSize={"5xl"}
                   fontWeight={"bold"}
                   _after={{
                     content: '"YRS"',
@@ -53,18 +105,17 @@ const AboutUs = () => {
                     left: "105%",
                   }}
                 >
-                  4
+                  {yearsSince}
                 </Text>
                 <Text fontSize={"2xl"} align={"center"}>
                   Years of <br /> Establishment
                 </Text>
               </VStack>
 
-              {/* Icon */}
               <VStack flex={1} spacing={0}>
                 <Text
                   position={"relative"}
-                  fontSize={"6xl"}
+                  fontSize={"5xl"}
                   fontWeight={"bold"}
                   _after={{
                     content: '"PCS"',
@@ -75,18 +126,17 @@ const AboutUs = () => {
                     left: "105%",
                   }}
                 >
-                  1000
+                  {data[1]?.quantity}
                 </Text>
                 <Text fontSize={"2xl"} align={"center"}>
-                  Bottles
+                  {data[1]?.title}
                 </Text>
               </VStack>
 
-              {/* Icon */}
               <VStack flex={1} spacing={0}>
                 <Text
                   position={"relative"}
-                  fontSize={"6xl"}
+                  fontSize={"5xl"}
                   fontWeight={"bold"}
                   _after={{
                     content: '"KGS"',
@@ -97,18 +147,17 @@ const AboutUs = () => {
                     left: "105%",
                   }}
                 >
-                  1200
+                  {data[2]?.quantity}
                 </Text>
                 <Text fontSize={"2xl"} align={"center"}>
-                  Papers
+                  {data[2]?.title}
                 </Text>
               </VStack>
 
-              {/* Icon */}
               <VStack flex={1} spacing={0}>
                 <Text
                   position={"relative"}
-                  fontSize={"6xl"}
+                  fontSize={"5xl"}
                   fontWeight={"bold"}
                   _after={{
                     content: '"PCS"',
@@ -119,26 +168,29 @@ const AboutUs = () => {
                     left: "105%",
                   }}
                 >
-                  10000
+                  {data[3]?.quantity}
                 </Text>
                 <Text fontSize={"2xl"} align={"center"}>
-                  Ewaste
+                  {data[3]?.title}
                 </Text>
               </VStack>
             </VStack>
 
-            <VStack flex={1} spacing={8}>
-              <Text fontSize={"3xl"} fontWeight={"bold"}>
-                Few Words About Us
-              </Text>
-              <Text fontSize={"xl"} align={"center"} mt={8}>
+            <VStack
+              flex={1}
+              spacing={8}
+              align={"start"}
+              px={4}
+              // textAlign={{ base: "center", lg: "start" }}
+            >
+              <Heading>Few Words About Us</Heading>
+              <Text lineHeight={"2rem"} fontSize={"lg"}>
                 Phohor Mohor is a pioneering company established in BS 2070,
                 specializing in Recyclable and Reusable solid waste management,
                 Located in Madhyapur-3 Bhatapur. With a strong commitment to
                 excellence and sustainability.
               </Text>
-
-              <Text align={"center"} lineHeight={"tall"}>
+              <Text lineHeight={"2rem"} fontSize={"lg"}>
                 Phohor Mohor is dedicated to reduce the solid waste are being
                 dumped to dumping site and create awareness to our society of
                 the waste management. Our team of skilled professionals is
@@ -156,38 +208,52 @@ const AboutUs = () => {
                 the power of collaboration and innovation, we are committed to
                 building a better future for generations to come.
               </Text>
+              <Text lineHeight={"2rem"} fontSize={"lg"}>
+                Our mission is to promote 3R whereas Reduce the waste or scrap
+                are being emitted, Re-use the waste or scrap are being emitted
+                and Recycle the waste or scrap are being emitted by human, While
+                promoting environmental sustainability and social
+                responsibility. With a firm belief in the power of collaboration
+                and innovation, we are committed to building a better future for
+                generations to come.
+              </Text>
             </VStack>
           </Flex>
         </Container>
       </Box>
       <Box as={"section"} py={24} position={"relative"} w={"100%"}>
-        <Box maxW={"80%"} mx={"auto"}>
-          <Text textTransform={"uppercase"} align={"center"} fontSize={"3xl"}>
-            We provide a range of services to our clients
+        <Container px={4}>
+          <Heading textAlign={"center"}>Services</Heading>
+          <Text textAlign={"center"} fontSize={"lg"}>
+            For the outcome of our mission we provide a range of services to our
+            clients
           </Text>
-          <Text textTransform={"uppercase"} align={"center"} fontSize={"1xl"}>
-            Waste Collection:
-            <Text>
-              We collect recyclable and reusable waste materials from
-              households, businesses,industries, institution and social
-              organization. Our team uses specialized equipment to ensure
-              efficient and safe waste collection
-            </Text>
-          </Text>
-        </Box>
+          <SimpleGrid
+            mt={12}
+            templateColumns={{
+              base: "repeat(auto-fit, minmax(200px, 1fr))",
+              lg: "repeat(2, 1fr)",
+            }}
+            gap={4}
+          >
+            {SERVICES.map(service => (
+              <Service key={service.title} service={service} />
+            ))}
+          </SimpleGrid>
+        </Container>
       </Box>
       <Box
         as={"section"}
-        py={24}
+        py={{ base: 12, lg: 24 }}
         position={"relative"}
         bgColor={colors.gray_200}
       >
-        <Container>
-          <Flex gap={10}>
-            <Box w={"40%"}>
+        <Container px={6}>
+          <Flex gap={10} direction={{ base: "column", lg: "row" }}>
+            <Box w={{ base: "60%", lg: "40%" }} mx={"auto"}>
               <Image src={ThreeR} alt={"recycle"} w={"full"} />
             </Box>
-            <Box w={"60%"}>
+            <Box w={{ lg: "60%" }}>
               <Text textTransform={"uppercase"} fontSize={"2xl"}>
                 Our Mission, Vision & Goals
               </Text>
@@ -204,56 +270,29 @@ const AboutUs = () => {
                   Our Mission
                 </Text>
                 <UnorderedList listStyleType={"none"} spacing={2}>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Collect the dry solid waste from door to door and use
-                    integrated 3R (Reuse, Reduce and Recycle) approach
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Quantity of Landfill waste can be significantly reduced by
-                    collecting the dry waste in source.
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Research for new innovative product from waste material.
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Create employment opportunity through waste management.
-                  </ListItem>
+                  {MISSIONS.map(mission => (
+                    <CustomListItem key={mission.id} item={mission} />
+                  ))}
                 </UnorderedList>
 
                 <Text mt={8} fontSize={"xl"} fontWeight={"bold"} mb={4}>
                   Our Vision
                 </Text>
                 <UnorderedList listStyleType={"none"} spacing={2}>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Solid waste has significant economic value.
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Solid waste should be separate in source according to
-                    degradable and non-degradable.
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={PiPaperPlaneRightFill} color={colors.gray} />
-                    Solid waste has many opportunity.
-                  </ListItem>
+                  {VISIONS.map(vision => (
+                    <CustomListItem key={vision.id} item={vision} />
+                  ))}
                 </UnorderedList>
               </Box>
             </Box>
           </Flex>
-          <Flex mt={16} bgColor={colors.primary} align={"center"} gap={8}>
-            <Square size={24} bg={colors.gray_500} />
+          <Flex mt={16} bgColor={colors.primary} align={"center"} gap={8} p={8}>
             <Text color={colors.white} flex={1} fontSize={"xl"}>
               <span style={{ fontWeight: 700 }}>Our Goal: </span>
               Establish recycle factory for dry solid waste.
             </Text>
           </Flex>
         </Container>
-        {/* <Container></Container> */}
       </Box>
     </>
   );

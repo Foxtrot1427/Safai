@@ -235,7 +235,7 @@ const AdminProducts = () => {
         ),
       }),
     ],
-    [columnHelper, onAddOpen, onDrawerOpen, onOpen, reset],
+    [columnHelper, onDrawerOpen, onOpen, reset, onEditOpen],
   );
   const formFields = (
     <>
