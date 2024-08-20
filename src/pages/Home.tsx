@@ -106,7 +106,7 @@ const Home = () => {
                 fontWeight={"bold"}
                 color={colors.white}
               >
-                Uncover Hidden Value of Scraps
+                Got Trash?
               </Text>
 
               <Text
@@ -166,12 +166,12 @@ const Home = () => {
                   About
                 </Text>
                 <Text
-                  fontSize={"4xl"}
+                  fontSize={"5xl"}
                   fontWeight={"black"}
                   color={colors.gray}
                   mt={"-14px"}
                 >
-                  Phohormohor
+                  Safai
                 </Text>
               </VStack>
             </Stack>
@@ -183,15 +183,14 @@ const Home = () => {
               justifyContent={"center"}
             >
               <Text lineHeight={"taller"} fontSize={"lg"}>
-                Phohor Mohor is a pioneering company established in BS 2070,
+                Safai is a pioneering company established in BS 2070,
                 specializing in Recyclable and Reusable solid waste management,
                 Located in Madhyapur-3 Bhatapur. With a strong commitment to
-                excellence and sustainability, Phohor Mohor is dedicated to
-                reduce the solid waste are being dumped to dumping site and
-                create awareness to our society of the waste management. Our
-                team of skilled professionals is driven by a passion for
-                innovation and a desire to create a positive impact on the
-                environment.
+                excellence and sustainability, Safai is dedicated to reduce the
+                solid waste are being dumped to dumping site and create
+                awareness to our society of the waste management. Our team of
+                skilled professionals is driven by a passion for innovation and
+                a desire to create a positive impact on the environment.
               </Text>
               <Button
                 mt={4}
@@ -380,9 +379,9 @@ const Home = () => {
                   </Text>
 
                   <Text mt={4} lineHeight={"1.75rem"}>
-                    At Phohor Mohor, our Recycle Services are at the heart of
-                    our mission to promote environmental sustainability and
-                    social responsibility. We take pride in our meticulous waste
+                    At Safai, our Recycle Services are at the heart of our
+                    mission to promote environmental sustainability and social
+                    responsibility. We take pride in our meticulous waste
                     sorting process, where we categorize waste materials such as
                     plastic, paper, rubber, metal, used oil, mobil, shoes,
                     clothes, and glass. By collaborating with trusted recycling
@@ -406,7 +405,7 @@ const Home = () => {
                     awareness and encouraging the adoption of responsible waste
                     management practices, we strive to create a positive ripple
                     effect that benefits both society and the environment. At
-                    Phohor Mohor, we believe that every effort counts, and our
+                    Safai, we believe that every effort counts, and our
                     recycling services are designed to make a meaningful
                     difference in the pursuit of a sustainable future.
                   </Text>
@@ -436,7 +435,7 @@ const Home = () => {
                   </Text>
 
                   <Text mt={4} lineHeight={"1.75rem"}>
-                    Phohor Mohor's Logistic Services are designed to ensure the
+                    Safai's Logistic Services are designed to ensure the
                     efficient and safe collection of recyclable and reusable
                     waste materials from various sources, including households,
                     businesses, industries, institutions, and social
@@ -460,7 +459,7 @@ const Home = () => {
                     technologies and methodologies, we continuously seek to
                     enhance our logistic operations, delivering top-notch
                     services that align with our mission to promote sustainable
-                    development. At Phohor Mohor, we are committed to building a
+                    development. At Safai, we are committed to building a
                     cleaner, greener future through efficient and innovative
                     waste management logistics.
                   </Text>

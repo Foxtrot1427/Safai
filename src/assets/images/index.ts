@@ -1,4 +1,4 @@
-import Logo from "./logo.png";
+import Logo from "./3r.png";
 import Carton from "./box.jpeg";
 import Recycle from "./recycle.png";
 import Logistics from "./logistics.png";

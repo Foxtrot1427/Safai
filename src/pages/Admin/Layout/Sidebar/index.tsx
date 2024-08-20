@@ -14,8 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { DonationIcon } from "@rsces/assets/icons/Donation";
 import { ProductsIcon } from "@rsces/assets/icons/Products";
-import Logo from "@rsces/assets/images/logo.png";
-import MiniLogo from "@rsces/assets/images/mini-logo.png";
+import Logo from "@rsces/assets/images/3r.png";
+import MiniLogo from "@rsces/assets/images/3r.png";
 import { NAVIGATION_ROUTES } from "@rsces/routes/routes.constant";
 import { colors } from "@rsces/theme/colors";
 import React, { Fragment, useEffect, useState } from "react";
