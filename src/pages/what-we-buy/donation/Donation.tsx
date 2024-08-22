@@ -37,13 +37,13 @@ const Donation = () => {
     useCreateDonation();
 
   const onSubmit = async (data: DonationFormValues) => {
-    if (data.pickUpDate) {
+    if (data.pickUpDate && data.pickUpTime) {
+      const combinedDateTime = new Date(
+        `${data.pickUpDate}T${data.pickUpTime}`,
+      );
+      data.pickUpDate = combinedDateTime.toISOString();
+    } else if (data.pickUpDate) {
       data.pickUpDate = new Date(data.pickUpDate).toISOString();
-      if (data.pickUpTime) {
-        data.pickUpDate = new Date(
-          data.pickUpDate + "T" + data.pickUpTime,
-        ).toISOString();
-      }
     }
     const formdata = toFormData(data, undefined, {
       indexes: null,
